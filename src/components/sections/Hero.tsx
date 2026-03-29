@@ -277,7 +277,7 @@ export default function Hero() {
         backgroundSize: "24px 24px",
       }}
     >
-      <BackgroundNoise seed={101} density={20} />
+      <BackgroundNoise seed={101} density={40} />
       <HudReadout position="top-right" lines={["SIG:OK // FREQ:443.2", "NODE:ACTIVE", "v2.0.1"]} />
 
       {/* Diagonal slash lines */}

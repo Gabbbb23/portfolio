@@ -98,7 +98,7 @@ export default function About() {
       id="about"
       className="relative z-10 bg-slate-50 py-16 md:py-20 overflow-hidden rounded-t-3xl -mt-1"
     >
-      <BackgroundNoise seed={202} density={14} />
+      <BackgroundNoise seed={202} density={30} />
       <HudReadout position="top-right" lines={["SEC:02 // ABOUT", "SCAN:COMPLETE"]} />
 
       {/* Ghost text */}

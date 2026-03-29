@@ -13,6 +13,40 @@ function seededRandom(seed: number) {
 const shapes = ["circle", "cross", "diamond", "square", "dot-grid"] as const;
 const codeFragments = ["0x4F", "//", "[ ]", ">>>", "++", "&&", "!=", "=>", "{}", "01", "**", "<<", ":::", "null", "fn()", "$."];
 
+const driftKeyframes = `
+@keyframes noise-drift-1 {
+  0%, 100% { transform: translate(0, 0) rotate(var(--r)); }
+  25% { transform: translate(12px, -8px) rotate(var(--r)); }
+  50% { transform: translate(-6px, 14px) rotate(var(--r)); }
+  75% { transform: translate(10px, 6px) rotate(var(--r)); }
+}
+@keyframes noise-drift-2 {
+  0%, 100% { transform: translate(0, 0) rotate(var(--r)); }
+  33% { transform: translate(-14px, 10px) rotate(var(--r)); }
+  66% { transform: translate(8px, -12px) rotate(var(--r)); }
+}
+@keyframes noise-drift-3 {
+  0%, 100% { transform: translate(0, 0) rotate(var(--r)); }
+  20% { transform: translate(16px, 4px) rotate(var(--r)); }
+  40% { transform: translate(-4px, -16px) rotate(var(--r)); }
+  60% { transform: translate(-12px, 8px) rotate(var(--r)); }
+  80% { transform: translate(6px, -10px) rotate(var(--r)); }
+}
+@keyframes noise-drift-4 {
+  0%, 100% { transform: translate(0, 0) rotate(var(--r)); }
+  30% { transform: translate(-10px, -14px) rotate(var(--r)); }
+  70% { transform: translate(14px, 12px) rotate(var(--r)); }
+}
+@keyframes noise-drift-5 {
+  0%, 100% { transform: translate(0, 0) rotate(var(--r)); }
+  15% { transform: translate(8px, 16px) rotate(var(--r)); }
+  45% { transform: translate(-16px, -4px) rotate(var(--r)); }
+  75% { transform: translate(4px, -14px) rotate(var(--r)); }
+}
+`;
+
+const driftNames = ["noise-drift-1", "noise-drift-2", "noise-drift-3", "noise-drift-4", "noise-drift-5"];
+
 interface BackgroundNoiseProps {
   seed?: number;
   density?: number;
@@ -37,6 +71,9 @@ export default function BackgroundNoise({
       size: number;
       rotation: number;
       opacity: number;
+      drift: string;
+      duration: number;
+      delay: number;
     }[] = [];
 
     for (let i = 0; i < density; i++) {
@@ -46,28 +83,35 @@ export default function BackgroundNoise({
         type,
         shape: shapes[Math.floor(rand() * shapes.length)],
         text: codeFragments[Math.floor(rand() * codeFragments.length)],
-        x: rand() * 94 + 3,  // 3-97% to avoid edge clipping
-        y: rand() * 94 + 3,
-        size: 12 + rand() * 28,
+        x: rand() * 90 + 5,
+        y: rand() * 90 + 5,
+        size: 20 + rand() * 44,
         rotation: type === "text" ? (rand() * 20 - 10) : rand() * 360,
-        opacity: isText ? (0.08 + rand() * 0.10) : (0.06 + rand() * 0.09),
+        opacity: isText ? (0.20 + rand() * 0.25) : (0.15 + rand() * 0.20),
+        drift: driftNames[Math.floor(rand() * driftNames.length)],
+        duration: 15 + rand() * 25,
+        delay: -(rand() * 20),
       });
     }
     return items;
   }, [seed, density]);
 
-  const baseColor = variant === "dark" ? "rgb(100,116,139)" : "rgb(148,163,184)"; // slate-500 dark, slate-400 light
+  const baseColor = variant === "dark" ? "rgb(100,116,139)" : "rgb(148,163,184)";
 
   return (
     <div className={`pointer-events-none absolute inset-0 select-none ${className}`} aria-hidden="true">
+      <style dangerouslySetInnerHTML={{ __html: driftKeyframes }} />
       {elements.map((el, i) => {
+        const anim = `${el.drift} ${el.duration}s ease-in-out ${el.delay}s infinite`;
         const style: React.CSSProperties = {
           position: "absolute",
           left: `${el.x}%`,
           top: `${el.y}%`,
           opacity: el.opacity,
-          transform: `rotate(${el.rotation}deg)`,
-        };
+          "--r": `${el.rotation}deg`,
+          animation: anim,
+          willChange: "transform",
+        } as React.CSSProperties;
 
         if (el.type === "text") {
           return (
@@ -93,7 +137,7 @@ export default function BackgroundNoise({
               style={{
                 ...style,
                 width: `${el.size * 2.5}px`,
-                height: "1px",
+                height: "1.5px",
                 backgroundColor: baseColor,
               }}
             />
@@ -109,7 +153,7 @@ export default function BackgroundNoise({
                 ...style,
                 width: s, height: s,
                 borderRadius: "50%",
-                border: `1.5px solid ${baseColor}`,
+                border: `2px solid ${baseColor}`,
               }}
             />
           );
@@ -117,8 +161,8 @@ export default function BackgroundNoise({
         if (el.shape === "cross") {
           return (
             <div key={i} style={{ ...style, width: s, height: s }}>
-              <div style={{ position: "absolute", top: "50%", left: 0, width: "100%", height: 1.5, backgroundColor: baseColor }} />
-              <div style={{ position: "absolute", left: "50%", top: 0, height: "100%", width: 1.5, backgroundColor: baseColor }} />
+              <div style={{ position: "absolute", top: "50%", left: 0, width: "100%", height: 2, backgroundColor: baseColor }} />
+              <div style={{ position: "absolute", left: "50%", top: 0, height: "100%", width: 2, backgroundColor: baseColor }} />
             </div>
           );
         }
@@ -129,9 +173,10 @@ export default function BackgroundNoise({
               style={{
                 ...style,
                 width: s * 0.7, height: s * 0.7,
-                border: `1.5px solid ${baseColor}`,
-                transform: `rotate(45deg)`,
-              }}
+                border: `2px solid ${baseColor}`,
+                "--r": "45deg",
+                animation: anim,
+              } as React.CSSProperties}
             />
           );
         }
@@ -142,8 +187,8 @@ export default function BackgroundNoise({
               style={{
                 ...style,
                 width: s * 2, height: s * 2,
-                backgroundImage: `radial-gradient(circle, ${baseColor} 1.2px, transparent 1.2px)`,
-                backgroundSize: "7px 7px",
+                backgroundImage: `radial-gradient(circle, ${baseColor} 1.5px, transparent 1.5px)`,
+                backgroundSize: "8px 8px",
               }}
             />
           );
@@ -154,7 +199,7 @@ export default function BackgroundNoise({
             style={{
               ...style,
               width: s * 0.6, height: s * 0.6,
-              border: `1.5px solid ${baseColor}`,
+              border: `2px solid ${baseColor}`,
             }}
           />
         );

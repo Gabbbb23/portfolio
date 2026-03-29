@@ -204,7 +204,7 @@ export default function Skills() {
             key={category.title}
             className="skill-panel relative flex-shrink-0 md:w-screen md:h-screen flex items-center justify-center px-6 md:px-16 py-20 md:py-0"
           >
-            <BackgroundNoise seed={300 + index * 100} density={12} />
+            <BackgroundNoise seed={300 + index * 100} density={25} />
             <div className="relative z-10 w-full max-w-5xl">
               {/* Category panel left border accent */}
               <div className="relative pl-6">
