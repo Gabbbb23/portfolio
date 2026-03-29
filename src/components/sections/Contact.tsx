@@ -67,6 +67,7 @@ export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
   const ghostRef = useRef<HTMLSpanElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const quoteRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -82,6 +83,18 @@ export default function Contact() {
         yPercent: -20, ease: "none",
         scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: true },
       });
+
+      // Quote line-by-line reveal
+      const lines = quoteRef.current?.querySelectorAll(".reveal-line");
+      if (lines && lines.length > 0) {
+        gsap.fromTo(lines,
+          { opacity: 0.2, y: 8 },
+          {
+            opacity: 1, y: 0, stagger: 0.2, ease: "none",
+            scrollTrigger: { trigger: quoteRef.current, start: "top 75%", end: "bottom 65%", scrub: 1 },
+          },
+        );
+      }
     });
     return () => ctx.revert();
   }, []);
@@ -98,13 +111,14 @@ export default function Contact() {
             <p className="mb-2 font-mono text-sm uppercase tracking-wider text-sky-400">
               &#9656; Get In Touch
             </p>
-            <h2 className="mb-4 font-heading text-4xl font-bold text-white md:text-5xl">
+            <h2 className="mb-6 font-heading text-5xl font-bold text-white md:text-6xl">
               Let&apos;s Connect
             </h2>
-            <p className="mb-8 text-slate-300">
-              I&apos;m always open to new opportunities, collaborations, or just
-              a friendly chat about tech.
-            </p>
+            <div ref={quoteRef} className="mb-8 max-w-lg font-heading text-2xl leading-snug text-slate-400 md:text-3xl">
+              <span className="reveal-line block">Building software that matters,</span>
+              <span className="reveal-line block">one line of code at a time.</span>
+              <span className="reveal-line block">Always learning, always shipping.</span>
+            </div>
             <div className="flex flex-wrap gap-3">
               {socials.map((social) => (
                 <SocialButton key={social.label} social={social} />

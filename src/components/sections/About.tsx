@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTextReveal, useScrollFadeUp, useCountUp, useTilt } from "@/lib/animations";
+import { useTextReveal, useCountUp, useTilt } from "@/lib/animations";
 import CornerBrackets from "@/components/CornerBrackets";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -27,7 +27,7 @@ function StatCard({ value, label }: { value: number; label: string }) {
 
 export default function About() {
   const headingRef = useTextReveal<HTMLHeadingElement>();
-  const bioRef = useScrollFadeUp<HTMLDivElement>();
+  const bioRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const ghostRef = useRef<HTMLSpanElement>(null);
   const headingWrapRef = useRef<HTMLDivElement>(null);
@@ -72,6 +72,18 @@ export default function About() {
           },
         }
       );
+
+      // Scroll-linked line-by-line bio reveal
+      const lines = bioRef.current?.querySelectorAll(".reveal-line");
+      if (lines && lines.length > 0) {
+        gsap.fromTo(lines,
+          { opacity: 0.15, y: 8 },
+          {
+            opacity: 1, y: 0, stagger: 0.15, ease: "none",
+            scrollTrigger: { trigger: bioRef.current, start: "top 70%", end: "bottom 60%", scrub: 1 },
+          },
+        );
+      }
 
       // Ghost parallax
       gsap.to(ghostRef.current, {
@@ -130,18 +142,18 @@ export default function About() {
         <div className="grid gap-12 md:grid-cols-[55%_1fr]">
           {/* Bio text */}
           <div ref={bioRef}>
-            <p className="text-slate-700 leading-relaxed">
+            <p className="reveal-line text-slate-700 leading-relaxed">
               I&apos;m a software engineer passionate about creating clean,
               performant, and thoughtful digital experiences. I believe great
               software sits at the intersection of technical excellence and
               human-centered design.
             </p>
-            <p className="text-slate-700 leading-relaxed mt-4">
+            <p className="reveal-line text-slate-700 leading-relaxed mt-4">
               Currently a junior-year computer science student, I spend my time
               exploring full-stack development, diving into new technologies, and
               building projects that solve real problems.
             </p>
-            <p className="text-slate-700 leading-relaxed mt-4">
+            <p className="reveal-line text-slate-700 leading-relaxed mt-4">
               I&apos;m always looking for opportunities to grow, collaborate, and
               build something meaningful. If you have an interesting project or
               just want to chat — reach out.

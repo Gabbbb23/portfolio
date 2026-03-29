@@ -87,13 +87,44 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
     return () => ctx.revert();
   }, [isOdd]);
 
+  const imageAreaRef = useRef<HTMLDivElement>(null);
+
+  // Scroll-linked 3D perspective tilt on image area
+  useEffect(() => {
+    const img = imageAreaRef.current;
+    const row = rowRef.current;
+    if (!img || !row) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(img,
+        { rotateX: 8, scale: 0.95, transformPerspective: 800, transformOrigin: "center bottom" },
+        {
+          rotateX: 0, scale: 1, ease: "none",
+          scrollTrigger: { trigger: row, start: "top 80%", end: "center center", scrub: 0.5 },
+        },
+      );
+    });
+    return () => ctx.revert();
+  }, []);
+
+  const marqueeText = `${project.title} \u00B7 `.repeat(10);
+
   return (
-    <div ref={rowRef} className="grid grid-cols-12 gap-6 md:gap-8 items-center">
+    <div ref={rowRef} className="relative grid grid-cols-12 gap-6 md:gap-8 items-center overflow-hidden">
+      {/* Marquee behind project row */}
+      <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none z-0">
+        <div className={isOdd ? "animate-marquee-reverse whitespace-nowrap" : "animate-marquee whitespace-nowrap"}>
+          <span className="font-display text-[clamp(6rem,15vw,12rem)] font-bold uppercase text-slate-100 leading-none">
+            {marqueeText}
+          </span>
+        </div>
+      </div>
+
       {/* Image area */}
       <div
-        className={`col-span-12 md:col-span-7 ${isOdd ? "md:order-2" : ""}`}
+        className={`relative z-10 col-span-12 md:col-span-7 ${isOdd ? "md:order-2" : ""}`}
       >
-        <div ref={imageRef} className="relative bg-slate-100 rounded-xl aspect-video overflow-hidden border border-slate-200">
+        <div ref={imageAreaRef} className="relative bg-slate-100 rounded-xl aspect-video overflow-hidden border border-slate-200">
           {/* Sky blue top bar */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-sky-500" />
           {/* Project number */}
@@ -109,7 +140,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
 
       {/* Info area */}
       <div
-        className={`col-span-12 md:col-span-5 ${
+        className={`relative z-10 col-span-12 md:col-span-5 ${
           isOdd ? "md:order-1 md:text-right" : ""
         }`}
       >

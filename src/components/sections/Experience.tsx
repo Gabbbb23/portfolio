@@ -206,10 +206,10 @@ export default function Experience() {
             <div ref={lineRef} className="w-full bg-slate-200" style={{ height: 0 }} />
           </div>
 
-          {/* Timeline entries */}
-          <div className="space-y-8 ml-0 md:ml-[60px] pl-8">
+          {/* Timeline entries — group hover dims siblings */}
+          <div className="group/exp space-y-8 ml-0 md:ml-[60px] pl-8">
             {experiences.map((item) => (
-              <div key={item.id} className="relative">
+              <div key={item.id} className="relative transition-opacity duration-300 group-hover/exp:opacity-40 hover:!opacity-100">
                 {/* Timeline dot */}
                 <div
                   data-dot
@@ -220,7 +220,7 @@ export default function Experience() {
                 <CornerBrackets>
                   <div
                     data-card
-                    className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+                    className="bg-white border border-slate-200 border-l-2 border-l-transparent rounded-xl p-6 shadow-sm hover:shadow-md hover:border-l-sky-500 transition-all duration-300"
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <span className="bg-sky-100 text-sky-600 font-mono text-xs rounded-full px-3 py-1">
