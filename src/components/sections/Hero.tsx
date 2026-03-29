@@ -128,32 +128,34 @@ export default function Hero() {
         scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: true },
       });
 
-      // Pin hero — About section slides over it
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "bottom top",
-        pin: true,
-        pinType: "transform",
-        pinSpacing: false,
+      // Desktop only — pin hero, parallax effects
+      ScrollTrigger.matchMedia({
+        "(min-width: 768px)": function () {
+          ScrollTrigger.create({
+            trigger: sectionRef.current,
+            start: "top top",
+            end: "bottom top",
+            pin: true,
+            pinType: "transform",
+            pinSpacing: false,
+          });
+
+          const contentEl = sectionRef.current?.querySelector(".hero-content");
+          if (contentEl) {
+            gsap.to(contentEl, {
+              scale: 0.95, opacity: 0.6, ease: "none",
+              scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom top", scrub: true },
+            });
+          }
+
+          if (shapesRef.current) {
+            gsap.to(shapesRef.current, {
+              yPercent: -50, ease: "none",
+              scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom top", scrub: true },
+            });
+          }
+        },
       });
-
-      // Hero content recedes as user scrolls away
-      const contentEl = sectionRef.current?.querySelector(".hero-content");
-      if (contentEl) {
-        gsap.to(contentEl, {
-          scale: 0.95, opacity: 0.6, ease: "none",
-          scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom top", scrub: true },
-        });
-      }
-
-      // Floating shapes parallax faster
-      if (shapesRef.current) {
-        gsap.to(shapesRef.current, {
-          yPercent: -50, ease: "none",
-          scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom top", scrub: true },
-        });
-      }
     });
 
     return () => ctx.revert();

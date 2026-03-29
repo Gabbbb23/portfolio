@@ -96,7 +96,7 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="relative z-10 bg-slate-50 py-16 md:py-20 overflow-hidden rounded-t-3xl -mt-1"
+      className="relative z-10 bg-slate-50 py-16 md:py-20 overflow-hidden md:rounded-t-3xl md:-mt-1"
     >
       <BackgroundNoise seed={202} density={16} />
       <HudReadout position="top-right" lines={["SEC:02 // ABOUT", "SCAN:COMPLETE"]} />
