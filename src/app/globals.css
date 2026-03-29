@@ -76,3 +76,72 @@ body {
 .animate-marquee-reverse {
   animation: marquee 20s linear infinite reverse;
 }
+
+/* ZZZ — CRT scanline overlay */
+.crt-scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px);
+}
+
+/* ZZZ — TV static noise grain */
+.tv-noise::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ZZZ — Glitch text on hover */
+.glitch-text { position: relative; }
+.glitch-text::before, .glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.glitch-text:hover::before {
+  opacity: 0.8; color: #0EA5E9;
+  clip-path: inset(20% 0 30% 0);
+  transform: translateX(-3px);
+  animation: glitch-shift 0.3s steps(2) 1;
+}
+.glitch-text:hover::after {
+  opacity: 0.8; color: #F43F5E;
+  clip-path: inset(50% 0 10% 0);
+  transform: translateX(3px);
+  animation: glitch-shift 0.3s steps(2) 1 reverse;
+}
+@keyframes glitch-shift {
+  0% { clip-path: inset(20% 0 30% 0); transform: translateX(-3px); }
+  25% { clip-path: inset(60% 0 5% 0); transform: translateX(2px); }
+  50% { clip-path: inset(10% 0 50% 0); transform: translateX(-2px); }
+  75% { clip-path: inset(40% 0 20% 0); transform: translateX(3px); }
+  100% { clip-path: inset(20% 0 30% 0); transform: translateX(-3px); }
+}
+
+/* ZZZ — Halftone dot pattern */
+.halftone-dots {
+  background-image: radial-gradient(circle, #CBD5E1 0.8px, transparent 0.8px);
+  background-size: 8px 8px;
+}
+
+/* ZZZ — Terminal cursor blink */
+@keyframes terminal-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.animate-terminal-blink {
+  animation: terminal-blink 1s steps(1) infinite;
+}

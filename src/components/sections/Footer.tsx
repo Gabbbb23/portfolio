@@ -54,6 +54,16 @@ export default function Footer() {
           ))}
         </div>
 
+        <div className="flex items-center justify-center gap-2 font-mono text-[10px] text-slate-600">
+          <span className="flex items-center gap-0.5">
+            <span className="h-1 w-0.5 rounded-sm bg-sky-500" />
+            <span className="h-1.5 w-0.5 rounded-sm bg-sky-500" />
+            <span className="h-2 w-0.5 rounded-sm bg-sky-500" />
+            <span className="h-2.5 w-0.5 rounded-sm bg-sky-500" />
+          </span>
+          <span>SIGNAL:ACTIVE // NODE:DEPLOYED // UPTIME:99.9%</span>
+        </div>
+
         <p className="font-mono text-sm text-slate-500">
           &copy; {new Date().getFullYear()} Gab. All rights reserved.
         </p>

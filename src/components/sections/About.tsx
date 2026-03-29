@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTextReveal, useCountUp, useTilt } from "@/lib/animations";
 import CornerBrackets from "@/components/CornerBrackets";
+import HudReadout from "@/components/HudReadout";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -96,6 +97,8 @@ export default function About() {
       id="about"
       className="relative z-10 bg-slate-50 py-16 md:py-20 overflow-hidden rounded-t-3xl -mt-1"
     >
+      <HudReadout position="top-right" lines={["SEC:02 // ABOUT", "SCAN:COMPLETE"]} />
+
       {/* Ghost text */}
       <span
         ref={ghostRef}
@@ -126,6 +129,8 @@ export default function About() {
             </h2>
           </div>
         </div>
+
+        <div className="mb-6 h-1 w-32 halftone-dots opacity-40" />
 
         {/* Side-by-side layout */}
         <div className="grid gap-12 md:grid-cols-[55%_1fr]">

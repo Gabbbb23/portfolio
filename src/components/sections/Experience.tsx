@@ -198,16 +198,18 @@ export default function Experience() {
 
               {/* Timeline entries — group hover dims siblings */}
               <div className="group/exp space-y-8 ml-0 md:ml-[60px] pl-8">
-                {experiences.map((item) => (
+                {experiences.map((item, index) => (
                   <div key={item.id} className="relative transition-opacity duration-300 group-hover/exp:opacity-60 hover:!opacity-100" style={{ opacity: 1 }}>
                     {/* Timeline dot */}
-                    <div
-                      data-dot
-                      className="absolute -left-8 top-6 w-3 h-3 rounded-full bg-sky-500 ring-4 ring-sky-100 -translate-x-[5px]"
-                    />
+                    <div data-dot className="absolute -left-8 top-6 flex items-center gap-1 -translate-x-[5px]">
+                      <div className="h-3 w-3 rounded-full bg-sky-500 ring-4 ring-sky-100" />
+                      <span className="hidden font-mono text-[8px] text-slate-300 tracking-wider md:inline">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
 
                     {/* Card */}
-                    <CornerBrackets>
+                    <CornerBrackets variant="crosshair">
                       <div
                         data-card
                         className="bg-white border border-slate-200 border-l-2 border-l-transparent rounded-xl p-6 shadow-sm hover:shadow-md hover:border-l-sky-500 transition-all duration-300"

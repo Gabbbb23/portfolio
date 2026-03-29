@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import HudReadout from "@/components/HudReadout";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -69,7 +70,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
         {/* Image area */}
         <div className={`relative z-10 col-span-12 md:col-span-7 ${isOdd ? "md:order-2" : ""}`}>
-          <div className="relative rounded-xl bg-slate-100 aspect-video overflow-hidden border border-slate-200">
+          <div className="crt-scanlines relative rounded-xl bg-slate-100 aspect-video overflow-hidden border border-slate-200">
             {/* Browser chrome */}
             <div className="flex items-center gap-2 bg-slate-200/80 px-3 py-2 border-b border-slate-200">
               <div className="flex gap-1.5">
@@ -201,6 +202,12 @@ export default function Projects() {
               { yPercent: 0, opacity: 1, scale: 1, ease: "none", duration: enterDuration },
               cardStart,
             );
+
+            const glitchLine = card.querySelector(".project-card-glitch");
+            if (glitchLine) {
+              tl.fromTo(glitchLine, { opacity: 1, scaleX: 0 }, { scaleX: 1, duration: 0.05, ease: "none" }, cardStart + enterDuration * 0.5);
+              tl.to(glitchLine, { opacity: 0, duration: 0.1 }, cardStart + enterDuration * 0.7);
+            }
           });
 
           if (dots && dots[0]) dots[0].classList.add("bg-sky-500");
@@ -224,6 +231,8 @@ export default function Projects() {
 
   return (
     <section ref={sectionRef} id="projects" className="relative z-10 min-h-screen bg-slate-50">
+      <HudReadout position="top-left" lines={["PROJ:SCAN // IDX:01", "STATUS:DEPLOYED", "BUILD:PASSING"]} />
+
       {/* Heading overlay */}
       <div className="pointer-events-none absolute left-8 top-12 z-20">
         <p className="font-mono text-sm uppercase tracking-wider text-sky-500">&#9656; Featured Work</p>
@@ -237,6 +246,7 @@ export default function Projects() {
             key={project.id}
             className="project-card md:absolute md:inset-0 bg-slate-50"
           >
+            <div className="project-card-glitch pointer-events-none absolute inset-x-0 top-1/2 z-50 h-[2px] bg-sky-400/30 opacity-0" />
             <ProjectCard project={project} index={i} />
           </div>
         ))}

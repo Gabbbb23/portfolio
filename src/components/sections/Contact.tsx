@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMagnetic } from "@/lib/animations";
+import HudReadout from "@/components/HudReadout";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -107,6 +108,8 @@ export default function Contact() {
       id="contact"
       className="relative z-10 overflow-hidden bg-slate-900 py-16 md:py-20"
     >
+      <HudReadout position="bottom-right" dark lines={["CONN:OPEN // PORT:443", "SIGNAL:STRONG"]} />
+
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-12 gap-8">
           <div ref={contentRef} className="col-span-12 md:col-span-6">
@@ -146,7 +149,16 @@ export default function Contact() {
               06
             </span>
 
-            <div className="relative z-10 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-800 overflow-hidden">
+            <div className="mb-3 inline-flex items-center gap-2 rounded border border-slate-700 bg-slate-800/80 px-3 py-1 font-mono text-[10px] text-slate-400">
+              <span className="flex items-center gap-0.5">
+                <span className="h-1 w-0.5 rounded-sm bg-sky-400" />
+                <span className="h-1.5 w-0.5 rounded-sm bg-sky-400" />
+                <span className="h-2 w-0.5 rounded-sm bg-sky-400" />
+              </span>
+              CONNECTED // INTER-KNOT
+            </div>
+
+            <div className="crt-scanlines relative z-10 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-800 overflow-hidden">
               <div className="flex items-center gap-2 bg-slate-700/50 px-3 py-2">
                 <div className="flex gap-1.5">
                   <div className="h-2 w-2 rounded-full bg-slate-500" />
@@ -162,7 +174,7 @@ export default function Contact() {
                 <p className="text-emerald-400">web dev, open source, clean code</p>
                 <p className="text-slate-500">$ echo $STATUS</p>
                 <p className="text-amber-400">open to opportunities</p>
-                <p className="text-slate-500 flex items-center gap-1">$ <span className="inline-block h-3 w-1.5 animate-pulse bg-sky-400" /></p>
+                <p className="text-slate-500 flex items-center gap-1">$ <span className="inline-block h-3 w-1.5 animate-terminal-blink bg-sky-400" /></p>
               </div>
             </div>
           </div>

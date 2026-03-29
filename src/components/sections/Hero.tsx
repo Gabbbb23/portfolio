@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMagnetic } from "@/lib/animations";
+import HudReadout from "@/components/HudReadout";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -194,12 +195,14 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex min-h-screen items-center overflow-hidden bg-white"
+      className="relative flex min-h-screen items-center overflow-hidden bg-white crt-scanlines tv-noise"
       style={{
         backgroundImage: "radial-gradient(circle, #E2E8F0 1px, transparent 1px)",
         backgroundSize: "24px 24px",
       }}
     >
+      <HudReadout position="top-right" lines={["SIG:OK // FREQ:443.2", "NODE:ACTIVE", "v2.0.1"]} />
+
       {/* Diagonal slash lines */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         <div className="absolute top-[-10%] left-[15%] h-[120%] w-[1px] rotate-[12deg] bg-slate-200/60" />
@@ -219,7 +222,8 @@ export default function Hero() {
 
           <h1
             ref={nameRef}
-            className="mb-6 font-heading text-7xl font-bold leading-none tracking-tight text-slate-900 md:text-8xl lg:text-9xl"
+            className="mb-6 font-heading text-7xl font-bold leading-none tracking-tight text-slate-900 md:text-8xl lg:text-9xl glitch-text"
+            data-text="Gab"
             style={{ perspective: "600px" }}
           >
             {"Gab".split("").map((char, i) => (
@@ -317,8 +321,15 @@ export default function Hero() {
               <p><span className="text-slate-400">{"}"}</span><span className="text-slate-400">;</span></p>
             </div>
             <div className="flex gap-4 border-t border-slate-800 px-3 py-1.5 font-mono text-[10px] text-slate-500">
-              <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />Available for work</span>
-              <span>TypeScript</span>
+              <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />ONLINE</span>
+              <span className="flex items-center gap-0.5">
+                <span className="h-1 w-0.5 rounded-sm bg-sky-400" />
+                <span className="h-1.5 w-0.5 rounded-sm bg-sky-400" />
+                <span className="h-2 w-0.5 rounded-sm bg-sky-400" />
+                <span className="h-2.5 w-0.5 rounded-sm bg-sky-400" />
+                <span className="ml-1">SIG:STRONG</span>
+              </span>
+              <span>TS</span>
               <span>UTF-8</span>
             </div>
           </div>

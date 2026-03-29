@@ -60,12 +60,14 @@ function SkillCard({ skill }: { skill: Skill }) {
         {skill.icon}
       </span>
       <span className="font-mono text-xs text-slate-600">{skill.name}</span>
-      <div className="mt-2 h-1 w-full rounded-full bg-slate-100">
-        <div
-          className="skill-bar-fill h-full rounded-full bg-sky-400"
-          data-level={skill.level}
-          style={{ width: 0 }}
-        />
+      <div className="mt-2 flex items-end justify-center gap-0.5">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={i}
+            className={`skill-signal-bar w-1.5 rounded-sm transition-colors ${i < Math.round((skill.level / 100) * 5) ? "bg-sky-400" : "bg-slate-100"}`}
+            style={{ height: `${6 + i * 3}px`, width: 0 }}
+          />
+        ))}
       </div>
     </div>
   );
@@ -107,14 +109,12 @@ export default function Skills() {
             },
           });
 
-          // Animate skill bars using containerAnimation for proper timing
+          // Animate signal bars using containerAnimation for proper timing
           panels.querySelectorAll(".skill-panel").forEach((panel) => {
-            const bars = panel.querySelectorAll(".skill-bar-fill");
-            gsap.fromTo(bars,
-              { width: "0%" },
-              {
-                width: (_: number, el: Element) => `${(el as HTMLElement).dataset.level}%`,
-                stagger: 0.08, duration: 0.8, ease: "power2.out",
+            const signalBars = panel.querySelectorAll(".skill-signal-bar");
+            gsap.fromTo(signalBars,
+              { width: 0 },
+              { width: "6px", stagger: 0.02, duration: 0.3, ease: "steps(1)",
                 scrollTrigger: {
                   trigger: panel,
                   containerAnimation: horizontalTween,
@@ -129,17 +129,15 @@ export default function Skills() {
           // Mobile: simple stagger reveal per category
           panels.querySelectorAll(".skill-panel").forEach((panel) => {
             const cards = panel.querySelectorAll(".skill-card-wrap");
-            const bars = panel.querySelectorAll(".skill-bar-fill");
+            const signalBars = panel.querySelectorAll(".skill-signal-bar");
             gsap.fromTo(cards,
               { y: 30, opacity: 0 },
               { y: 0, opacity: 1, stagger: 0.05, duration: 0.4, ease: "power3.out",
                 scrollTrigger: { trigger: panel, start: "top 80%" } },
             );
-            gsap.fromTo(bars,
-              { width: "0%" },
-              {
-                width: (_: number, el: Element) => `${(el as HTMLElement).dataset.level}%`,
-                stagger: 0.08, duration: 0.8, delay: 0.3, ease: "power2.out",
+            gsap.fromTo(signalBars,
+              { width: 0 },
+              { width: "6px", stagger: 0.02, duration: 0.3, delay: 0.3, ease: "steps(1)",
                 scrollTrigger: { trigger: panel, start: "top 80%" },
               },
             );
@@ -161,15 +159,18 @@ export default function Skills() {
 
       {/* Horizontal panels (desktop) / Vertical stack (mobile) */}
       <div ref={panelsRef} className="flex md:flex-row flex-col md:h-screen md:items-center">
-        {skillCategories.map((category) => (
+        {skillCategories.map((category, index) => (
           <div
             key={category.title}
             className="skill-panel flex-shrink-0 md:w-screen md:h-screen flex items-center justify-center px-6 md:px-16 py-20 md:py-0"
           >
             <div className="w-full max-w-4xl">
-              <h3 className="mb-8 font-display text-7xl text-slate-200">
-                {category.title}
-              </h3>
+              <div className="flex items-end justify-between mb-8">
+                <h3 className="font-display text-7xl text-slate-200">{category.title}</h3>
+                <span className="font-mono text-[10px] text-slate-300 tracking-wider">
+                  [{String(index + 1).padStart(2, "0")}/{String(skillCategories.length).padStart(2, "0")}] {category.skills.length} LOADED
+                </span>
+              </div>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                 {category.skills.map((skill) => (
                   <div key={skill.name} className="skill-card-wrap">
