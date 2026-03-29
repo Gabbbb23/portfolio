@@ -146,10 +146,11 @@ export default function About() {
               without a headache.
             </p>
             <p className="reveal-line text-slate-700 leading-relaxed mt-4">
-              Currently a junior-year CS student, I spend most of my time
-              obsessing over how to make things maintainable and meaningful.
-              Lately I&apos;ve been diving deep into AI — exploring how it can
-              make the products I build smarter and more useful.
+              Currently a junior-year CS student, I focus on learning how to
+              create and communicate solutions that are genuinely useful —
+              software that solves real problems for real people. Lately
+              I&apos;ve been diving into AI, exploring how it can make the
+              products I build smarter and more impactful.
             </p>
             <p className="reveal-line mt-6 border-l-2 border-sky-500 pl-4 font-mono text-sm italic text-slate-500">
               &quot;I&apos;d rather ship one well-architected feature than ten duct-taped ones.&quot;
