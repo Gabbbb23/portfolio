@@ -142,7 +142,8 @@ export default function Experience() {
   const headingRef = useTextReveal<HTMLHeadingElement>();
   const headingWrapRef = useRef<HTMLDivElement>(null);
   const highlightRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<SVGLineElement>(null);
+  const timelineWrapRef = useRef<HTMLDivElement>(null);
   const ghostRef = useRef<HTMLSpanElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -171,20 +172,26 @@ export default function Experience() {
 
   useEffect(() => {
     const line = lineRef.current;
-    if (!line) return;
+    const wrap = timelineWrapRef.current;
+    if (!line || !wrap) return;
 
-    gsap.set(line, { scaleY: 0, transformOrigin: "top" });
+    const length = wrap.clientHeight;
+    gsap.set(line, { attr: { y2: length } });
+    gsap.set(line, { strokeDasharray: length, strokeDashoffset: length });
 
-    gsap.to(line, {
-      scaleY: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: line,
-        start: "top 80%",
-        end: "bottom 20%",
-        scrub: 1,
-      },
+    const ctx = gsap.context(() => {
+      gsap.to(line, {
+        strokeDashoffset: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: wrap,
+          start: "top 60%",
+          end: "bottom 40%",
+          scrub: 1,
+        },
+      });
     });
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -215,12 +222,17 @@ export default function Experience() {
           </div>
         </div>
 
-        <div className="relative">
-          {/* Timeline line — dashed, P3R-style segmented connections */}
-          <div
-            ref={lineRef}
-            className="absolute left-[5px] top-0 h-full w-0 border-l-2 border-dashed border-slate-200 md:left-1/2 md:-translate-x-1/2"
-          />
+        <div ref={timelineWrapRef} className="relative">
+          {/* SVG timeline line — draws itself on scroll */}
+          <svg className="absolute left-[5px] top-0 h-full w-[2px] md:left-1/2 md:-translate-x-1/2 overflow-visible">
+            <line
+              ref={lineRef}
+              x1="1" y1="0" x2="1" y2="100%"
+              stroke="#E2E8F0"
+              strokeWidth="2"
+              strokeDasharray="8 6"
+            />
+          </svg>
 
           <div className="space-y-12">
             {experiences.map((item, index) => (
