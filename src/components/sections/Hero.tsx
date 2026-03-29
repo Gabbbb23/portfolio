@@ -431,9 +431,6 @@ export default function Hero() {
             {/* Scroll wheel dot — animates down */}
             <div className="absolute left-1/2 top-2 h-2 w-1 -translate-x-1/2 rounded-full bg-sky-500 animate-[scrollWheel_1.5s_ease-in-out_infinite]" />
           </div>
-          <span className="font-mono text-[10px] tracking-widest text-slate-400 uppercase">
-            Scroll
-          </span>
         </div>
       </div>
     </section>
