@@ -127,71 +127,51 @@ export default function Projects() {
     const ctx = gsap.context(() => {
       ScrollTrigger.matchMedia({
         "(min-width: 768px)": function () {
-          const scrollPerCard = window.innerHeight;
           const cardCount = cards.length;
 
-          // Pin the section — no scrub on pin itself
-          ScrollTrigger.create({
-            trigger: section,
-            start: "top top",
-            end: () => `+=${cardCount * scrollPerCard}`,
-            pin: true,
-            anticipatePin: 1,
+          // Single timeline drives all card transitions
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: () => `+=${cardCount * window.innerHeight}`,
+              pin: true,
+              scrub: 0.6,
+              anticipatePin: 1,
+              onUpdate: (self) => {
+                if (!dots || dots.length === 0) return;
+                const activeCard = Math.min(
+                  Math.floor(self.progress * cardCount),
+                  cardCount - 1,
+                );
+                dots.forEach((d, di) => {
+                  d.classList.toggle("bg-sky-500", di === activeCard);
+                  d.classList.toggle("bg-slate-300", di !== activeCard);
+                });
+              },
+            },
           });
 
-          // Each card after the first slides up over the previous
           cards.forEach((card, i) => {
             if (i === 0) return;
-
-            const enterStart = i * scrollPerCard;
-            const enterEnd = enterStart + scrollPerCard * 0.7;
-
-            gsap.fromTo(card,
-              { yPercent: 100, opacity: 0, scale: 0.9 },
-              {
-                yPercent: 0, opacity: 1, scale: 1, ease: "none",
-                scrollTrigger: {
-                  trigger: section,
-                  start: () => `top+=${enterStart} top`,
-                  end: () => `top+=${enterEnd} top`,
-                  scrub: 0.5,
-                },
-              },
-            );
+            const cardStart = i / cardCount;
+            const enterDuration = 0.7 / cardCount;
+            const recessDuration = 0.4 / cardCount;
 
             // Previous card recedes
-            gsap.to(cards[i - 1], {
-              scale: 0.92, opacity: 0.4, ease: "none",
-              scrollTrigger: {
-                trigger: section,
-                start: () => `top+=${enterStart} top`,
-                end: () => `top+=${enterStart + scrollPerCard * 0.4} top`,
-                scrub: 0.5,
-              },
-            });
+            tl.to(cards[i - 1], {
+              scale: 0.92, opacity: 0.4, ease: "none", duration: recessDuration,
+            }, cardStart);
 
-            // Update active dot
-            if (dots && dots[i]) {
-              ScrollTrigger.create({
-                trigger: section,
-                start: () => `top+=${enterStart + scrollPerCard * 0.3} top`,
-                end: () => `top+=${(i + 1) * scrollPerCard + scrollPerCard * 0.3} top`,
-                onEnter: () => {
-                  dots.forEach((d) => d.classList.remove("bg-sky-500"));
-                  dots[i].classList.add("bg-sky-500");
-                },
-                onEnterBack: () => {
-                  dots.forEach((d) => d.classList.remove("bg-sky-500"));
-                  dots[i].classList.add("bg-sky-500");
-                },
-              });
-            }
+            // New card slides up
+            tl.fromTo(card,
+              { yPercent: 100, opacity: 0, scale: 0.9 },
+              { yPercent: 0, opacity: 1, scale: 1, ease: "none", duration: enterDuration },
+              cardStart,
+            );
           });
 
-          // First dot active initially
-          if (dots && dots[0]) {
-            dots[0].classList.add("bg-sky-500");
-          }
+          if (dots && dots[0]) dots[0].classList.add("bg-sky-500");
         },
         "(max-width: 767px)": function () {
           // Mobile: simple stagger fade-in

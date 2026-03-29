@@ -40,55 +40,17 @@ export default function Navbar() {
     });
   }, []);
 
+  const activeIndexRef = useRef(-1);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(navRef.current,
         { y: -100, opacity: 0 },
         { y: 0, opacity: 1, duration: 1, ease: "power3.out", delay: 0.5 },
       );
-
-      // Hide indicator when in hero
-      ScrollTrigger.create({
-        trigger: "#hero",
-        start: "top top",
-        end: "bottom center",
-        onEnter: () => {
-          gsap.to(indicatorRef.current, { opacity: 0, duration: 0.2 });
-          setActiveIndex(-1);
-        },
-        onEnterBack: () => {
-          gsap.to(indicatorRef.current, { opacity: 0, duration: 0.2 });
-          setActiveIndex(-1);
-        },
-      });
-
-      // Active section tracking
-      const sections = ["about", "skills", "projects", "experience", "contact"];
-      sections.forEach((id, index) => {
-        ScrollTrigger.create({
-          trigger: `#${id}`,
-          start: "top center",
-          end: "bottom center",
-          onEnter: () => moveIndicator(index),
-          onEnterBack: () => moveIndicator(index),
-          onLeave: () => {
-            if (index === sections.length - 1) {
-              gsap.to(indicatorRef.current, { opacity: 0, duration: 0.2 });
-              setActiveIndex(-1);
-            }
-          },
-          onLeaveBack: () => {
-            if (index === 0) {
-              gsap.to(indicatorRef.current, { opacity: 0, duration: 0.2 });
-              setActiveIndex(-1);
-            }
-          },
-        });
-      });
     });
 
-    // Refresh after pinned sections initialize
-    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 200);
+    const sections = ["hero", "about", "skills", "projects", "experience", "contact"];
 
     const handleScroll = () => {
       const currentScroll = window.scrollY;
@@ -99,11 +61,40 @@ export default function Navbar() {
         setHidden(false);
       }
       lastScroll.current = currentScroll;
+
+      // Active section detection via visual position
+      const viewportCenter = window.innerHeight / 2;
+      let newIndex = -1;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        const style = window.getComputedStyle(el);
+        const isPinned = style.position === "fixed";
+
+        if ((isPinned && rect.top <= 0 && rect.bottom >= viewportCenter) ||
+            (!isPinned && rect.top <= viewportCenter && rect.bottom >= viewportCenter)) {
+          newIndex = i === 0 ? -1 : i - 1; // hero = -1, about = 0, skills = 1, etc.
+          break;
+        }
+      }
+
+      if (newIndex !== activeIndexRef.current) {
+        activeIndexRef.current = newIndex;
+        if (newIndex === -1) {
+          gsap.to(indicatorRef.current, { opacity: 0, duration: 0.2 });
+          setActiveIndex(-1);
+        } else {
+          moveIndicator(newIndex);
+        }
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
     return () => {
-      clearTimeout(refreshTimer);
       ctx.revert();
       window.removeEventListener("scroll", handleScroll);
     };

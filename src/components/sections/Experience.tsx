@@ -120,10 +120,10 @@ export default function Experience() {
       const cards = timelineRef.current?.querySelectorAll("[data-card]");
       if (cards && cards.length > 0) {
         gsap.fromTo(cards,
-          { x: 40, opacity: 0 },
+          { y: 20, opacity: 0 },
           {
-            x: 0, opacity: 1, stagger: 0.12, duration: 0.4, ease: "power3.out",
-            scrollTrigger: { trigger: timelineRef.current, start: "top 70%" },
+            y: 0, opacity: 1, stagger: 0.06, duration: 0.35, ease: "power3.out",
+            scrollTrigger: { trigger: timelineRef.current, start: "top 85%" },
           },
         );
       }
@@ -191,7 +191,7 @@ export default function Experience() {
           {/* Timeline entries — group hover dims siblings */}
           <div className="group/exp space-y-8 ml-0 md:ml-[60px] pl-8">
             {experiences.map((item) => (
-              <div key={item.id} className="relative transition-opacity duration-300 group-hover/exp:opacity-40 hover:!opacity-100" style={{ opacity: 1 }}>
+              <div key={item.id} className="relative transition-opacity duration-300 group-hover/exp:opacity-60 hover:!opacity-100" style={{ opacity: 1 }}>
                 {/* Timeline dot */}
                 <div
                   data-dot
