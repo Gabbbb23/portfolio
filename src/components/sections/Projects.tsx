@@ -89,19 +89,14 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
         {/* Image area */}
         <div className={`relative z-10 col-span-12 md:col-span-7 ${isOdd ? "md:order-2" : ""}`}>
-          <div className="crt-scanlines relative rounded-xl bg-slate-800 aspect-video overflow-hidden border border-slate-700">
+          <div className="crt-scanlines relative rounded-xl bg-slate-800 overflow-hidden border border-slate-700">
             {/* Top accent bar */}
             <div className="absolute top-0 left-0 right-0 h-0.5 z-20" style={{ backgroundColor: accent }} />
-            {/* WIP badge */}
-            {project.wip && (
-              <span className="absolute top-3 left-3 z-20 rounded bg-amber-500 px-2 py-0.5 font-mono text-[10px] font-bold text-slate-900">
-                WIP
-              </span>
-            )}
+            {/* WIP badge — inside the content flow, not absolute */}
             {/* Project number */}
             <span className="absolute bottom-3 right-3 z-10 font-display text-5xl" style={{ color: accent, opacity: 0.2 }}>{projectNum}</span>
-            {/* Browser chrome — always visible */}
-            <div className="relative z-20 flex items-center gap-2 bg-slate-800/90 px-3 py-2 border-b border-slate-700 backdrop-blur-sm">
+            {/* Browser chrome */}
+            <div className="flex items-center gap-2 bg-slate-800 px-3 py-2 border-b border-slate-700">
               <div className="flex gap-1.5">
                 <div className="h-2 w-2 rounded-full bg-red-400/80" />
                 <div className="h-2 w-2 rounded-full bg-yellow-400/80" />
@@ -113,18 +108,26 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 </span>
               </div>
             </div>
+            {/* Content area */}
             {project.image ? (
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover object-top pt-8"
-                sizes="(max-width: 768px) 100vw, 58vw"
-                quality={90}
-                priority={index === 0}
-              />
+              <div className="relative aspect-video">
+                {project.wip && (
+                  <span className="absolute top-3 left-3 z-20 rounded bg-amber-500 px-2 py-0.5 font-mono text-[10px] font-bold text-slate-900">
+                    WIP
+                  </span>
+                )}
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover object-top"
+                  sizes="(max-width: 768px) 100vw, 58vw"
+                  quality={90}
+                  priority={index === 0}
+                />
+              </div>
             ) : (
-              <div className="p-4 space-y-2">
+              <div className="aspect-video p-4 space-y-2">
                 <div className="h-2 w-3/4 rounded bg-slate-700" />
                 <div className="h-2 w-1/2 rounded bg-slate-700" />
                 <div className="h-2 w-2/3 rounded bg-sky-500/20" />
