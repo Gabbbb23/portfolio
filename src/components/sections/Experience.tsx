@@ -69,27 +69,16 @@ export default function Experience() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Counter-directional entrance: heading from left, ghost from right
-      gsap.from(headingWrapRef.current, {
-        x: -60,
-        opacity: 0,
-        duration: 0.5,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
-      });
-
-      gsap.from(ghostRef.current, {
-        x: 100,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
-      });
+      gsap.fromTo(headingWrapRef.current,
+        { x: -60, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } },
+      );
+      gsap.fromTo(ghostRef.current,
+        { x: 100, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, ease: "power2.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } },
+      );
 
       // Highlight bar sweeps in behind heading
       gsap.fromTo(
@@ -130,32 +119,25 @@ export default function Experience() {
       // Cards stagger in from the right
       const cards = timelineRef.current?.querySelectorAll("[data-card]");
       if (cards && cards.length > 0) {
-        gsap.from(cards, {
-          x: 40,
-          opacity: 0,
-          stagger: 0.12,
-          duration: 0.4,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: timelineRef.current,
-            start: "top 70%",
+        gsap.fromTo(cards,
+          { x: 40, opacity: 0 },
+          {
+            x: 0, opacity: 1, stagger: 0.12, duration: 0.4, ease: "power3.out",
+            scrollTrigger: { trigger: timelineRef.current, start: "top 70%" },
           },
-        });
+        );
       }
 
       // Dots pop in with elastic ease
       const dots = timelineRef.current?.querySelectorAll("[data-dot]");
       if (dots && dots.length > 0) {
-        gsap.from(dots, {
-          scale: 0,
-          stagger: 0.12,
-          duration: 0.3,
-          ease: "back.out(2)",
-          scrollTrigger: {
-            trigger: timelineRef.current,
-            start: "top 70%",
+        gsap.fromTo(dots,
+          { scale: 0 },
+          {
+            scale: 1, stagger: 0.12, duration: 0.3, ease: "back.out(2)",
+            scrollTrigger: { trigger: timelineRef.current, start: "top 70%" },
           },
-        });
+        );
       }
     });
 
@@ -221,6 +203,7 @@ export default function Experience() {
                   <div
                     data-card
                     className="bg-white border border-slate-200 border-l-2 border-l-transparent rounded-xl p-6 shadow-sm hover:shadow-md hover:border-l-sky-500 transition-all duration-300"
+                    style={{ opacity: 1 }}
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <span className="bg-sky-100 text-sky-600 font-mono text-xs rounded-full px-3 py-1">

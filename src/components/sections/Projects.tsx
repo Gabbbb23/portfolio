@@ -72,16 +72,11 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
     if (!row) return;
 
     const ctx = gsap.context(() => {
-      gsap.from(row, {
-        x: isOdd ? 40 : -40,
-        opacity: 0,
-        duration: 0.5,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: row,
-          start: "top 80%",
-        },
-      });
+      gsap.fromTo(row,
+        { x: isOdd ? 40 : -40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, ease: "power3.out",
+          scrollTrigger: { trigger: row, start: "top 80%" } },
+      );
     });
 
     return () => ctx.revert();
@@ -114,7 +109,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
       {/* Marquee behind project row */}
       <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none z-0">
         <div className={isOdd ? "animate-marquee-reverse whitespace-nowrap" : "animate-marquee whitespace-nowrap"}>
-          <span className="font-display text-[clamp(6rem,15vw,12rem)] font-bold uppercase text-slate-100 leading-none">
+          <span className="font-display text-[clamp(6rem,15vw,12rem)] font-bold uppercase text-slate-200 leading-none">
             {marqueeText}
           </span>
         </div>
@@ -221,27 +216,16 @@ export default function Projects() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Counter-directional: heading from left, ghost from right
-      gsap.from(headingWrapRef.current, {
-        x: -60,
-        opacity: 0,
-        duration: 0.5,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
-      });
-
-      gsap.from(ghostRef.current, {
-        x: 100,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
-      });
+      gsap.fromTo(headingWrapRef.current,
+        { x: -60, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } },
+      );
+      gsap.fromTo(ghostRef.current,
+        { x: 100, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, ease: "power2.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } },
+      );
 
       // Highlight bar sweeps in behind heading
       gsap.fromTo(

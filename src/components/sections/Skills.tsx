@@ -152,20 +152,16 @@ export default function Skills() {
       );
 
       // Counter-directional entrance: heading from left, ghost from right
-      gsap.from(headingWrapRef.current, {
-        x: -60,
-        opacity: 0,
-        duration: 0.5,
-        ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-      });
-      gsap.from(ghostRef.current, {
-        x: 100,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-      });
+      gsap.fromTo(headingWrapRef.current,
+        { x: -60, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } },
+      );
+      gsap.fromTo(ghostRef.current,
+        { x: 100, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, ease: "power2.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } },
+      );
 
       // Ghost parallax
       gsap.to(ghostRef.current, {
