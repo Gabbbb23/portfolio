@@ -19,7 +19,8 @@ interface ExperienceItem {
   technologies?: string[];
 }
 
-const experiences: ExperienceItem[] = [
+// Chronological order: newest first
+const workExperience: ExperienceItem[] = [
   {
     id: "1",
     title: "Product Developer",
@@ -50,6 +51,9 @@ const experiences: ExperienceItem[] = [
     type: "work",
     technologies: ["Blockchain", "Full Stack", "Mobile Dev"],
   },
+];
+
+const education: ExperienceItem[] = [
   {
     id: "4",
     title: "B.S. Information Technology",
@@ -71,6 +75,48 @@ const experiences: ExperienceItem[] = [
     technologies: ["HTML/CSS", "Java", "Networking"],
   },
 ];
+
+function TimelineCard({ item, index, accent = "sky" }: { item: ExperienceItem; index: number; accent?: "sky" | "amber" }) {
+  const dotColor = accent === "amber" ? "bg-amber-500 ring-amber-100" : "bg-sky-500 ring-sky-100";
+  const badgeColor = accent === "amber" ? "bg-amber-100 text-amber-600" : "bg-sky-100 text-sky-600";
+  const hoverBorder = accent === "amber" ? "hover:border-l-amber-500" : "hover:border-l-sky-500";
+  const companyColor = accent === "amber" ? "text-amber-500" : "text-sky-500";
+
+  return (
+    <div className="relative transition-opacity duration-300 group-hover/exp:opacity-60 hover:!opacity-100" style={{ opacity: 1 }}>
+      <div data-dot className="absolute -left-8 top-6 flex items-center gap-1 -translate-x-[5px]">
+        <div className={`h-3 w-3 rounded-full ring-4 ${dotColor}`} />
+        <span className="hidden font-mono text-[8px] text-slate-300 tracking-wider md:inline">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </div>
+      <CornerBrackets variant="crosshair">
+        <div
+          data-card
+          className={`bg-white border border-slate-200 border-l-2 border-l-transparent rounded-xl p-6 shadow-sm hover:shadow-md ${hoverBorder} transition-all duration-300`}
+          style={{ opacity: 1 }}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            <span className={`${badgeColor} font-mono text-xs rounded-full px-3 py-1`}>
+              {item.type === "work" ? "Work" : "Education"}
+            </span>
+            <span className="text-slate-500 font-mono text-xs">{item.period}</span>
+          </div>
+          <h3 className="text-lg font-heading font-bold text-slate-900">{item.title}</h3>
+          <p className={`${companyColor} text-sm font-medium`}>{item.company}</p>
+          <p className="text-slate-600 text-sm mt-2">{item.description}</p>
+          {item.technologies && (
+            <div className="mt-3 flex flex-wrap gap-1.5">
+              {item.technologies.map((tech) => (
+                <span key={tech} className="rounded bg-slate-100 px-2 py-0.5 font-mono text-[10px] text-slate-500">{tech}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </CornerBrackets>
+    </div>
+  );
+}
 
 export default function Experience() {
   const headingRef = useTextReveal<HTMLHeadingElement>();
@@ -197,98 +243,27 @@ export default function Experience() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-8">
-          {/* Timeline — 8 columns */}
-          <div className="col-span-12 md:col-span-8">
-            {/* Left-aligned timeline */}
-            <div ref={timelineRef} className="relative">
-              {/* Drawing timeline line */}
-              <div className="absolute left-0 md:left-[60px] top-0 bottom-0 w-[2px]">
-                <div ref={lineRef} className="w-full bg-slate-200" style={{ height: 0 }} />
-              </div>
-
-              {/* Timeline entries — group hover dims siblings */}
-              <div className="group/exp space-y-8 ml-0 md:ml-[60px] pl-8">
-                {experiences.map((item, index) => (
-                  <div key={item.id} className="relative transition-opacity duration-300 group-hover/exp:opacity-60 hover:!opacity-100" style={{ opacity: 1 }}>
-                    {/* Timeline dot */}
-                    <div data-dot className="absolute -left-8 top-6 flex items-center gap-1 -translate-x-[5px]">
-                      <div className="h-3 w-3 rounded-full bg-sky-500 ring-4 ring-sky-100" />
-                      <span className="hidden font-mono text-[8px] text-slate-300 tracking-wider md:inline">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
-                    </div>
-
-                    {/* Card */}
-                    <CornerBrackets variant="crosshair">
-                      <div
-                        data-card
-                        className="bg-white border border-slate-200 border-l-2 border-l-transparent rounded-xl p-6 shadow-sm hover:shadow-md hover:border-l-sky-500 transition-all duration-300"
-                        style={{ opacity: 1 }}
-                      >
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="bg-sky-100 text-sky-600 font-mono text-xs rounded-full px-3 py-1">
-                            {item.type === "work" ? "Work" : "Education"}
-                          </span>
-                          <span className="text-slate-500 font-mono text-xs">
-                            {item.period}
-                          </span>
-                        </div>
-                        <h3 className="text-lg font-heading font-bold text-slate-900">
-                          {item.title}
-                        </h3>
-                        <p className="text-sky-500 text-sm font-medium">
-                          {item.company}
-                        </p>
-                        <p className="text-slate-600 text-sm mt-2">
-                          {item.description}
-                        </p>
-                        {item.technologies && (
-                          <div className="mt-3 flex flex-wrap gap-1.5">
-                            {item.technologies.map((tech) => (
-                              <span key={tech} className="rounded bg-slate-100 px-2 py-0.5 font-mono text-[10px] text-slate-500">
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </CornerBrackets>
-                  </div>
-                ))}
-              </div>
-            </div>
+        {/* Work & Events timeline */}
+        <div ref={timelineRef} className="relative">
+          <h3 className="mb-6 font-mono text-xs uppercase tracking-wider text-sky-500">&#9656; Work &amp; Events</h3>
+          <div className="absolute left-0 md:left-[60px] top-10 bottom-0 w-[2px]">
+            <div ref={lineRef} className="w-full bg-slate-200" style={{ height: 0 }} />
           </div>
+          <div className="group/exp space-y-8 ml-0 md:ml-[60px] pl-8">
+            {workExperience.map((item, index) => (
+              <TimelineCard key={item.id} item={item} index={index} />
+            ))}
+          </div>
+        </div>
 
-          {/* Summary sidebar — 4 columns, sticky */}
-          <div className="hidden md:col-span-4 md:block">
-            <div className="sticky top-32">
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
-                <h4 className="mb-4 font-mono text-xs uppercase tracking-wider text-sky-500">Quick Stats</h4>
-                <div className="space-y-4">
-                  <div>
-                    <span className="font-heading text-2xl font-bold text-slate-900">3+</span>
-                    <span className="ml-2 font-mono text-xs text-slate-500">Years Coding</span>
-                  </div>
-                  <div>
-                    <span className="font-heading text-2xl font-bold text-slate-900">1.33</span>
-                    <span className="ml-2 font-mono text-xs text-slate-500">GWA</span>
-                  </div>
-                  <div>
-                    <span className="font-heading text-2xl font-bold text-slate-900">10+</span>
-                    <span className="ml-2 font-mono text-xs text-slate-500">Projects Built</span>
-                  </div>
-                </div>
-                <div className="mt-6 border-t border-slate-200 pt-4">
-                  <h4 className="mb-3 font-mono text-xs uppercase tracking-wider text-sky-500">Stack</h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {["React", "Next.js", "TypeScript", "TailwindCSS", "Firebase", "AI"].map((s) => (
-                      <span key={s} className="rounded-full bg-sky-100 px-2.5 py-0.5 font-mono text-[10px] text-sky-700">{s}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+        {/* Education section */}
+        <div className="mt-16 relative">
+          <h3 className="mb-6 font-mono text-xs uppercase tracking-wider text-amber-500">&#9656; Education</h3>
+          <div className="absolute left-0 md:left-[60px] top-10 bottom-0 w-[2px] bg-slate-200" />
+          <div className="group/exp space-y-8 ml-0 md:ml-[60px] pl-8">
+            {education.map((item, index) => (
+              <TimelineCard key={item.id} item={item} index={index} accent="amber" />
+            ))}
           </div>
         </div>
       </div>
