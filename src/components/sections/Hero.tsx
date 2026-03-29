@@ -157,6 +157,55 @@ export default function Hero() {
     return () => ctx.revert();
   }, []);
 
+  // Randomized glitch on "Gab"
+  useEffect(() => {
+    const el = nameRef.current;
+    if (!el) return;
+
+    let timeout: ReturnType<typeof setTimeout>;
+    let killed = false;
+
+    const rand = (min: number, max: number) => Math.random() * (max - min) + min;
+
+    const fireGlitch = () => {
+      if (killed) return;
+      const before = window.getComputedStyle(el, "::before");
+      // Can't animate pseudo-elements with GSAP directly — use CSS custom properties
+      const steps = Math.floor(rand(3, 6));
+      let step = 0;
+
+      const tick = () => {
+        if (step >= steps || killed) {
+          el.style.setProperty("--gb", "0"); el.style.setProperty("--gr", "0");
+          el.style.setProperty("--gx1", "0px"); el.style.setProperty("--gy1", "0px");
+          el.style.setProperty("--gx2", "0px"); el.style.setProperty("--gy2", "0px");
+          el.style.setProperty("--gc1", "inset(0 0 100% 0)");
+          el.style.setProperty("--gc2", "inset(0 0 100% 0)");
+          // Schedule next glitch at random interval
+          timeout = setTimeout(fireGlitch, rand(2000, 6000));
+          return;
+        }
+        el.style.setProperty("--gb", "1"); el.style.setProperty("--gr", "1");
+        el.style.setProperty("--gx1", `${rand(-8, 8)}px`);
+        el.style.setProperty("--gy1", `${rand(-3, 3)}px`);
+        el.style.setProperty("--gx2", `${rand(-8, 8)}px`);
+        el.style.setProperty("--gy2", `${rand(-3, 3)}px`);
+        const t1 = Math.floor(rand(5, 80)), b1 = Math.floor(rand(5, 80));
+        const t2 = Math.floor(rand(5, 80)), b2 = Math.floor(rand(5, 80));
+        el.style.setProperty("--gc1", `inset(${t1}% 0 ${b1}% 0)`);
+        el.style.setProperty("--gc2", `inset(${t2}% 0 ${b2}% 0)`);
+        step++;
+        setTimeout(tick, rand(40, 100));
+      };
+      tick();
+    };
+
+    // Initial delay before first glitch
+    timeout = setTimeout(fireGlitch, rand(2500, 4000));
+
+    return () => { killed = true; clearTimeout(timeout); };
+  }, []);
+
   // Typing effect — only starts after timeline triggers it
   useEffect(() => {
     if (!typingStarted) return;
