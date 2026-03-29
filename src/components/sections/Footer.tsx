@@ -20,7 +20,7 @@ export default function Footer() {
         </button>
 
         <div className="flex gap-6 font-mono text-sm text-slate-400">
-          {["About", "Skills", "Projects", "Experience", "Contact"].map((item) => (
+          {["About", "Projects", "Experience", "Contact"].map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase()}`}

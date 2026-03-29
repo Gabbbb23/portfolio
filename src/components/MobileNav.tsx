@@ -4,10 +4,9 @@ import { useState } from "react";
 
 const sections = [
   { id: "about", label: "About", num: "01" },
-  { id: "skills", label: "Skills", num: "02" },
-  { id: "projects", label: "Projects", num: "03" },
-  { id: "experience", label: "Experience", num: "04" },
-  { id: "contact", label: "Contact", num: "05" },
+  { id: "projects", label: "Projects", num: "02" },
+  { id: "experience", label: "Experience", num: "03" },
+  { id: "contact", label: "Contact", num: "04" },
 ];
 
 export default function MobileNav() {
