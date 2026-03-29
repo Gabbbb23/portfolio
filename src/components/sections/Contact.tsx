@@ -144,37 +144,41 @@ export default function Contact() {
             </div>
           </div>
 
-          <div className="col-span-12 hidden md:col-span-6 md:flex flex-col items-center justify-center">
-            <span ref={ghostRef} className="absolute top-1/4 select-none font-display text-[16rem] leading-none text-slate-800 opacity-30">
+          <div className="relative col-span-12 hidden md:col-span-6 md:flex flex-col items-center justify-center">
+            {/* Ghost 06 — behind everything */}
+            <span ref={ghostRef} className="pointer-events-none absolute inset-0 flex items-center justify-center select-none font-display text-[12rem] leading-none text-slate-800/20">
               06
             </span>
 
-            <div className="mb-3 inline-flex items-center gap-2 rounded border border-amber-500/30 bg-slate-800/80 px-3 py-1 font-mono text-[10px] text-slate-400">
-              <span className="flex items-center gap-0.5">
-                <span className="h-1 w-0.5 rounded-sm bg-amber-400" />
-                <span className="h-1.5 w-0.5 rounded-sm bg-amber-400" />
-                <span className="h-2 w-0.5 rounded-sm bg-amber-400" />
-              </span>
-              CONNECTED // INTER-KNOT
-            </div>
-
-            <div className="crt-scanlines relative z-10 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-800 overflow-hidden">
-              <div className="flex items-center gap-2 bg-slate-700/50 px-3 py-2">
-                <div className="flex gap-1.5">
-                  <div className="h-2 w-2 rounded-full bg-slate-500" />
-                  <div className="h-2 w-2 rounded-full bg-slate-500" />
-                  <div className="h-2 w-2 rounded-full bg-slate-500" />
-                </div>
-                <span className="font-mono text-[10px] text-slate-400">terminal</span>
+            {/* Terminal card + badge — above ghost */}
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="mb-3 inline-flex items-center gap-2 rounded border border-amber-500/30 bg-slate-800/80 px-3 py-1 font-mono text-[10px] text-slate-400">
+                <span className="flex items-center gap-0.5">
+                  <span className="h-1 w-0.5 rounded-sm bg-amber-400" />
+                  <span className="h-1.5 w-0.5 rounded-sm bg-amber-400" />
+                  <span className="h-2 w-0.5 rounded-sm bg-amber-400" />
+                </span>
+                CONNECTED // INTER-KNOT
               </div>
-              <div className="space-y-1.5 p-4 font-mono text-xs">
-                <p className="text-slate-500">$ whoami</p>
-                <p className="text-sky-400">gab — full-stack developer</p>
-                <p className="text-slate-500">$ cat interests.txt</p>
-                <p className="text-emerald-400">web dev, open source, clean code</p>
-                <p className="text-slate-500">$ echo $STATUS</p>
-                <p className="text-amber-400">open to opportunities</p>
-                <p className="text-slate-500 flex items-center gap-1">$ <span className="inline-block h-3 w-1.5 animate-terminal-blink bg-sky-400" /></p>
+
+              <div className="crt-scanlines w-full max-w-sm overflow-hidden rounded-lg border border-slate-700 bg-slate-800">
+                <div className="flex items-center gap-2 border-b border-slate-700 bg-slate-700/50 px-3 py-2">
+                  <div className="flex gap-1.5">
+                    <div className="h-2 w-2 rounded-full bg-slate-500" />
+                    <div className="h-2 w-2 rounded-full bg-slate-500" />
+                    <div className="h-2 w-2 rounded-full bg-slate-500" />
+                  </div>
+                  <span className="font-mono text-[10px] text-slate-400">terminal</span>
+                </div>
+                <div className="space-y-1.5 p-4 font-mono text-xs">
+                  <p className="text-slate-500">$ whoami</p>
+                  <p className="text-sky-400">gab — full-stack developer</p>
+                  <p className="text-slate-500">$ cat interests.txt</p>
+                  <p className="text-emerald-400">web dev, open source, clean code</p>
+                  <p className="text-slate-500">$ echo $STATUS</p>
+                  <p className="text-amber-400">open to opportunities</p>
+                  <p className="flex items-center gap-1 text-slate-500">$ <span className="inline-block h-3 w-1.5 animate-terminal-blink bg-sky-400" /></p>
+                </div>
               </div>
             </div>
           </div>
