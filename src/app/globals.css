@@ -101,7 +101,7 @@ body {
 }
 
 /* ZZZ — Glitch text — auto-repeating periodic interference */
-.glitch-text { position: relative; }
+.glitch-text { position: relative; display: inline-block; }
 .glitch-text::before, .glitch-text::after {
   content: attr(data-text);
   position: absolute;
@@ -109,28 +109,35 @@ body {
   width: 100%; height: 100%;
   pointer-events: none;
   opacity: 0;
+  z-index: 60;
+  background: inherit;
+  -webkit-background-clip: text;
 }
 .glitch-text::before {
   color: #0EA5E9;
-  animation: glitch-blue 4s ease-in-out infinite;
+  animation: glitch-blue 3.5s linear infinite;
+  animation-delay: 2s;
 }
 .glitch-text::after {
   color: #F43F5E;
-  animation: glitch-red 4s ease-in-out infinite;
+  animation: glitch-red 3.5s linear infinite;
+  animation-delay: 2s;
 }
 @keyframes glitch-blue {
-  0%, 88%, 100% { opacity: 0; clip-path: inset(50% 0 50% 0); transform: translateX(0); }
-  90% { opacity: 0.8; clip-path: inset(20% 0 30% 0); transform: translateX(-3px); }
-  92% { opacity: 0.8; clip-path: inset(60% 0 5% 0); transform: translateX(2px); }
-  94% { opacity: 0.8; clip-path: inset(10% 0 50% 0); transform: translateX(-2px); }
-  96% { opacity: 0; clip-path: inset(50% 0 50% 0); transform: translateX(0); }
+  0%, 85%, 100% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 100% 0); }
+  86% { opacity: 1; transform: translate(-6px, -2px); clip-path: inset(10% 0 30% 0); }
+  88% { opacity: 1; transform: translate(4px, 1px); clip-path: inset(55% 0 10% 0); }
+  90% { opacity: 1; transform: translate(-3px, -1px); clip-path: inset(25% 0 45% 0); }
+  92% { opacity: 1; transform: translate(5px, 0); clip-path: inset(70% 0 5% 0); }
+  93% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 100% 0); }
 }
 @keyframes glitch-red {
-  0%, 88%, 100% { opacity: 0; clip-path: inset(50% 0 50% 0); transform: translateX(0); }
-  91% { opacity: 0.8; clip-path: inset(40% 0 20% 0); transform: translateX(3px); }
-  93% { opacity: 0.8; clip-path: inset(15% 0 45% 0); transform: translateX(-2px); }
-  95% { opacity: 0.8; clip-path: inset(55% 0 10% 0); transform: translateX(2px); }
-  96% { opacity: 0; clip-path: inset(50% 0 50% 0); transform: translateX(0); }
+  0%, 85%, 100% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 100% 0); }
+  87% { opacity: 1; transform: translate(5px, 2px); clip-path: inset(40% 0 15% 0); }
+  89% { opacity: 1; transform: translate(-4px, -1px); clip-path: inset(5% 0 60% 0); }
+  91% { opacity: 1; transform: translate(6px, 1px); clip-path: inset(50% 0 20% 0); }
+  92.5% { opacity: 1; transform: translate(-3px, 0); clip-path: inset(15% 0 50% 0); }
+  93% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 100% 0); }
 }
 
 /* ZZZ — Halftone dot pattern */
