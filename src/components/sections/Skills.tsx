@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTextReveal, useStaggerReveal } from "@/lib/animations";
+import CornerBrackets from "@/components/CornerBrackets";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -143,7 +144,7 @@ function SkillCategorySection({ category }: { category: SkillCategory }) {
   const gridRef = useStaggerReveal<HTMLDivElement>(0.08);
 
   return (
-    <div>
+    <CornerBrackets className="p-3">
       <h3 className="mb-6 font-display text-2xl uppercase tracking-wider text-slate-900">
         {category.title}
       </h3>
@@ -155,6 +156,6 @@ function SkillCategorySection({ category }: { category: SkillCategory }) {
           <SkillCard key={skill.name} skill={skill} />
         ))}
       </div>
-    </div>
+    </CornerBrackets>
   );
 }

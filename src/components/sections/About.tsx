@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useScrollFadeUp, useTextReveal, useCountUp } from "@/lib/animations";
+import CornerBrackets from "@/components/CornerBrackets";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -107,12 +108,14 @@ export default function About() {
           </div>
 
           <div ref={statsRef} className="flex items-center">
-            <div className="grid w-full grid-cols-2 gap-6">
-              <StatItem value={10} label="Projects Built" />
-              <StatItem value={8} label="Technologies" />
-              <StatItem value={3} label="Years Coding" />
-              <StatItem value={2} label="Internships" />
-            </div>
+            <CornerBrackets className="w-full p-3">
+              <div className="grid w-full grid-cols-2 gap-6">
+                <StatItem value={10} label="Projects Built" />
+                <StatItem value={8} label="Technologies" />
+                <StatItem value={3} label="Years Coding" />
+                <StatItem value={2} label="Internships" />
+              </div>
+            </CornerBrackets>
           </div>
         </div>
       </div>

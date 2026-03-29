@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTextReveal } from "@/lib/animations";
+import CornerBrackets from "@/components/CornerBrackets";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -119,7 +120,7 @@ function TimelineItem({
           isLeft ? "md:mr-auto md:pr-8" : "md:ml-auto md:pl-8"
         }`}
       >
-        <div className="rounded-2xl bg-white p-6 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
+        <CornerBrackets className="rounded-2xl bg-white p-6 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
           <div className="mb-1 flex items-center gap-2">
             <span className="rounded-full bg-sky-100 px-3 py-1 font-mono text-xs font-medium text-sky-600">
               {item.type === "work" ? "Work" : "Education"}
@@ -131,7 +132,7 @@ function TimelineItem({
           <p className="text-sm leading-relaxed text-slate-700">
             {item.description}
           </p>
-        </div>
+        </CornerBrackets>
       </div>
     </div>
   );

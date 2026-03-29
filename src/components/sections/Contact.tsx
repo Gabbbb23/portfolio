@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTextReveal, useScrollFadeUp, useMagnetic } from "@/lib/animations";
+import CornerBrackets from "@/components/CornerBrackets";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -123,6 +124,7 @@ export default function Contact() {
           </div>
         </div>
 
+        <CornerBrackets className="p-4">
         <div ref={contentRef}>
           <p className="mb-12 text-lg leading-relaxed text-slate-500">
             I&apos;m always open to new opportunities, collaborations, or just a
@@ -136,6 +138,7 @@ export default function Contact() {
             ))}
           </div>
         </div>
+        </CornerBrackets>
       </div>
     </section>
   );
