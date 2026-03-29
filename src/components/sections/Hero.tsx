@@ -13,7 +13,7 @@ const titles = [
   "Software Engineer",
   "Full-Stack Developer",
   "Problem Solver",
-  "Creative Builder",
+  "Product Developer",
 ];
 
 function FloatingShape({
