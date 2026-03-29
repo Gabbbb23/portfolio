@@ -120,17 +120,37 @@ export default function Hero() {
       // t=1.5: Scroll indicator
       tl.to(scrollIndicatorRef.current, { opacity: 1, duration: 0.4 }, 1.5);
 
-      // Ghost text parallax (scroll-driven, separate from entrance)
+      // Ghost text parallax
       gsap.to(ghostRef.current, {
-        yPercent: -20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
+        yPercent: -30, ease: "none",
+        scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: true },
       });
+
+      // Pin hero — About section slides over it
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top top",
+        end: "bottom top",
+        pin: true,
+        pinSpacing: false,
+      });
+
+      // Hero content recedes as user scrolls away
+      const contentEl = sectionRef.current?.querySelector(".hero-content");
+      if (contentEl) {
+        gsap.to(contentEl, {
+          scale: 0.95, opacity: 0.6, ease: "none",
+          scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom top", scrub: true },
+        });
+      }
+
+      // Floating shapes parallax faster
+      if (shapesRef.current) {
+        gsap.to(shapesRef.current, {
+          yPercent: -50, ease: "none",
+          scrollTrigger: { trigger: sectionRef.current, start: "top top", end: "bottom top", scrub: true },
+        });
+      }
     });
 
     return () => ctx.revert();
@@ -187,7 +207,7 @@ export default function Hero() {
       </div>
 
       {/* 12-column grid container */}
-      <div className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-12 items-center gap-8 px-6">
+      <div className="hero-content relative z-10 mx-auto grid w-full max-w-6xl grid-cols-12 items-center gap-8 px-6">
         {/* Left side — 7 columns */}
         <div className="col-span-12 md:col-span-7">
           <p

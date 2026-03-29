@@ -12,24 +12,24 @@ export default function SectionDivider() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(lineRef.current,
-        { width: "0%" },
+        { scaleX: 0, transformOrigin: "left center" },
         {
-          width: "100%",
-          duration: 0.8,
-          ease: "power2.inOut",
+          scaleX: 1,
+          ease: "none",
           scrollTrigger: {
             trigger: lineRef.current,
-            start: "top 85%",
-            once: true,
+            start: "top 90%",
+            end: "top 60%",
+            scrub: true,
           },
-        }
+        },
       );
     });
     return () => ctx.revert();
   }, []);
 
   return (
-    <div className="relative overflow-hidden py-4">
+    <div className="relative z-10 overflow-hidden py-4">
       <div ref={lineRef} className="mx-auto h-px max-w-5xl bg-sky-500/40" />
     </div>
   );

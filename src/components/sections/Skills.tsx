@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTextReveal } from "@/lib/animations";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -72,106 +71,70 @@ function SkillCard({ skill }: { skill: Skill }) {
   );
 }
 
-function SkillCategorySection({ category }: { category: SkillCategory }) {
-  const gridRef = useRef<HTMLDivElement>(null);
-  const categoryRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const grid = gridRef.current;
-    const trigger = categoryRef.current;
-    if (!grid || !trigger) return;
-
-    const cards = grid.children;
-
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger,
-        start: "top 80%",
-        onEnter: () => {
-          gsap.fromTo(cards,
-            { y: 30, opacity: 0 },
-            { y: 0, opacity: 1, stagger: 0.05, duration: 0.4, ease: "power3.out" },
-          );
-          // Animated skill bar fills after cards reveal
-          const bars = grid.querySelectorAll(".skill-bar-fill");
-          gsap.fromTo(bars,
-            { width: "0%" },
-            {
-              width: (_: number, el: Element) => `${(el as HTMLElement).dataset.level}%`,
-              stagger: 0.08,
-              duration: 0.8,
-              delay: 0.3,
-              ease: "power2.out",
-            },
-          );
-        },
-        once: true,
-      });
-    });
-
-    return () => ctx.revert();
-  }, []);
-
-  return (
-    <div ref={categoryRef} className="mb-10 rounded-lg border border-slate-100 bg-slate-50/50 p-6">
-      <h3 className="mb-4 font-display text-xl uppercase text-slate-900">
-        <span className="text-sky-500/30">[</span> {category.title}{" "}
-        <span className="text-sky-500/30">]</span>
-      </h3>
-      <div
-        ref={gridRef}
-        className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6"
-      >
-        {category.skills.map((skill) => (
-          <SkillCard key={skill.name} skill={skill} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function Skills() {
-  const headingRef = useTextReveal<HTMLHeadingElement>();
-  const headingWrapRef = useRef<HTMLDivElement>(null);
-  const highlightRef = useRef<HTMLDivElement>(null);
-  const ghostRef = useRef<HTMLSpanElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const panelsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    const panels = panelsRef.current;
+    if (!section || !panels) return;
+
     const ctx = gsap.context(() => {
-      // Highlight bar sweeps in behind heading
-      gsap.fromTo(
-        highlightRef.current,
-        { width: 0 },
-        {
-          width: "calc(100% + 1rem)",
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: { trigger: headingRef.current, start: "top 75%" },
-        }
-      );
+      // Desktop: horizontal scroll
+      ScrollTrigger.matchMedia({
+        "(min-width: 768px)": function () {
+          const totalWidth = panels.scrollWidth - window.innerWidth;
 
-      // Counter-directional entrance: heading from left, ghost from right
-      gsap.fromTo(headingWrapRef.current,
-        { x: -60, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.5, ease: "power3.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } },
-      );
-      gsap.fromTo(ghostRef.current,
-        { x: 100, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.6, ease: "power2.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } },
-      );
+          gsap.to(panels, {
+            x: -totalWidth,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: () => `+=${totalWidth}`,
+              pin: true,
+              scrub: 1,
+              anticipatePin: 1,
+            },
+          });
 
-      // Ghost parallax
-      gsap.to(ghostRef.current, {
-        yPercent: -20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
+          // Animate skill bars when each panel enters
+          panels.querySelectorAll(".skill-panel").forEach((panel, i) => {
+            const bars = panel.querySelectorAll(".skill-bar-fill");
+            gsap.fromTo(bars,
+              { width: "0%" },
+              {
+                width: (_: number, el: Element) => `${(el as HTMLElement).dataset.level}%`,
+                stagger: 0.08, duration: 0.8, ease: "power2.out",
+                scrollTrigger: {
+                  trigger: section,
+                  start: () => `top+=${i * (totalWidth / 3)}px top`,
+                  toggleActions: "play none none none",
+                },
+              },
+            );
+          });
+        },
+        "(max-width: 767px)": function () {
+          // Mobile: simple stagger reveal per category
+          panels.querySelectorAll(".skill-panel").forEach((panel) => {
+            const cards = panel.querySelectorAll(".skill-card-wrap");
+            const bars = panel.querySelectorAll(".skill-bar-fill");
+            gsap.fromTo(cards,
+              { y: 30, opacity: 0 },
+              { y: 0, opacity: 1, stagger: 0.05, duration: 0.4, ease: "power3.out",
+                scrollTrigger: { trigger: panel, start: "top 80%" } },
+            );
+            gsap.fromTo(bars,
+              { width: "0%" },
+              {
+                width: (_: number, el: Element) => `${(el as HTMLElement).dataset.level}%`,
+                stagger: 0.08, duration: 0.8, delay: 0.3, ease: "power2.out",
+                scrollTrigger: { trigger: panel, start: "top 80%" },
+              },
+            );
+          });
         },
       });
     });
@@ -180,43 +143,33 @@ export default function Skills() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="skills"
-      className="relative overflow-hidden bg-white py-16 px-6 md:py-20"
-    >
-      {/* Ghost text */}
-      <span
-        ref={ghostRef}
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(10rem,25vw,20rem)] leading-none text-ghost"
-        aria-hidden="true"
-      >
-        03
-      </span>
+    <section ref={sectionRef} id="skills" className="relative z-10 overflow-hidden bg-white">
+      {/* Fixed heading overlay */}
+      <div className="pointer-events-none absolute left-8 top-12 z-20">
+        <p className="font-mono text-sm uppercase tracking-wider text-sky-500">&#9656; Tech Stack</p>
+        <h2 className="mt-2 font-heading text-4xl font-bold text-slate-900">Skills &amp; Technologies</h2>
+      </div>
 
-      <div className="relative mx-auto max-w-6xl">
-        <div ref={headingWrapRef}>
-          <p className="mb-2 font-mono text-sm uppercase tracking-wider text-sky-500">
-            &#9656; Tech Stack
-          </p>
-
-          <div className="relative inline-block">
-            <div
-              ref={highlightRef}
-              className="-z-10 absolute -left-2 bottom-1 h-3 rounded-sm bg-sky-100"
-              style={{ width: 0 }}
-            />
-            <h2
-              ref={headingRef}
-              className="mb-10 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
-            >
-              Skills & Technologies
-            </h2>
-          </div>
-        </div>
-
+      {/* Horizontal panels (desktop) / Vertical stack (mobile) */}
+      <div ref={panelsRef} className="flex md:flex-row flex-col md:h-screen md:items-center">
         {skillCategories.map((category) => (
-          <SkillCategorySection key={category.title} category={category} />
+          <div
+            key={category.title}
+            className="skill-panel flex-shrink-0 md:w-screen md:h-screen flex items-center justify-center px-6 md:px-16 py-20 md:py-0"
+          >
+            <div className="w-full max-w-4xl">
+              <h3 className="mb-8 font-display text-7xl text-slate-100">
+                {category.title}
+              </h3>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                {category.skills.map((skill) => (
+                  <div key={skill.name} className="skill-card-wrap">
+                    <SkillCard skill={skill} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         ))}
       </div>
     </section>

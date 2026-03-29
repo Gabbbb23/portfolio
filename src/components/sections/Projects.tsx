@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTextReveal, useTilt } from "@/lib/animations";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,194 +11,100 @@ interface Project {
   title: string;
   description: string;
   tags: string[];
-  image: string;
   liveUrl?: string;
   githubUrl?: string;
 }
 
-// Placeholder projects — will be replaced by Sanity CMS data
 const projects: Project[] = [
   {
     id: "1",
     title: "Project One",
-    description:
-      "A full-stack web application built with modern technologies. Features real-time updates, authentication, and a clean UI.",
+    description: "A full-stack web application built with modern technologies. Features real-time updates, authentication, and a clean UI.",
     tags: ["React", "Node.js", "PostgreSQL", "Tailwind"],
-    image: "/placeholder-project.jpg",
     liveUrl: "#",
     githubUrl: "#",
   },
   {
     id: "2",
     title: "Project Two",
-    description:
-      "An API-driven platform that streamlines workflow automation. Built for scalability and performance.",
+    description: "An API-driven platform that streamlines workflow automation. Built for scalability and performance.",
     tags: ["Next.js", "TypeScript", "MongoDB", "Docker"],
-    image: "/placeholder-project.jpg",
     liveUrl: "#",
     githubUrl: "#",
   },
   {
     id: "3",
     title: "Project Three",
-    description:
-      "A mobile-first application focused on user experience. Implements complex state management and offline support.",
+    description: "A mobile-first application focused on user experience. Implements complex state management and offline support.",
     tags: ["React", "Python", "REST API", "Figma"],
-    image: "/placeholder-project.jpg",
     liveUrl: "#",
     githubUrl: "#",
   },
   {
     id: "4",
     title: "Project Four",
-    description:
-      "A developer tool that simplifies common tasks. Features a CLI interface and extensible plugin system.",
+    description: "A developer tool that simplifies common tasks. Features a CLI interface and extensible plugin system.",
     tags: ["TypeScript", "Node.js", "CLI", "Open Source"],
-    image: "/placeholder-project.jpg",
     liveUrl: "#",
     githubUrl: "#",
   },
 ];
 
-function ProjectRow({ project, index }: { project: Project; index: number }) {
-  const rowRef = useRef<HTMLDivElement>(null);
-  const imageRef = useTilt<HTMLDivElement>(5);
-  const projectNum = String(index + 1).padStart(2, "0");
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const isOdd = index % 2 === 1;
-
-  useEffect(() => {
-    const row = rowRef.current;
-    if (!row) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(row,
-        { x: isOdd ? 40 : -40, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.5, ease: "power3.out",
-          scrollTrigger: { trigger: row, start: "top 80%" } },
-      );
-    });
-
-    return () => ctx.revert();
-  }, [isOdd]);
-
-  const imageAreaRef = useRef<HTMLDivElement>(null);
-
-  // Scroll-linked 3D perspective tilt on image area
-  useEffect(() => {
-    const img = imageAreaRef.current;
-    const row = rowRef.current;
-    if (!img || !row) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo(img,
-        { rotateX: 8, scale: 0.95, transformPerspective: 800, transformOrigin: "center bottom" },
-        {
-          rotateX: 0, scale: 1, ease: "none",
-          scrollTrigger: { trigger: row, start: "top 80%", end: "center center", scrub: 0.5 },
-        },
-      );
-    });
-    return () => ctx.revert();
-  }, []);
-
+  const projectNum = String(index + 1).padStart(2, "0");
   const marqueeText = `${project.title} \u00B7 `.repeat(10);
 
   return (
-    <div ref={rowRef} className="relative grid grid-cols-12 gap-6 md:gap-8 items-center overflow-hidden">
-      {/* Marquee behind project row */}
-      <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none z-0">
-        <div className={isOdd ? "animate-marquee-reverse whitespace-nowrap" : "animate-marquee whitespace-nowrap"}>
-          <span className="font-display text-[clamp(6rem,15vw,12rem)] font-bold uppercase text-slate-200 leading-none">
-            {marqueeText}
-          </span>
-        </div>
-      </div>
-
-      {/* Image area */}
-      <div
-        className={`relative z-10 col-span-12 md:col-span-7 ${isOdd ? "md:order-2" : ""}`}
-      >
-        <div ref={imageAreaRef} className="relative bg-slate-100 rounded-xl aspect-video overflow-hidden border border-slate-200">
-          {/* Sky blue top bar */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-sky-500" />
-          {/* Project number */}
-          <span className="absolute top-4 right-4 font-display text-6xl text-slate-200">
-            {projectNum}
-          </span>
-          {/* Placeholder */}
-          <div className="absolute inset-0 flex items-center justify-center text-slate-300 text-6xl">
-            {"</ >"}
+    <div className="absolute inset-0 flex items-center justify-center px-6 md:px-8">
+      <div className="relative grid w-full max-w-6xl grid-cols-12 items-center gap-6 md:gap-8">
+        {/* Marquee behind */}
+        <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none z-0">
+          <div className={index % 2 === 0 ? "animate-marquee whitespace-nowrap" : "animate-marquee-reverse whitespace-nowrap"}>
+            <span className="font-display text-[clamp(6rem,15vw,12rem)] font-bold uppercase text-slate-300 leading-none">
+              {marqueeText}
+            </span>
           </div>
         </div>
-      </div>
 
-      {/* Info area */}
-      <div
-        className={`relative z-10 col-span-12 md:col-span-5 ${
-          isOdd ? "md:order-1 md:text-right" : ""
-        }`}
-      >
-        <h3 className="text-2xl font-heading font-bold text-slate-900 mb-2 hover:text-sky-500 transition">
-          {project.title}
-        </h3>
-        <p className="text-slate-600 mb-4 text-sm">{project.description}</p>
-
-        {/* Tags */}
-        <div
-          className={`flex flex-wrap gap-2 mb-4 ${
-            isOdd ? "md:justify-end" : ""
-          }`}
-        >
-          {project.tags.map((tag) => (
-            <span
-              key={tag}
-              className="bg-sky-100 text-sky-700 font-mono text-xs rounded-full px-3 py-1"
-            >
-              {tag}
-            </span>
-          ))}
+        {/* Image area */}
+        <div className={`relative z-10 col-span-12 md:col-span-7 ${isOdd ? "md:order-2" : ""}`}>
+          <div className="relative rounded-xl bg-slate-100 aspect-video overflow-hidden border border-slate-200">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-sky-500" />
+            <span className="absolute top-4 right-4 font-display text-6xl text-slate-200">{projectNum}</span>
+            <div className="absolute inset-0 flex items-center justify-center text-6xl text-slate-300">{"</ >"}</div>
+          </div>
         </div>
 
-        {/* Links */}
-        <div
-          className={`flex gap-4 ${isOdd ? "md:justify-end" : ""}`}
-        >
-          {project.liveUrl && (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-sky-500 hover:text-sky-600 font-mono text-sm transition-colors"
-            >
-              <svg
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
-              </svg>
-              Live Demo
-            </a>
-          )}
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-sky-500 hover:text-sky-600 font-mono text-sm transition-colors"
-            >
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-              </svg>
-              GitHub
-            </a>
-          )}
+        {/* Info area */}
+        <div className={`relative z-10 col-span-12 md:col-span-5 ${isOdd ? "md:order-1 md:text-right" : ""}`}>
+          <h3 className="mb-3 font-heading text-3xl font-bold text-slate-900">{project.title}</h3>
+          <p className="mb-4 text-slate-600">{project.description}</p>
+          <div className={`mb-4 flex flex-wrap gap-2 ${isOdd ? "md:justify-end" : ""}`}>
+            {project.tags.map((tag) => (
+              <span key={tag} className="rounded-full bg-sky-100 px-3 py-1 font-mono text-xs text-sky-700">{tag}</span>
+            ))}
+          </div>
+          <div className={`flex gap-4 ${isOdd ? "md:justify-end" : ""}`}>
+            {project.liveUrl && (
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 font-mono text-sm text-sky-500 transition-colors hover:text-sky-600">
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+                Live Demo
+              </a>
+            )}
+            {project.githubUrl && (
+              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 font-mono text-sm text-sky-500 transition-colors hover:text-sky-600">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                </svg>
+                GitHub
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -207,50 +112,92 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
 }
 
 export default function Projects() {
-  const headingRef = useTextReveal<HTMLHeadingElement>();
   const sectionRef = useRef<HTMLElement>(null);
-  const ghostRef = useRef<HTMLSpanElement>(null);
-  const headingWrapRef = useRef<HTMLDivElement>(null);
-  const highlightRef = useRef<HTMLDivElement>(null);
+  const stackRef = useRef<HTMLDivElement>(null);
+  const dotsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const section = sectionRef.current;
+    const stack = stackRef.current;
+    if (!section || !stack) return;
+
+    const cards = stack.querySelectorAll<HTMLElement>(".project-card");
+    const dots = dotsRef.current?.querySelectorAll<HTMLElement>(".project-dot");
+
     const ctx = gsap.context(() => {
-      // Counter-directional: heading from left, ghost from right
-      gsap.fromTo(headingWrapRef.current,
-        { x: -60, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.5, ease: "power3.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } },
-      );
-      gsap.fromTo(ghostRef.current,
-        { x: 100, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.6, ease: "power2.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" } },
-      );
+      ScrollTrigger.matchMedia({
+        "(min-width: 768px)": function () {
+          // Pin the section for card-stack scroll
+          ScrollTrigger.create({
+            trigger: section,
+            start: "top top",
+            end: () => `+=${cards.length * 100}vh`,
+            pin: true,
+            scrub: true,
+            anticipatePin: 1,
+          });
 
-      // Highlight bar sweeps in behind heading
-      gsap.fromTo(
-        highlightRef.current,
-        { width: 0 },
-        {
-          width: "calc(100% + 1rem)",
-          duration: 0.5,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: headingRef.current,
-            start: "top 75%",
-          },
-        }
-      );
+          // Each card after the first slides up over the previous
+          cards.forEach((card, i) => {
+            if (i === 0) return;
 
-      // Ghost parallax
-      gsap.to(ghostRef.current, {
-        yPercent: -20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
+            gsap.fromTo(card,
+              { yPercent: 100, opacity: 0, scale: 0.9 },
+              {
+                yPercent: 0, opacity: 1, scale: 1, ease: "power2.out",
+                scrollTrigger: {
+                  trigger: section,
+                  start: () => `top+=${i * 100}vh top`,
+                  end: () => `top+=${i * 100 + 80}vh top`,
+                  scrub: true,
+                },
+              },
+            );
+
+            // Previous card recedes
+            gsap.to(cards[i - 1], {
+              scale: 0.92, opacity: 0.4,
+              scrollTrigger: {
+                trigger: section,
+                start: () => `top+=${i * 100}vh top`,
+                end: () => `top+=${i * 100 + 50}vh top`,
+                scrub: true,
+              },
+            });
+
+            // Update active dot
+            if (dots && dots[i]) {
+              ScrollTrigger.create({
+                trigger: section,
+                start: () => `top+=${i * 100 + 40}vh top`,
+                end: () => `top+=${(i + 1) * 100 + 40}vh top`,
+                onEnter: () => {
+                  dots.forEach((d) => d.classList.remove("bg-sky-500"));
+                  dots[i].classList.add("bg-sky-500");
+                },
+                onEnterBack: () => {
+                  dots.forEach((d) => d.classList.remove("bg-sky-500"));
+                  dots[i].classList.add("bg-sky-500");
+                },
+              });
+            }
+          });
+
+          // First dot active initially
+          if (dots && dots[0]) {
+            dots[0].classList.add("bg-sky-500");
+          }
+        },
+        "(max-width: 767px)": function () {
+          // Mobile: simple stagger fade-in
+          cards.forEach((card, i) => {
+            gsap.set(card, { position: "relative", opacity: 1, yPercent: 0, scale: 1 });
+            gsap.fromTo(card,
+              { y: 40, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.5, ease: "power3.out",
+                scrollTrigger: { trigger: card, start: "top 85%" } },
+            );
+          });
         },
       });
     });
@@ -259,48 +206,31 @@ export default function Projects() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="projects"
-      className="bg-slate-50 py-16 md:py-20 relative overflow-hidden"
-    >
-      {/* Ghost text */}
-      <span
-        ref={ghostRef}
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(10rem,25vw,20rem)] leading-none text-ghost"
-        aria-hidden="true"
-      >
-        04
-      </span>
+    <section ref={sectionRef} id="projects" className="relative z-10 min-h-screen bg-slate-50">
+      {/* Heading overlay */}
+      <div className="pointer-events-none absolute left-8 top-12 z-20">
+        <p className="font-mono text-sm uppercase tracking-wider text-sky-500">&#9656; Featured Work</p>
+        <h2 className="mt-2 font-heading text-4xl font-bold text-slate-900">Projects</h2>
+      </div>
 
-      <div className="relative mx-auto max-w-6xl px-6">
-        {/* Heading area */}
-        <div ref={headingWrapRef}>
-          <p className="font-mono text-sky-500 uppercase tracking-wider text-sm mb-2">
-            &#9656; Featured Work
-          </p>
-
-          <div className="relative inline-block">
-            <div
-              ref={highlightRef}
-              className="absolute -left-2 bottom-1 h-3 bg-sky-100 -z-10 rounded-sm"
-              style={{ width: 0 }}
-            />
-            <h2
-              ref={headingRef}
-              className="font-heading text-4xl md:text-5xl font-bold text-slate-900 mb-12"
-            >
-              Projects
-            </h2>
+      {/* Stacked cards */}
+      <div ref={stackRef} className="relative md:h-screen flex md:items-center md:justify-center flex-col md:flex-row gap-16 md:gap-0 px-6 py-20 md:py-0">
+        {projects.map((project, i) => (
+          <div
+            key={project.id}
+            className={`project-card md:absolute md:inset-0 ${i === 0 ? "" : "md:opacity-0"}`}
+            style={i === 0 ? { opacity: 1 } : undefined}
+          >
+            <ProjectCard project={project} index={i} />
           </div>
-        </div>
+        ))}
+      </div>
 
-        {/* Project rows — vertical alternating layout */}
-        <div className="space-y-16">
-          {projects.map((project, index) => (
-            <ProjectRow key={project.id} project={project} index={index} />
-          ))}
-        </div>
+      {/* Progress dots */}
+      <div ref={dotsRef} className="absolute right-8 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-3 md:flex">
+        {projects.map((_, i) => (
+          <div key={i} className="project-dot h-2 w-2 rounded-full bg-slate-300 transition-colors" />
+        ))}
       </div>
     </section>
   );

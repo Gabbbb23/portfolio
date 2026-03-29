@@ -148,7 +148,7 @@ export default function Experience() {
     <section
       ref={sectionRef}
       id="experience"
-      className="relative bg-white py-16 md:py-20 overflow-hidden"
+      className="relative z-10 bg-white py-16 md:py-20 overflow-hidden"
     >
       {/* Ghost text */}
       <span

@@ -94,7 +94,7 @@ export default function About() {
     <section
       ref={sectionRef}
       id="about"
-      className="bg-slate-50 py-16 md:py-20 relative overflow-hidden"
+      className="relative z-10 bg-slate-50 py-16 md:py-20 overflow-hidden rounded-t-3xl -mt-1"
     >
       {/* Ghost text */}
       <span
