@@ -180,7 +180,7 @@ export default function Contact() {
                 </div>
                 <div className="space-y-1.5 p-4 font-mono text-xs">
                   <p className="text-slate-500">$ whoami</p>
-                  <p className="text-sky-400">gab — full-stack developer</p>
+                  <p className="text-sky-400">gab — product developer</p>
                   <p className="text-slate-500">$ cat interests.txt</p>
                   <p className="text-emerald-400">web dev, open source, clean code</p>
                   <p className="text-slate-500">$ echo $STATUS</p>
