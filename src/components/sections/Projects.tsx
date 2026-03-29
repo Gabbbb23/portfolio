@@ -152,15 +152,20 @@ export default function Projects() {
             },
           });
 
+          // Set z-index stacking order
+          cards.forEach((card, i) => {
+            gsap.set(card, { zIndex: i + 1 });
+          });
+
           cards.forEach((card, i) => {
             if (i === 0) return;
             const cardStart = i / cardCount;
             const enterDuration = 0.7 / cardCount;
             const recessDuration = 0.4 / cardCount;
 
-            // Previous card recedes
+            // Previous card recedes upward and fades
             tl.to(cards[i - 1], {
-              scale: 0.92, opacity: 0.4, ease: "none", duration: recessDuration,
+              scale: 0.92, opacity: 0.3, yPercent: -5, ease: "none", duration: recessDuration,
             }, cardStart);
 
             // New card slides up

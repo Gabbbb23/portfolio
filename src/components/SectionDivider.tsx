@@ -6,7 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function SectionDivider() {
+export default function SectionDivider({ className = "" }: { className?: string }) {
   const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function SectionDivider() {
   }, []);
 
   return (
-    <div className="relative z-10 overflow-hidden py-4">
+    <div className={`relative z-10 overflow-hidden py-4 ${className}`}>
       <div ref={lineRef} className="mx-auto h-px max-w-5xl bg-sky-500/40" />
     </div>
   );

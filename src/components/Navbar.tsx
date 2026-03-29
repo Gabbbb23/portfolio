@@ -35,7 +35,7 @@ export default function Navbar() {
       x: link.offsetLeft,
       width: link.offsetWidth,
       opacity: 1,
-      duration: 0.3,
+      duration: 0.15,
       ease: "power2.out",
     });
   }, []);

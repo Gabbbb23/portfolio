@@ -21,13 +21,12 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <SectionDivider />
         <About />
-        <SectionDivider />
+        <SectionDivider className="bg-slate-50" />
         <Skills />
         <SectionDivider />
         <Projects />
-        <SectionDivider />
+        <SectionDivider className="bg-slate-50" />
         <Experience />
         <SectionDivider />
         <Contact />
