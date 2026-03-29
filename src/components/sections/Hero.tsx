@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMagnetic } from "@/lib/animations";
 import HudReadout from "@/components/HudReadout";
+import BackgroundNoise from "@/components/BackgroundNoise";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -276,6 +277,7 @@ export default function Hero() {
         backgroundSize: "24px 24px",
       }}
     >
+      <BackgroundNoise seed={101} density={20} />
       <HudReadout position="top-right" lines={["SIG:OK // FREQ:443.2", "NODE:ACTIVE", "v2.0.1"]} />
 
       {/* Diagonal slash lines */}

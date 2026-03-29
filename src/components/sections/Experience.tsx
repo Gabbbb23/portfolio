@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTextReveal } from "@/lib/animations";
 import CornerBrackets from "@/components/CornerBrackets";
+import BackgroundNoise from "@/components/BackgroundNoise";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -155,6 +156,7 @@ export default function Experience() {
       id="experience"
       className="relative z-10 bg-white py-16 md:py-20 overflow-hidden"
     >
+      <BackgroundNoise seed={505} density={16} />
       {/* Ghost text */}
       <span
         ref={ghostRef}

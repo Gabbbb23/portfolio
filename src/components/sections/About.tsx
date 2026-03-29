@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTextReveal, useCountUp, useTilt } from "@/lib/animations";
 import CornerBrackets from "@/components/CornerBrackets";
+import BackgroundNoise from "@/components/BackgroundNoise";
 import HudReadout from "@/components/HudReadout";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -97,6 +98,7 @@ export default function About() {
       id="about"
       className="relative z-10 bg-slate-50 py-16 md:py-20 overflow-hidden rounded-t-3xl -mt-1"
     >
+      <BackgroundNoise seed={202} density={14} />
       <HudReadout position="top-right" lines={["SEC:02 // ABOUT", "SCAN:COMPLETE"]} />
 
       {/* Ghost text */}
@@ -133,9 +135,9 @@ export default function About() {
         <div className="mb-6 h-1 w-32 halftone-dots opacity-40" />
 
         {/* Side-by-side layout */}
-        <div className="grid gap-12 md:grid-cols-[55%_1fr]">
-          {/* Bio text */}
-          <div ref={bioRef}>
+        <div className="grid gap-8 md:grid-cols-[55%_1fr]">
+          {/* Bio text — in a subtle panel */}
+          <div ref={bioRef} className="rounded-xl border border-slate-100 bg-white/60 p-6">
             <p className="reveal-line text-slate-700 leading-relaxed">
               I&apos;m a software engineer passionate about creating clean,
               performant, and thoughtful digital experiences. I believe great

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import BackgroundNoise from "@/components/BackgroundNoise";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -201,19 +202,25 @@ export default function Skills() {
         {skillCategories.map((category, index) => (
           <div
             key={category.title}
-            className="skill-panel flex-shrink-0 md:w-screen md:h-screen flex items-center justify-center px-6 md:px-16 py-20 md:py-0"
+            className="skill-panel relative flex-shrink-0 md:w-screen md:h-screen flex items-center justify-center px-6 md:px-16 py-20 md:py-0"
           >
-            <div className="w-full max-w-4xl">
+            <BackgroundNoise seed={300 + index * 100} density={12} />
+            <div className="relative z-10 w-full max-w-5xl">
               {/* Category panel left border accent */}
               <div className="relative pl-6">
                 <div className="absolute left-0 top-0 bottom-0 w-1 rounded-full" style={{ backgroundColor: accentHex[category.accent] || "#0EA5E9", opacity: 0.6 }} />
-                <div className="flex items-end justify-between mb-8">
+                <div className="flex items-end justify-between mb-4">
                   <h3 className={`font-display text-7xl ${category.accentGhost}`}>{category.title}</h3>
                   <span className={`font-mono text-[10px] tracking-wider ${category.accentText}`}>
                     [{String(index + 1).padStart(2, "0")}/{String(skillCategories.length).padStart(2, "0")}] {category.skills.length} LOADED
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                <p className="mb-6 font-mono text-xs text-slate-400 max-w-md">
+                  {index === 0 && "Building interfaces that feel alive — responsive, accessible, and performant."}
+                  {index === 1 && "Architecting server-side systems, APIs, and databases that scale."}
+                  {index === 2 && "The ecosystem that ties it all together — version control, deployment, and design."}
+                </p>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6">
                   {category.skills.map((skill) => (
                     <div key={skill.name} className="skill-card-wrap">
                       <SkillCard skill={skill} category={category} />
