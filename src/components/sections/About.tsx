@@ -139,20 +139,22 @@ export default function About() {
           {/* Bio text — in a subtle panel */}
           <div ref={bioRef} className="rounded-xl border border-slate-100 bg-white/60 p-6">
             <p className="reveal-line text-slate-700 leading-relaxed">
-              I&apos;m a software engineer passionate about creating clean,
-              performant, and thoughtful digital experiences. I believe great
-              software sits at the intersection of technical excellence and
-              human-centered design.
+              I build software that delivers real value to the people who use it.
+              For me, a good product isn&apos;t just code that works — it&apos;s
+              something that solves a genuine problem, scales without falling
+              apart, and is clean enough for the next developer to pick up
+              without a headache.
             </p>
             <p className="reveal-line text-slate-700 leading-relaxed mt-4">
-              Currently a junior-year computer science student, I spend my time
-              exploring full-stack development, diving into new technologies, and
-              building projects that solve real problems.
+              Currently a junior-year CS student, I spend most of my time
+              obsessing over how to make things maintainable and meaningful.
+              I&apos;d rather ship one well-architected feature than ten
+              duct-taped ones.
             </p>
             <p className="reveal-line text-slate-700 leading-relaxed mt-4">
-              I&apos;m always looking for opportunities to grow, collaborate, and
-              build something meaningful. If you have an interesting project or
-              just want to chat — reach out.
+              If you&apos;re working on something that needs to scale, or you
+              just want to talk about building products that actually matter —
+              let&apos;s connect.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {["Next.js", "Open Source", "UI/UX", "Clean Code", "System Design", "No Coffee"].map((tag) => (
