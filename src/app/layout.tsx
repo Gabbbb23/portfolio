@@ -29,8 +29,22 @@ const bebasNeue = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
-  title: "Gab | Software Engineer",
-  description: "Software Engineer portfolio — building clean, performant, and thoughtful software.",
+  title: "Gab | Product Developer",
+  description: "Product Developer building software that solves real problems, scales cleanly, and delivers value.",
+  metadataBase: new URL("https://komakahol.online"),
+  openGraph: {
+    title: "Gab — Product Developer",
+    description: "Building software that solves real problems, scales cleanly, and delivers value.",
+    url: "https://komakahol.online",
+    siteName: "Gab Portfolio",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Gab — Product Developer",
+    description: "Building software that solves real problems, scales cleanly, and delivers value.",
+  },
 };
 
 export default function RootLayout({
