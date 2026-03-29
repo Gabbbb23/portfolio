@@ -155,8 +155,10 @@ export default function About() {
               just want to chat — reach out.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
-              {["Next.js", "Open Source", "UI/UX", "Clean Code", "System Design", "Coffee"].map((tag) => (
-                <span key={tag} className="rounded-full border border-slate-200 bg-white px-3 py-1 font-mono text-xs text-slate-500 transition-colors hover:border-sky-300 hover:text-sky-500">
+              {["Next.js", "Open Source", "UI/UX", "Clean Code", "System Design", "No Coffee"].map((tag) => (
+                <span key={tag} className={`rounded-full border border-slate-200 bg-white px-3 py-1 font-mono text-xs transition-colors hover:border-sky-300 hover:text-sky-500 ${
+                  tag === "No Coffee" ? "font-bold text-slate-900" : "text-slate-500"
+                }`}>
                   {tag}
                 </span>
               ))}
