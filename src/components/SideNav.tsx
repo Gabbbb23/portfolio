@@ -60,60 +60,62 @@ export default function SideNav() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Projects section has a dark bg — SideNav needs lighter inactive colors there
-  const onDark = activeIndex === 2; // index 2 = "projects"
-
   return (
-    <div className="fixed right-6 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-6 md:flex">
-      {sections.map((section, i) => (
-        <button
-          key={section.id}
-          onClick={() => handleClick(section.id)}
-          className="group flex cursor-pointer items-center gap-3"
-          aria-label={`Navigate to ${section.label}`}
+    <nav className="fixed right-5 top-1/2 z-50 hidden -translate-y-1/2 md:block" aria-label="Section navigation">
+      {/* Backdrop pill */}
+      <div className="rounded-full border border-slate-200 bg-white/80 px-3 py-5 shadow-sm backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-5">
+          {sections.map((section, i) => {
+            const isActive = activeIndex === i;
+
+            return (
+              <button
+                key={section.id}
+                onClick={() => handleClick(section.id)}
+                className="group relative flex flex-col items-center gap-1"
+                aria-label={`Navigate to ${section.label}`}
+              >
+                {/* Dot indicator */}
+                <div
+                  className={`rounded-full transition-all duration-300 ${
+                    isActive
+                      ? "h-3 w-3 bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)]"
+                      : "h-2 w-2 bg-slate-400 group-hover:bg-slate-600 group-hover:scale-125"
+                  }`}
+                />
+
+                {/* Number label below dot */}
+                <span
+                  className={`font-mono text-[9px] leading-none transition-colors duration-300 ${
+                    isActive ? "text-sky-500 font-bold" : "text-slate-400 group-hover:text-slate-600"
+                  }`}
+                >
+                  {section.num}
+                </span>
+
+                {/* Hover tooltip — section name */}
+                <div className="pointer-events-none absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-slate-900 px-2.5 py-1 font-mono text-[10px] text-white opacity-0 shadow-lg transition-all duration-200 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0">
+                  {section.label}
+                  {/* Arrow */}
+                  <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full border-4 border-transparent border-l-slate-900" />
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Resume link */}
+      <div className="mt-3 flex justify-center">
+        <a
+          href="/resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full border border-slate-200 bg-white/80 px-2.5 py-1.5 font-mono text-[9px] font-medium tracking-wider text-slate-500 shadow-sm backdrop-blur-sm transition-colors hover:border-sky-500 hover:text-sky-500"
         >
-          <span
-            className={`font-mono text-[10px] tracking-wider transition-all duration-300 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 ${
-              activeIndex === i ? "text-sky-500" : onDark ? "text-slate-400" : "text-slate-400"
-            }`}
-          >
-            {section.label.toUpperCase()}
-          </span>
-
-          <span
-            className={`font-mono text-[10px] transition-colors duration-300 ${
-              activeIndex === i
-                ? "text-sky-500"
-                : onDark
-                  ? "text-slate-400 group-hover:text-slate-300"
-                  : "text-slate-300 group-hover:text-slate-500"
-            }`}
-          >
-            {section.num}
-          </span>
-
-          <div
-            className={`h-[2px] rounded-full transition-all duration-300 ${
-              activeIndex === i
-                ? "w-6 bg-sky-500"
-                : onDark
-                  ? "w-4 bg-slate-500 group-hover:w-6 group-hover:bg-slate-400"
-                  : "w-4 bg-slate-300 group-hover:w-6 group-hover:bg-slate-400"
-            }`}
-          />
-        </button>
-      ))}
-
-      <a
-        href="/resume.pdf"
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`mt-4 font-mono text-[10px] tracking-wider transition-colors hover:text-sky-500 [writing-mode:vertical-lr] rotate-180 ${
-          onDark ? "text-slate-400" : "text-slate-400"
-        }`}
-      >
-        RESUME
-      </a>
-    </div>
+          CV
+        </a>
+      </div>
+    </nav>
   );
 }
