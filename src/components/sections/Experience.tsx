@@ -19,47 +19,56 @@ interface ExperienceItem {
   technologies?: string[];
 }
 
-// Placeholder data — will be replaced by Sanity CMS
 const experiences: ExperienceItem[] = [
   {
     id: "1",
-    title: "Software Engineering Intern",
-    company: "Tech Company",
-    period: "Summer 2025",
+    title: "Product Developer",
+    company: "Experia",
+    period: "Dec 2025 — Present",
     description:
-      "Developed and maintained full-stack features. Collaborated with cross-functional teams to deliver production-ready code.",
+      "Building and shipping product features focused on delivering user value. Working across the stack to create scalable, maintainable solutions.",
     type: "work",
-    technologies: ["React", "Node.js", "PostgreSQL", "AWS"],
+    technologies: ["React", "Next.js", "TypeScript", "AI"],
   },
   {
     id: "2",
-    title: "B.S. Computer Science",
-    company: "University",
-    period: "2023 — Present",
+    title: "DLSU Hackercup — Participant",
+    company: "De La Salle University",
+    period: "July 2024",
     description:
-      "Studying computer science with a focus on software engineering, data structures, algorithms, and system design.",
-    type: "education",
-    technologies: ["Java", "Python", "C++", "Algorithms"],
+      "24-hour hackathon building solutions for SDGs across multiple universities. Built Fuse, a social media, course discovery, and mentor platform using React, TailwindCSS, Next.js, and Firebase. Based on SDG 4, quality education.",
+    type: "work",
+    technologies: ["React", "Next.js", "TailwindCSS", "Firebase"],
   },
   {
     id: "3",
-    title: "Freelance Developer",
-    company: "Self-Employed",
+    title: "Level it Up! — Seminar Participant",
+    company: "CICS",
     period: "2024",
     description:
-      "Built custom web applications for clients. Managed projects end-to-end from requirements to deployment.",
+      "Seminar on Tactics for Mobile and Web App Development Mastery. Explored Blockchain Technology, Full Stack Development, and IT Career Paths.",
     type: "work",
-    technologies: ["Next.js", "Tailwind", "Vercel", "Stripe"],
+    technologies: ["Blockchain", "Full Stack", "Mobile Dev"],
   },
   {
     id: "4",
-    title: "Open Source Contributor",
-    company: "Various Projects",
+    title: "B.S. Information Technology",
+    company: "Rizal Technological University",
     period: "2023 — Present",
     description:
-      "Contributed to open source projects, fixing bugs and adding features. Active member of developer communities.",
-    type: "work",
-    technologies: ["TypeScript", "Git", "GitHub Actions"],
+      "Cumulative GWA: 1.33. Academic Achiever 2023-2024. Studying information technology with focus on software development and system design.",
+    type: "education",
+    technologies: ["Java", "Python", "C++", "System Design"],
+  },
+  {
+    id: "5",
+    title: "ICT Strand",
+    company: "Rizal Technological University",
+    period: "2021 — 2023",
+    description:
+      "Senior high school ICT strand. Cumulative GWA: 1.30. Foundation in programming, networking, and information systems.",
+    type: "education",
+    technologies: ["HTML/CSS", "Java", "Networking"],
   },
 ];
 
@@ -262,18 +271,18 @@ export default function Experience() {
                     <span className="ml-2 font-mono text-xs text-slate-500">Years Coding</span>
                   </div>
                   <div>
-                    <span className="font-heading text-2xl font-bold text-slate-900">4+</span>
-                    <span className="ml-2 font-mono text-xs text-slate-500">Projects Shipped</span>
+                    <span className="font-heading text-2xl font-bold text-slate-900">1.33</span>
+                    <span className="ml-2 font-mono text-xs text-slate-500">GWA</span>
                   </div>
                   <div>
                     <span className="font-heading text-2xl font-bold text-slate-900">10+</span>
-                    <span className="ml-2 font-mono text-xs text-slate-500">Technologies</span>
+                    <span className="ml-2 font-mono text-xs text-slate-500">Projects Built</span>
                   </div>
                 </div>
                 <div className="mt-6 border-t border-slate-200 pt-4">
-                  <h4 className="mb-3 font-mono text-xs uppercase tracking-wider text-sky-500">Top Skills</h4>
+                  <h4 className="mb-3 font-mono text-xs uppercase tracking-wider text-sky-500">Stack</h4>
                   <div className="flex flex-wrap gap-1.5">
-                    {["React", "TypeScript", "Node.js", "Next.js", "Python"].map((s) => (
+                    {["React", "Next.js", "TypeScript", "TailwindCSS", "Firebase", "AI"].map((s) => (
                       <span key={s} className="rounded-full bg-sky-100 px-2.5 py-0.5 font-mono text-[10px] text-sky-700">{s}</span>
                     ))}
                   </div>
