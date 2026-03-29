@@ -400,7 +400,7 @@ export default function Hero() {
             <div className="p-4 font-mono text-xs leading-relaxed">
               <p><span className="text-sky-400">const</span> <span className="text-white">portfolio</span> <span className="text-slate-400">=</span> <span className="text-slate-400">{"{"}</span></p>
               <p className="pl-4"><span className="text-white">name</span><span className="text-slate-400">:</span> <span className="text-emerald-400">&quot;Gab&quot;</span><span className="text-slate-400">,</span></p>
-              <p className="pl-4"><span className="text-white">role</span><span className="text-slate-400">:</span> <span className="text-emerald-400">&quot;Full-Stack Developer&quot;</span><span className="text-slate-400">,</span></p>
+              <p className="pl-4"><span className="text-white">role</span><span className="text-slate-400">:</span> <span className="text-emerald-400">&quot;Product Developer&quot;</span><span className="text-slate-400">,</span></p>
               <p className="pl-4"><span className="text-white">skills</span><span className="text-slate-400">:</span> <span className="text-slate-400">[</span><span className="text-emerald-400">&quot;React&quot;</span><span className="text-slate-400">,</span> <span className="text-emerald-400">&quot;Node.js&quot;</span><span className="text-slate-400">,</span> <span className="text-emerald-400">&quot;TS&quot;</span><span className="text-slate-400">],</span></p>
               <p className="pl-4"><span className="text-white">passion</span><span className="text-slate-400">:</span> <span className="text-emerald-400">&quot;Building things that matter&quot;</span></p>
               <p><span className="text-slate-400">{"}"}</span><span className="text-slate-400">;</span></p>
