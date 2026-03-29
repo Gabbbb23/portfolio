@@ -63,22 +63,13 @@ export default function Hero() {
     const el = nameRef.current;
     if (!el) return;
 
-    // Split name into letter spans
-    const text = el.textContent || "";
-    el.innerHTML = "";
-    [...text].forEach((char) => {
-      const span = document.createElement("span");
-      span.textContent = char;
-      span.style.display = "inline-block";
-      if (char === " ") span.style.width = "0.3em";
-      el.appendChild(span);
-    });
+    const letters = el.querySelectorAll(".hero-letter");
 
     const ctx = gsap.context(() => {
       // Set initial invisible states
       gsap.set(ghostRef.current, { x: 200, opacity: 0 });
       gsap.set(labelRef.current, { y: 20, opacity: 0 });
-      gsap.set(el.children, { y: 60, rotateX: -15, opacity: 0 });
+      gsap.set(letters, { y: 60, rotateX: -15, opacity: 0 });
       gsap.set(subtitleRef.current, { opacity: 0 });
       gsap.set(ctaRef.current!.children, { y: 30, opacity: 0 });
       if (shapesRef.current) gsap.set(shapesRef.current.children, { scale: 0.5, opacity: 0 });
@@ -93,7 +84,7 @@ export default function Hero() {
       tl.to(labelRef.current, { y: 0, opacity: 1, duration: 0.4 }, 0.5);
 
       // t=0.7: "Gab" letters stagger in with 3D rotation
-      tl.to(el.children, {
+      tl.to(letters, {
         y: 0, rotateX: 0, opacity: 1,
         stagger: 0.08, duration: 0.6,
       }, 0.7);
@@ -222,7 +213,9 @@ export default function Hero() {
           className="mb-6 font-heading text-[clamp(4rem,12vw,10rem)] font-bold leading-none tracking-tight text-slate-900"
           style={{ perspective: "600px" }}
         >
-          Gab
+          {"Gab".split("").map((char, i) => (
+            <span key={i} className="hero-letter inline-block">{char}</span>
+          ))}
         </h1>
 
         <div ref={subtitleRef} className="mb-12 h-10">

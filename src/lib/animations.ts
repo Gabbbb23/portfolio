@@ -68,7 +68,7 @@ export function useStaggerReveal<T extends HTMLElement>(stagger = 0.1) {
   return ref;
 }
 
-// Text reveal animation — splits text into words and animates them
+// Text reveal animation — animates element without mutating DOM
 export function useTextReveal<T extends HTMLElement>() {
   const ref = useRef<T>(null);
 
@@ -76,40 +76,17 @@ export function useTextReveal<T extends HTMLElement>() {
     const el = ref.current;
     if (!el) return;
 
-    const text = el.textContent || "";
-    el.innerHTML = "";
-
-    const words = text.split(" ");
-    words.forEach((word, i) => {
-      const wrapper = document.createElement("span");
-      wrapper.style.display = "inline-block";
-      wrapper.style.overflow = "hidden";
-      wrapper.style.verticalAlign = "top";
-
-      const inner = document.createElement("span");
-      inner.style.display = "inline-block";
-      inner.textContent = word;
-      inner.className = "reveal-word";
-
-      wrapper.appendChild(inner);
-      el.appendChild(wrapper);
-
-      if (i < words.length - 1) {
-        el.appendChild(document.createTextNode("\u00A0"));
-      }
-    });
-
-    const wordEls = el.querySelectorAll(".reveal-word");
-    gsap.set(wordEls, { y: "110%" });
+    gsap.set(el, { y: 40, opacity: 0, clipPath: "inset(0 0 100% 0)" });
 
     const trigger = ScrollTrigger.create({
       trigger: el,
       start: "top 85%",
       onEnter: () => {
-        gsap.to(wordEls, {
-          y: "0%",
+        gsap.to(el, {
+          y: 0,
+          opacity: 1,
+          clipPath: "inset(0 0 0% 0)",
           duration: 0.8,
-          stagger: 0.05,
           ease: "power3.out",
         });
       },
