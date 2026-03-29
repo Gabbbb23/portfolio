@@ -96,7 +96,7 @@ export default function BackgroundNoise({
     return items;
   }, [seed, density]);
 
-  const baseColor = variant === "dark" ? "rgb(100,116,139)" : "rgb(148,163,184)";
+  const baseColor = variant === "dark" ? "rgb(148,163,184)" : "rgb(148,163,184)"; // slate-400 for both — dark bg needs same brightness since opacity handles visibility
 
   return (
     <div className={`pointer-events-none absolute inset-0 select-none ${className}`} aria-hidden="true">

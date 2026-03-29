@@ -228,7 +228,7 @@ export default function Projects() {
 
   return (
     <section ref={sectionRef} id="projects" className="project-section relative z-10 min-h-screen bg-slate-900">
-      <BackgroundNoise seed={404} density={20} variant="dark" />
+      <BackgroundNoise seed={404} density={20} variant="dark" className="z-[5]" />
       <HudReadout position="top-right" lines={["PROJ:SCAN // IDX:01", "STATUS:DEPLOYED", "BUILD:PASSING"]} />
 
       {/* Dot-grid texture overlay */}
