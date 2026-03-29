@@ -15,11 +15,19 @@ interface Skill {
 interface SkillCategory {
   title: string;
   skills: Skill[];
+  accent: string;       // Tailwind color class for fills (e.g. "sky" | "amber" | "emerald")
+  accentBar: string;    // CSS class for signal bar fill color
+  accentText: string;   // CSS class for bracket/hover text
+  accentGhost: string;  // CSS class for faint ghost title tint
 }
 
 const skillCategories: SkillCategory[] = [
   {
     title: "FRONTEND",
+    accent: "sky",
+    accentBar: "bg-sky-400",
+    accentText: "text-sky-500",
+    accentGhost: "text-sky-100",
     skills: [
       { name: "React", icon: "\u269B", level: 95 },
       { name: "Next.js", icon: "\u25B2", level: 90 },
@@ -31,6 +39,10 @@ const skillCategories: SkillCategory[] = [
   },
   {
     title: "BACKEND",
+    accent: "amber",
+    accentBar: "bg-amber-400",
+    accentText: "text-amber-500",
+    accentGhost: "text-amber-100",
     skills: [
       { name: "Node.js", icon: "\uD83D\uDFE2", level: 85 },
       { name: "Python", icon: "\uD83D\uDC0D", level: 80 },
@@ -42,6 +54,10 @@ const skillCategories: SkillCategory[] = [
   },
   {
     title: "TOOLS",
+    accent: "emerald",
+    accentBar: "bg-emerald-400",
+    accentText: "text-emerald-500",
+    accentGhost: "text-emerald-100",
     skills: [
       { name: "Git", icon: "\uD83D\uDCE6", level: 85 },
       { name: "Docker", icon: "\uD83D\uDC33", level: 65 },
@@ -53,21 +69,36 @@ const skillCategories: SkillCategory[] = [
   },
 ];
 
-function SkillCard({ skill }: { skill: Skill }) {
+const accentHex: Record<string, string> = {
+  sky: "#0EA5E9",
+  amber: "#F59E0B",
+  emerald: "#10B981",
+};
+
+function SkillCard({ skill, category }: { skill: Skill; category: SkillCategory }) {
+  const hex = accentHex[category.accent] || "#0EA5E9";
+
   return (
-    <div className="group relative rounded-lg border border-slate-200 bg-white p-4 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md overflow-hidden" style={{ opacity: 1 }}>
-      {/* Left accent strip — always visible, expands on hover */}
-      <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-sky-400/40 transition-all duration-300 group-hover:w-[4px] group-hover:bg-sky-500" />
-      <span className="mb-2 block text-2xl text-slate-700 transition-colors duration-200 group-hover:text-sky-500">
+    <div
+      className="group relative rounded-lg border border-slate-200 bg-white p-4 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md overflow-hidden"
+      style={{ opacity: 1, "--accent": hex } as React.CSSProperties}
+    >
+      {/* Left accent strip — category colored */}
+      <div className="absolute left-0 top-0 bottom-0 w-[3px] transition-all duration-300 group-hover:w-[4px]" style={{ backgroundColor: hex, opacity: 0.4 }} />
+      <span className="mb-2 block text-2xl text-slate-700 transition-colors duration-200 group-hover:[color:var(--accent)]">
         {skill.icon}
       </span>
-      <span className="font-mono text-xs font-medium text-slate-700">{skill.name}</span>
+      <span className="font-mono text-xs font-medium text-slate-700 transition-colors duration-200 group-hover:[color:var(--accent)]">{skill.name}</span>
       <div className="mt-2 flex items-end justify-center gap-0.5">
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}
-            className={`skill-signal-bar w-1.5 rounded-sm transition-colors ${i < Math.round((skill.level / 100) * 5) ? "bg-sky-400" : "bg-slate-200"}`}
-            style={{ height: `${6 + i * 3}px`, width: 0 }}
+            className="skill-signal-bar w-1.5 rounded-sm transition-colors"
+            style={{
+              height: `${6 + i * 3}px`,
+              width: 0,
+              backgroundColor: i < Math.round((skill.level / 100) * 5) ? hex : "#E2E8F0",
+            }}
           />
         ))}
       </div>
@@ -173,18 +204,22 @@ export default function Skills() {
             className="skill-panel flex-shrink-0 md:w-screen md:h-screen flex items-center justify-center px-6 md:px-16 py-20 md:py-0"
           >
             <div className="w-full max-w-4xl">
-              <div className="flex items-end justify-between mb-8">
-                <h3 className="font-display text-7xl text-slate-200/80">{category.title}</h3>
-                <span className="font-mono text-[10px] text-slate-400 tracking-wider">
-                  [{String(index + 1).padStart(2, "0")}/{String(skillCategories.length).padStart(2, "0")}] {category.skills.length} LOADED
-                </span>
-              </div>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                {category.skills.map((skill) => (
-                  <div key={skill.name} className="skill-card-wrap">
-                    <SkillCard skill={skill} />
-                  </div>
-                ))}
+              {/* Category panel left border accent */}
+              <div className="relative pl-6">
+                <div className="absolute left-0 top-0 bottom-0 w-1 rounded-full" style={{ backgroundColor: accentHex[category.accent] || "#0EA5E9", opacity: 0.6 }} />
+                <div className="flex items-end justify-between mb-8">
+                  <h3 className={`font-display text-7xl ${category.accentGhost}`}>{category.title}</h3>
+                  <span className={`font-mono text-[10px] tracking-wider ${category.accentText}`}>
+                    [{String(index + 1).padStart(2, "0")}/{String(skillCategories.length).padStart(2, "0")}] {category.skills.length} LOADED
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                  {category.skills.map((skill) => (
+                    <div key={skill.name} className="skill-card-wrap">
+                      <SkillCard skill={skill} category={category} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

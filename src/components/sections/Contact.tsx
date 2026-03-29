@@ -149,11 +149,11 @@ export default function Contact() {
               06
             </span>
 
-            <div className="mb-3 inline-flex items-center gap-2 rounded border border-slate-700 bg-slate-800/80 px-3 py-1 font-mono text-[10px] text-slate-400">
+            <div className="mb-3 inline-flex items-center gap-2 rounded border border-amber-500/30 bg-slate-800/80 px-3 py-1 font-mono text-[10px] text-slate-400">
               <span className="flex items-center gap-0.5">
-                <span className="h-1 w-0.5 rounded-sm bg-sky-400" />
-                <span className="h-1.5 w-0.5 rounded-sm bg-sky-400" />
-                <span className="h-2 w-0.5 rounded-sm bg-sky-400" />
+                <span className="h-1 w-0.5 rounded-sm bg-amber-400" />
+                <span className="h-1.5 w-0.5 rounded-sm bg-amber-400" />
+                <span className="h-2 w-0.5 rounded-sm bg-amber-400" />
               </span>
               CONNECTED // INTER-KNOT
             </div>

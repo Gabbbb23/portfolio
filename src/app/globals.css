@@ -1,10 +1,18 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Sky blue accent — matches Tailwind sky-500 */
+  /* Primary accent — sky blue */
   --color-sky: #0EA5E9;
   --color-sky-hover: #0284C7;
   --color-sky-light: #E0F2FE;
+
+  /* ZZZ energy accent — electric amber */
+  --color-amber: #F59E0B;
+  --color-amber-light: #FEF3C7;
+
+  /* ZZZ signal accent — neon green */
+  --color-neon: #10B981;
+  --color-neon-light: #D1FAE5;
 
   /* Ghost text for light backgrounds */
   --color-ghost: #E2E8F0;

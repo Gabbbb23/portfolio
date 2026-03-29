@@ -51,9 +51,12 @@ const projects: Project[] = [
   },
 ];
 
+const projectAccents = ["#0EA5E9", "#F59E0B", "#0EA5E9", "#10B981"]; // sky, amber, sky, emerald
+
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const isOdd = index % 2 === 1;
   const projectNum = String(index + 1).padStart(2, "0");
+  const accent = projectAccents[index] || "#0EA5E9";
   const marqueeText = `${project.title} \u00B7 `.repeat(10);
 
   return (
@@ -90,10 +93,10 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               <div className="h-2 w-1/3 rounded bg-slate-700" />
               <div className="mt-2 h-8 w-full rounded bg-sky-500/10" />
             </div>
-            {/* Top accent bar */}
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-sky-500" />
+            {/* Top accent bar — per-project color */}
+            <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: accent }} />
             {/* Project number */}
-            <span className="absolute bottom-3 right-3 font-display text-5xl text-slate-700">{projectNum}</span>
+            <span className="absolute bottom-3 right-3 font-display text-5xl" style={{ color: accent, opacity: 0.2 }}>{projectNum}</span>
           </div>
         </div>
 
