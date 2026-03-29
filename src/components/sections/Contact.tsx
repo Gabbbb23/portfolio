@@ -66,23 +66,27 @@ function SocialButton({ social }: { social: SocialLink }) {
 
 export default function Contact() {
   const headingRef = useTextReveal<HTMLHeadingElement>();
+  const headingWrapRef = useRef<HTMLDivElement>(null);
   const contentRef = useScrollFadeUp<HTMLDivElement>();
   const ghostRef = useRef<HTMLSpanElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (ghostRef.current && sectionRef.current) {
-      gsap.to(ghostRef.current, {
-        yPercent: -20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
+    const ctx = gsap.context(() => {
+      gsap.from(headingWrapRef.current, {
+        x: -80, opacity: 0, duration: 0.8, ease: "power3.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
       });
-    }
+      gsap.from(ghostRef.current, {
+        x: 120, opacity: 0, duration: 1.0, ease: "power2.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
+      });
+      gsap.to(ghostRef.current, {
+        yPercent: -20, ease: "none",
+        scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: true },
+      });
+    });
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -97,16 +101,18 @@ export default function Contact() {
       </span>
 
       <div className="relative mx-auto max-w-3xl text-center">
-        <p className="mb-4 font-mono text-sm font-medium tracking-widest text-sky-500 uppercase">
-          &#9656; Get In Touch
-        </p>
+        <div ref={headingWrapRef}>
+          <p className="mb-4 font-mono text-sm font-medium tracking-widest text-sky-500 uppercase">
+            &#9656; Get In Touch
+          </p>
 
-        <h2
-          ref={headingRef}
-          className="mb-6 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
-        >
-          Let&apos;s Connect
-        </h2>
+          <h2
+            ref={headingRef}
+            className="mb-6 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
+          >
+            Let&apos;s Connect
+          </h2>
+        </div>
 
         <div ref={contentRef}>
           <p className="mb-12 text-lg leading-relaxed text-slate-500">

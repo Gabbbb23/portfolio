@@ -139,23 +139,27 @@ function TimelineItem({
 
 export default function Experience() {
   const headingRef = useTextReveal<HTMLHeadingElement>();
+  const headingWrapRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
   const ghostRef = useRef<HTMLSpanElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (ghostRef.current && sectionRef.current) {
-      gsap.to(ghostRef.current, {
-        yPercent: -20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
+    const ctx = gsap.context(() => {
+      gsap.from(headingWrapRef.current, {
+        x: -80, opacity: 0, duration: 0.8, ease: "power3.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
       });
-    }
+      gsap.from(ghostRef.current, {
+        x: 120, opacity: 0, duration: 1.0, ease: "power2.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
+      });
+      gsap.to(ghostRef.current, {
+        yPercent: -20, ease: "none",
+        scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: true },
+      });
+    });
+    return () => ctx.revert();
   }, []);
 
   useEffect(() => {
@@ -188,16 +192,18 @@ export default function Experience() {
       </span>
 
       <div className="relative mx-auto max-w-6xl">
-        <p className="mb-4 font-mono text-sm font-medium tracking-widest text-sky-500 uppercase">
-          &#9656; Journey
-        </p>
+        <div ref={headingWrapRef}>
+          <p className="mb-4 font-mono text-sm font-medium tracking-widest text-sky-500 uppercase">
+            &#9656; Journey
+          </p>
 
-        <h2
-          ref={headingRef}
-          className="mb-16 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
-        >
-          Experience & Education
-        </h2>
+          <h2
+            ref={headingRef}
+            className="mb-16 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
+          >
+            Experience & Education
+          </h2>
+        </div>
 
         <div className="relative">
           {/* Timeline line — dashed, P3R-style segmented connections */}
