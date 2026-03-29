@@ -231,7 +231,7 @@ export default function Projects() {
 
   return (
     <section ref={sectionRef} id="projects" className="relative z-10 min-h-screen bg-slate-50">
-      <HudReadout position="top-left" lines={["PROJ:SCAN // IDX:01", "STATUS:DEPLOYED", "BUILD:PASSING"]} />
+      <HudReadout position="top-right" lines={["PROJ:SCAN // IDX:01", "STATUS:DEPLOYED", "BUILD:PASSING"]} />
 
       {/* Heading overlay */}
       <div className="pointer-events-none absolute left-8 top-12 z-20">

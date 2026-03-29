@@ -1,8 +1,9 @@
 "use client";
 
 import SmoothScroll from "@/components/providers/SmoothScroll";
-import Navbar from "@/components/Navbar";
-import ScrollProgressBar from "@/components/ScrollProgressBar";
+import FloatingLogo from "@/components/FloatingLogo";
+import SideNav from "@/components/SideNav";
+import MobileNav from "@/components/MobileNav";
 import CustomCursor from "@/components/CustomCursor";
 import SectionDivider from "@/components/SectionDivider";
 import Hero from "@/components/sections/Hero";
@@ -16,9 +17,10 @@ import Footer from "@/components/sections/Footer";
 export default function Home() {
   return (
     <SmoothScroll>
-      <ScrollProgressBar />
+      <FloatingLogo />
+      <SideNav />
+      <MobileNav />
       <CustomCursor />
-      <Navbar />
       <main>
         <Hero />
         <About />

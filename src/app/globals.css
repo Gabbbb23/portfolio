@@ -145,3 +145,8 @@ body {
 .animate-terminal-blink {
   animation: terminal-blink 1s steps(1) infinite;
 }
+
+/* Fallback for signal bars if GSAP doesn't trigger */
+@media (prefers-reduced-motion: reduce) {
+  .skill-signal-bar { width: 6px !important; }
+}

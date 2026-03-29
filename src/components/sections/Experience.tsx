@@ -158,7 +158,7 @@ export default function Experience() {
       {/* Ghost text */}
       <span
         ref={ghostRef}
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(10rem,25vw,20rem)] leading-none text-ghost"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(10rem,25vw,20rem)] leading-none text-slate-200 opacity-60"
         aria-hidden="true"
       >
         05
