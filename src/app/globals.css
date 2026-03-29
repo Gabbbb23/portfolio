@@ -168,6 +168,13 @@ body {
   );
 }
 
+/* Scroll wheel indicator animation */
+@keyframes scrollWheel {
+  0% { top: 8px; opacity: 1; }
+  50% { top: 22px; opacity: 0.3; }
+  100% { top: 8px; opacity: 1; }
+}
+
 /* Fallback for signal bars if GSAP doesn't trigger */
 @media (prefers-reduced-motion: reduce) {
   .skill-signal-bar { width: 6px !important; }

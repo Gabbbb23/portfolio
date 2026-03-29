@@ -421,18 +421,19 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator at bottom center */}
+      {/* Scroll indicator — mouse/scroll wheel shape */}
       <div
         ref={scrollIndicatorRef}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
         <div className="flex flex-col items-center gap-2">
-          <span className="font-mono text-xs font-medium tracking-widest text-slate-400 uppercase">
+          <div className="relative h-10 w-6 rounded-full border-2 border-slate-300">
+            {/* Scroll wheel dot — animates down */}
+            <div className="absolute left-1/2 top-2 h-2 w-1 -translate-x-1/2 rounded-full bg-sky-500 animate-[scrollWheel_1.5s_ease-in-out_infinite]" />
+          </div>
+          <span className="font-mono text-[10px] tracking-widest text-slate-400 uppercase">
             Scroll
           </span>
-          <div className="h-10 w-[1px] overflow-hidden bg-slate-200">
-            <div className="h-3 w-full animate-bounce bg-sky-500" />
-          </div>
         </div>
       </div>
     </section>
