@@ -15,17 +15,17 @@ interface ExperienceItem {
   company: string;
   period: string;
   description: string;
-  type: "work" | "education";
+  type: "work" | "education" | "event";
   technologies?: string[];
 }
 
-// Chronological order: newest first
+// Newest first
 const workExperience: ExperienceItem[] = [
   {
     id: "1",
     title: "Product Developer",
     company: "Experia",
-    period: "Dec 2025 — Present",
+    period: "Jan 2026 — Present",
     description:
       "Building and shipping product features focused on delivering user value. Working across the stack to create scalable, maintainable solutions.",
     type: "work",
@@ -33,23 +33,23 @@ const workExperience: ExperienceItem[] = [
   },
   {
     id: "2",
-    title: "DLSU Hackercup — Participant",
-    company: "De La Salle University",
-    period: "July 2024",
-    description:
-      "24-hour hackathon building solutions for SDGs across multiple universities. Built Fuse, a social media, course discovery, and mentor platform using React, TailwindCSS, Next.js, and Firebase. Based on SDG 4, quality education.",
-    type: "work",
-    technologies: ["React", "Next.js", "TailwindCSS", "Firebase"],
-  },
-  {
-    id: "3",
     title: "Ship or Be Shipped 2025 — Hackathon",
     company: "Build and Ship Philippines @ Kaya Founders",
     period: "Dec 2025",
     description:
       "24-hour hackathon where top companies brought real challenges with bounties starting at P5,000+. Solved actual business problems under pressure with instant hiring opportunities on the spot.",
-    type: "work",
+    type: "event",
     technologies: ["React", "Next.js", "AI", "Rapid Prototyping"],
+  },
+  {
+    id: "3",
+    title: "DLSU Hackercup — Participant",
+    company: "De La Salle University",
+    period: "July 2024",
+    description:
+      "24-hour hackathon building solutions for SDGs across multiple universities. Built Fuse, a social media, course discovery, and mentor platform using React, TailwindCSS, Next.js, and Firebase. Based on SDG 4, quality education.",
+    type: "event",
+    technologies: ["React", "Next.js", "TailwindCSS", "Firebase"],
   },
 ];
 
@@ -98,7 +98,7 @@ function TimelineCard({ item, index, accent = "sky" }: { item: ExperienceItem; i
         >
           <div className="flex items-center gap-2 mb-1">
             <span className={`${badgeColor} font-mono text-xs rounded-full px-3 py-1`}>
-              {item.type === "work" ? "Work" : "Education"}
+              {item.type === "work" ? "Work" : item.type === "event" ? "Event" : "Education"}
             </span>
             <span className="text-slate-500 font-mono text-xs">{item.period}</span>
           </div>
