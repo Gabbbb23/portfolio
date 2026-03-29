@@ -27,20 +27,20 @@ export default function SideNav() {
 
       const viewportCenter = window.innerHeight / 2;
       let newIndex = -1;
-      const sectionIds = ["hero", ...sections.map((s) => s.id)];
 
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sectionIds[i]);
+      // Check each section — use the pin-spacer if it exists (GSAP wraps pinned sections)
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i].id);
         if (!el) continue;
-        const rect = el.getBoundingClientRect();
-        const style = window.getComputedStyle(el);
-        const isPinned = style.position === "fixed";
 
-        if (
-          (isPinned && rect.top <= 0 && rect.bottom >= viewportCenter) ||
-          (!isPinned && rect.top <= viewportCenter && rect.bottom >= viewportCenter)
-        ) {
-          newIndex = i === 0 ? -1 : i - 1;
+        // GSAP pin-spacer wraps the pinned element — check both the spacer and the element
+        const spacer = el.closest(".pin-spacer") as HTMLElement | null;
+        const checkEl = spacer || el;
+        const rect = checkEl.getBoundingClientRect();
+
+        // Section is "active" if it occupies the center of the viewport
+        if (rect.top <= viewportCenter && rect.bottom >= viewportCenter) {
+          newIndex = i;
           break;
         }
       }
@@ -62,7 +62,6 @@ export default function SideNav() {
 
   return (
     <nav className="fixed right-5 top-1/2 z-50 hidden -translate-y-1/2 md:block" aria-label="Section navigation">
-      {/* Backdrop pill */}
       <div className="rounded-full border border-slate-200 bg-white/80 px-3 py-5 shadow-sm backdrop-blur-sm">
         <div className="flex flex-col items-center gap-5">
           {sections.map((section, i) => {
@@ -75,7 +74,6 @@ export default function SideNav() {
                 className="group relative flex flex-col items-center gap-1"
                 aria-label={`Navigate to ${section.label}`}
               >
-                {/* Dot indicator */}
                 <div
                   className={`rounded-full transition-all duration-300 ${
                     isActive
@@ -84,7 +82,6 @@ export default function SideNav() {
                   }`}
                 />
 
-                {/* Number label below dot */}
                 <span
                   className={`font-mono text-[9px] leading-none transition-colors duration-300 ${
                     isActive ? "text-sky-500 font-bold" : "text-slate-400 group-hover:text-slate-600"
@@ -93,10 +90,8 @@ export default function SideNav() {
                   {section.num}
                 </span>
 
-                {/* Hover tooltip — section name */}
                 <div className="pointer-events-none absolute right-full mr-4 top-1/2 -translate-y-1/2 whitespace-nowrap rounded-md bg-slate-900 px-2.5 py-1 font-mono text-[10px] text-white opacity-0 shadow-lg transition-all duration-200 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0">
                   {section.label}
-                  {/* Arrow */}
                   <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full border-4 border-transparent border-l-slate-900" />
                 </div>
               </button>
@@ -105,7 +100,6 @@ export default function SideNav() {
         </div>
       </div>
 
-      {/* Resume link */}
       <div className="mt-3 flex justify-center">
         <a
           href="/resume.pdf"

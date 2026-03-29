@@ -175,7 +175,7 @@ export default function Projects() {
           start: "top top",
           end: () => `+=${(cardCount - 1) * window.innerHeight}`,
           pin: true,
-          pinType: "fixed",
+          pinType: "transform",
           scrub: 1.5,
           anticipatePin: 1,
           invalidateOnRefresh: true,

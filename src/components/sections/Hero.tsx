@@ -134,6 +134,7 @@ export default function Hero() {
         start: "top top",
         end: "bottom top",
         pin: true,
+        pinType: "transform",
         pinSpacing: false,
       });
 

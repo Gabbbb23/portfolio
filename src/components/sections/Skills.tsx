@@ -130,6 +130,7 @@ export default function Skills() {
               start: "top top",
               end: () => `+=${totalWidth}`,
               pin: true,
+              pinType: "transform",
               scrub: 1.5,
               anticipatePin: 1,
               onUpdate: (self: ScrollTrigger) => {
