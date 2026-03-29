@@ -157,53 +157,79 @@ export default function Hero() {
     return () => ctx.revert();
   }, []);
 
-  // Randomized glitch on "Gab"
+  // Randomized glitch on "Gab" — uses real DOM elements instead of pseudo-elements
   useEffect(() => {
     const el = nameRef.current;
     if (!el) return;
 
-    let timeout: ReturnType<typeof setTimeout>;
+    // Create two glitch layers as real DOM elements (pseudo-elements are unreliable)
+    const blue = document.createElement("span");
+    const red = document.createElement("span");
+    const baseStyle = "position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:60;opacity:0;";
+    blue.textContent = "Gab";
+    red.textContent = "Gab";
+    blue.setAttribute("aria-hidden", "true");
+    red.setAttribute("aria-hidden", "true");
+    blue.setAttribute("style", baseStyle + "color:#0EA5E9;");
+    red.setAttribute("style", baseStyle + "color:#F43F5E;");
+    el.style.position = "relative";
+    el.appendChild(blue);
+    el.appendChild(red);
+
+    const timers: ReturnType<typeof setTimeout>[] = [];
     let killed = false;
 
     const rand = (min: number, max: number) => Math.random() * (max - min) + min;
 
+    const reset = () => {
+      blue.style.opacity = "0";
+      red.style.opacity = "0";
+      blue.style.transform = "none";
+      red.style.transform = "none";
+      blue.style.clipPath = "inset(0 0 100% 0)";
+      red.style.clipPath = "inset(0 0 100% 0)";
+    };
+
     const fireGlitch = () => {
       if (killed) return;
-      const before = window.getComputedStyle(el, "::before");
-      // Can't animate pseudo-elements with GSAP directly — use CSS custom properties
-      const steps = Math.floor(rand(3, 6));
+      const steps = Math.floor(rand(3, 7));
       let step = 0;
 
       const tick = () => {
         if (step >= steps || killed) {
-          el.style.setProperty("--gb", "0"); el.style.setProperty("--gr", "0");
-          el.style.setProperty("--gx1", "0px"); el.style.setProperty("--gy1", "0px");
-          el.style.setProperty("--gx2", "0px"); el.style.setProperty("--gy2", "0px");
-          el.style.setProperty("--gc1", "inset(0 0 100% 0)");
-          el.style.setProperty("--gc2", "inset(0 0 100% 0)");
-          // Schedule next glitch at random interval
-          timeout = setTimeout(fireGlitch, rand(2000, 6000));
+          reset();
+          const next = setTimeout(fireGlitch, rand(2000, 5500));
+          timers.push(next);
           return;
         }
-        el.style.setProperty("--gb", "1"); el.style.setProperty("--gr", "1");
-        el.style.setProperty("--gx1", `${rand(-8, 8)}px`);
-        el.style.setProperty("--gy1", `${rand(-3, 3)}px`);
-        el.style.setProperty("--gx2", `${rand(-8, 8)}px`);
-        el.style.setProperty("--gy2", `${rand(-3, 3)}px`);
-        const t1 = Math.floor(rand(5, 80)), b1 = Math.floor(rand(5, 80));
-        const t2 = Math.floor(rand(5, 80)), b2 = Math.floor(rand(5, 80));
-        el.style.setProperty("--gc1", `inset(${t1}% 0 ${b1}% 0)`);
-        el.style.setProperty("--gc2", `inset(${t2}% 0 ${b2}% 0)`);
+        const x1 = rand(-8, 8), y1 = rand(-3, 3);
+        const x2 = rand(-8, 8), y2 = rand(-3, 3);
+        const t1 = Math.floor(rand(5, 75)), b1 = Math.floor(rand(5, 75));
+        const t2 = Math.floor(rand(5, 75)), b2 = Math.floor(rand(5, 75));
+
+        blue.style.opacity = "1";
+        blue.style.transform = `translate(${x1}px, ${y1}px)`;
+        blue.style.clipPath = `inset(${t1}% 0 ${b1}% 0)`;
+        red.style.opacity = "1";
+        red.style.transform = `translate(${x2}px, ${y2}px)`;
+        red.style.clipPath = `inset(${t2}% 0 ${b2}% 0)`;
+
         step++;
-        setTimeout(tick, rand(40, 100));
+        const t = setTimeout(tick, rand(40, 90));
+        timers.push(t);
       };
       tick();
     };
 
-    // Initial delay before first glitch
-    timeout = setTimeout(fireGlitch, rand(2500, 4000));
+    const initial = setTimeout(fireGlitch, rand(2000, 3500));
+    timers.push(initial);
 
-    return () => { killed = true; clearTimeout(timeout); };
+    return () => {
+      killed = true;
+      timers.forEach(clearTimeout);
+      blue.remove();
+      red.remove();
+    };
   }, []);
 
   // Typing effect — only starts after timeline triggers it
@@ -271,8 +297,7 @@ export default function Hero() {
 
           <h1
             ref={nameRef}
-            className="mb-6 font-heading text-7xl font-bold leading-none tracking-tight text-slate-900 md:text-8xl lg:text-9xl glitch-text"
-            data-text="Gab"
+            className="mb-6 font-heading text-7xl font-bold leading-none tracking-tight text-slate-900 md:text-8xl lg:text-9xl"
             style={{ perspective: "600px" }}
           >
             {"Gab".split("").map((char, i) => (
