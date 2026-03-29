@@ -150,7 +150,8 @@ export default function About() {
               create and communicate solutions that are genuinely useful —
               software that solves real problems for real people. Lately
               I&apos;ve been diving into AI, exploring how it can make the
-              products I build smarter and more impactful.
+              products I build deliver higher quality output — and figuring
+              out how to maximize what it can do.
             </p>
             <p className="reveal-line mt-6 border-l-2 border-sky-500 pl-4 font-mono text-sm italic text-slate-500">
               &quot;I&apos;d rather ship one well-architected feature than ten duct-taped ones.&quot;
