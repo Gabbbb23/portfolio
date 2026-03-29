@@ -15,6 +15,8 @@ interface Project {
   tags: string[];
   category?: string;
   year?: string;
+  image?: string;
+  wip?: boolean;
   liveUrl?: string;
   githubUrl?: string;
 }
@@ -27,6 +29,8 @@ const projects: Project[] = [
     tags: ["React", "Vite", "CodeMirror", "JSZip"],
     category: "Dev Tool",
     year: "2026",
+    image: "/projects/app-inventor-studio.png",
+    wip: true,
     liveUrl: "https://app-inventor-studio.vercel.app",
     githubUrl: "https://github.com/Gabbbb23/App-Inventor-Studio",
   },
@@ -85,29 +89,39 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         {/* Image area */}
         <div className={`relative z-10 col-span-12 md:col-span-7 ${isOdd ? "md:order-2" : ""}`}>
           <div className="crt-scanlines relative rounded-xl bg-slate-800 aspect-video overflow-hidden border border-slate-700">
-            {/* Browser chrome — dark terminal style */}
-            <div className="flex items-center gap-2 bg-slate-800/90 px-3 py-2 border-b border-slate-700">
-              <div className="flex gap-1.5">
-                <div className="h-2 w-2 rounded-full bg-red-400/80" />
-                <div className="h-2 w-2 rounded-full bg-yellow-400/80" />
-                <div className="h-2 w-2 rounded-full bg-green-400/80" />
-              </div>
-              <div className="flex-1 rounded bg-slate-900/60 px-2 py-0.5 text-center">
-                <span className="font-mono text-[10px] text-slate-500">localhost:3000</span>
-              </div>
-            </div>
-            {/* Content placeholder with wireframe lines */}
-            <div className="p-4 space-y-2">
-              <div className="h-2 w-3/4 rounded bg-slate-700" />
-              <div className="h-2 w-1/2 rounded bg-slate-700" />
-              <div className="h-2 w-2/3 rounded bg-sky-500/20" />
-              <div className="h-2 w-1/3 rounded bg-slate-700" />
-              <div className="mt-2 h-8 w-full rounded bg-sky-500/10" />
-            </div>
-            {/* Top accent bar — per-project color */}
-            <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: accent }} />
+            {/* Top accent bar */}
+            <div className="absolute top-0 left-0 right-0 h-0.5 z-20" style={{ backgroundColor: accent }} />
+            {/* WIP badge */}
+            {project.wip && (
+              <span className="absolute top-3 left-3 z-20 rounded bg-amber-500 px-2 py-0.5 font-mono text-[10px] font-bold text-slate-900">
+                WIP
+              </span>
+            )}
             {/* Project number */}
-            <span className="absolute bottom-3 right-3 font-display text-5xl" style={{ color: accent, opacity: 0.2 }}>{projectNum}</span>
+            <span className="absolute bottom-3 right-3 z-10 font-display text-5xl" style={{ color: accent, opacity: 0.2 }}>{projectNum}</span>
+            {project.image ? (
+              <img src={project.image} alt={project.title} className="h-full w-full object-cover object-top" />
+            ) : (
+              <>
+                <div className="flex items-center gap-2 bg-slate-800/90 px-3 py-2 border-b border-slate-700">
+                  <div className="flex gap-1.5">
+                    <div className="h-2 w-2 rounded-full bg-red-400/80" />
+                    <div className="h-2 w-2 rounded-full bg-yellow-400/80" />
+                    <div className="h-2 w-2 rounded-full bg-green-400/80" />
+                  </div>
+                  <div className="flex-1 rounded bg-slate-900/60 px-2 py-0.5 text-center">
+                    <span className="font-mono text-[10px] text-slate-500">localhost:3000</span>
+                  </div>
+                </div>
+                <div className="p-4 space-y-2">
+                  <div className="h-2 w-3/4 rounded bg-slate-700" />
+                  <div className="h-2 w-1/2 rounded bg-slate-700" />
+                  <div className="h-2 w-2/3 rounded bg-sky-500/20" />
+                  <div className="h-2 w-1/3 rounded bg-slate-700" />
+                  <div className="mt-2 h-8 w-full rounded bg-sky-500/10" />
+                </div>
+              </>
+            )}
           </div>
         </div>
 
