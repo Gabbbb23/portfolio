@@ -148,13 +148,12 @@ export default function About() {
             <p className="reveal-line text-slate-700 leading-relaxed mt-4">
               Currently a junior-year CS student, I spend most of my time
               obsessing over how to make things maintainable and meaningful.
-              I&apos;d rather ship one well-architected feature than ten
-              duct-taped ones.
+              Lately I&apos;ve been diving deep into AI — exploring how it can
+              make the products I build smarter and more useful.
             </p>
             <p className="reveal-line text-slate-700 leading-relaxed mt-4">
-              If you&apos;re working on something that needs to scale, or you
-              just want to talk about building products that actually matter —
-              let&apos;s connect.
+              I&apos;m always down to talk about scalable systems, AI-powered
+              products, or anything that pushes what software can do. Hit me up.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {["Next.js", "Open Source", "UI/UX", "Clean Code", "System Design", "No Coffee"].map((tag) => (
