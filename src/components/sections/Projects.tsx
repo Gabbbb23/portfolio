@@ -100,36 +100,37 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             )}
             {/* Project number */}
             <span className="absolute bottom-3 right-3 z-10 font-display text-5xl" style={{ color: accent, opacity: 0.2 }}>{projectNum}</span>
+            {/* Browser chrome — always visible */}
+            <div className="relative z-20 flex items-center gap-2 bg-slate-800/90 px-3 py-2 border-b border-slate-700 backdrop-blur-sm">
+              <div className="flex gap-1.5">
+                <div className="h-2 w-2 rounded-full bg-red-400/80" />
+                <div className="h-2 w-2 rounded-full bg-yellow-400/80" />
+                <div className="h-2 w-2 rounded-full bg-green-400/80" />
+              </div>
+              <div className="flex-1 rounded bg-slate-900/60 px-2 py-0.5 text-center">
+                <span className="font-mono text-[10px] text-slate-500">
+                  {project.liveUrl && project.liveUrl !== "#" ? project.liveUrl.replace("https://", "") : "localhost:3000"}
+                </span>
+              </div>
+            </div>
             {project.image ? (
               <Image
                 src={project.image}
                 alt={project.title}
                 fill
-                className="object-cover object-top"
+                className="object-cover object-top pt-8"
                 sizes="(max-width: 768px) 100vw, 58vw"
                 quality={90}
                 priority={index === 0}
               />
             ) : (
-              <>
-                <div className="flex items-center gap-2 bg-slate-800/90 px-3 py-2 border-b border-slate-700">
-                  <div className="flex gap-1.5">
-                    <div className="h-2 w-2 rounded-full bg-red-400/80" />
-                    <div className="h-2 w-2 rounded-full bg-yellow-400/80" />
-                    <div className="h-2 w-2 rounded-full bg-green-400/80" />
-                  </div>
-                  <div className="flex-1 rounded bg-slate-900/60 px-2 py-0.5 text-center">
-                    <span className="font-mono text-[10px] text-slate-500">localhost:3000</span>
-                  </div>
-                </div>
-                <div className="p-4 space-y-2">
-                  <div className="h-2 w-3/4 rounded bg-slate-700" />
-                  <div className="h-2 w-1/2 rounded bg-slate-700" />
-                  <div className="h-2 w-2/3 rounded bg-sky-500/20" />
-                  <div className="h-2 w-1/3 rounded bg-slate-700" />
-                  <div className="mt-2 h-8 w-full rounded bg-sky-500/10" />
-                </div>
-              </>
+              <div className="p-4 space-y-2">
+                <div className="h-2 w-3/4 rounded bg-slate-700" />
+                <div className="h-2 w-1/2 rounded bg-slate-700" />
+                <div className="h-2 w-2/3 rounded bg-sky-500/20" />
+                <div className="h-2 w-1/3 rounded bg-slate-700" />
+                <div className="mt-2 h-8 w-full rounded bg-sky-500/10" />
+              </div>
             )}
           </div>
         </div>
