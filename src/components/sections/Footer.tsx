@@ -19,7 +19,7 @@ export default function Footer() {
           </svg>
         </button>
 
-        <div className="flex gap-6 font-mono text-sm text-slate-400">
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6 font-mono text-xs md:text-sm text-slate-400">
           {["About", "Projects", "Experience", "Contact"].map((item) => (
             <a
               key={item}

@@ -124,7 +124,7 @@ export default function Contact() {
             <p className="mb-2 font-mono text-sm uppercase tracking-wider text-sky-400">
               &#9656; Get In Touch
             </p>
-            <h2 className="mb-6 font-heading text-5xl font-bold text-white md:text-6xl">
+            <h2 className="mb-6 font-heading text-4xl font-bold text-white md:text-5xl lg:text-6xl">
               Let&apos;s Connect
             </h2>
             <div ref={quoteRef} className="mb-8 max-w-lg font-heading text-2xl leading-snug text-slate-400 md:text-3xl">
