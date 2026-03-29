@@ -63,8 +63,8 @@ export default function CustomCursor() {
       ref={cursorRef}
       className={`fixed top-0 left-0 pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 transition-[width,height,border-color] duration-200 ease-out ${
         isHovering
-          ? "h-12 w-12 border-sky-500/80"
-          : "h-6 w-6 border-sky-500/50"
+          ? "h-14 w-14 border-sky-500 bg-sky-500/10"
+          : "h-8 w-8 border-sky-500/70 bg-sky-500/5"
       }`}
     />
   );

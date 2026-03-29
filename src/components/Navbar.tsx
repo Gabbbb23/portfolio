@@ -46,6 +46,21 @@ export default function Navbar() {
         y: -100, opacity: 0, duration: 1, ease: "power3.out", delay: 0.5,
       });
 
+      // Hide indicator when in hero
+      ScrollTrigger.create({
+        trigger: "#hero",
+        start: "top top",
+        end: "bottom center",
+        onEnter: () => {
+          gsap.to(indicatorRef.current, { opacity: 0, duration: 0.2 });
+          setActiveIndex(-1);
+        },
+        onEnterBack: () => {
+          gsap.to(indicatorRef.current, { opacity: 0, duration: 0.2 });
+          setActiveIndex(-1);
+        },
+      });
+
       // Active section tracking
       const sections = ["about", "skills", "projects", "experience", "contact"];
       sections.forEach((id, index) => {

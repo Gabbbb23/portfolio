@@ -270,7 +270,7 @@ export default function Hero() {
             ].map((frag) => (
               <span
                 key={frag.text}
-                className={`absolute font-mono text-slate-200/40 ${frag.size}`}
+                className={`absolute font-mono text-slate-300/60 ${frag.size}`}
                 style={{ left: frag.x, top: frag.y }}
               >
                 {frag.text}

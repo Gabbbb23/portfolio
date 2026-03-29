@@ -56,7 +56,7 @@ const skillCategories: SkillCategory[] = [
 
 function SkillCard({ skill }: { skill: Skill }) {
   return (
-    <div className="group rounded-lg border border-slate-200 bg-white p-4 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-l-4 hover:border-l-sky-500 hover:shadow-md">
+    <div className="group rounded-lg border border-slate-200 bg-white p-4 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-l-4 hover:border-l-sky-500 hover:shadow-md" style={{ opacity: 1 }}>
       <span className="mb-2 block text-2xl text-slate-700 transition-colors duration-200 group-hover:text-sky-500">
         {skill.icon}
       </span>
@@ -144,7 +144,7 @@ export default function Skills() {
         highlightRef.current,
         { width: 0 },
         {
-          width: "calc(100% + 2rem)",
+          width: "calc(100% + 1rem)",
           duration: 0.6,
           ease: "power2.out",
           scrollTrigger: { trigger: headingRef.current, start: "top 75%" },
