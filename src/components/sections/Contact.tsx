@@ -35,7 +35,7 @@ const socials: SocialLink[] = [
   },
   {
     label: "Email",
-    href: "mailto:gab@ticketnation.ph",
+    href: "mailto:gabvinculado23@gmail.com",
     icon: (
       <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -146,8 +146,8 @@ export default function Contact() {
             </div>
             <div className="mt-6 border-t border-slate-700 pt-6">
               <p className="mb-1 font-mono text-xs text-slate-500">Email me directly</p>
-              <a href="mailto:gab@ticketnation.ph" className="font-mono text-sm text-sky-400 transition-colors hover:text-sky-300">
-                gab@ticketnation.ph
+              <a href="mailto:gabvinculado23@gmail.com" className="font-mono text-sm text-sky-400 transition-colors hover:text-sky-300">
+                gabvinculado23@gmail.com
               </a>
             </div>
           </div>
