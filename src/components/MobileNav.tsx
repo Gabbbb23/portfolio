@@ -47,14 +47,6 @@ export default function MobileNav() {
               {section.label}
             </button>
           ))}
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 rounded-full border border-slate-300 px-6 py-2 font-mono text-sm text-slate-600 transition-all hover:border-sky-500 hover:text-sky-500"
-          >
-            Resume
-          </a>
         </div>
       </div>
     </>
