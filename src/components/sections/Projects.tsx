@@ -62,7 +62,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   const marqueeText = `${project.title} \u00B7 `.repeat(10);
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center px-6 md:px-8">
+    <div className="md:absolute md:inset-0 flex items-center justify-center px-6 md:px-8">
       <div className="relative grid w-full max-w-6xl grid-cols-12 items-center gap-6 md:gap-8">
         {/* Marquee behind */}
         <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none z-0">
@@ -252,7 +252,7 @@ export default function Projects() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="projects" className="project-section relative z-10 min-h-screen bg-slate-900">
+    <section ref={sectionRef} id="projects" className="project-section relative z-10 md:min-h-screen bg-slate-900">
       <BackgroundNoise seed={404} density={20} variant="dark" className="z-[5]" />
       <HudReadout position="top-right" lines={["PROJ:SCAN // IDX:01", "STATUS:DEPLOYED", "BUILD:PASSING"]} />
 
@@ -270,14 +270,14 @@ export default function Projects() {
         PROJECTS
       </span>
 
-      {/* Heading overlay — top-20 clears the floating logo pill */}
-      <div className="pointer-events-none absolute left-8 top-20 z-20">
+      {/* Heading */}
+      <div className="relative z-20 px-6 pt-16 pb-4 md:pointer-events-none md:absolute md:left-8 md:top-20 md:px-0 md:pt-0 md:pb-0">
         <p className="font-mono text-sm uppercase tracking-wider text-sky-400">&#9656; Featured Work</p>
         <h2 className="mt-2 font-heading text-4xl font-bold text-white">Projects</h2>
       </div>
 
       {/* Stacked cards */}
-      <div ref={stackRef} className="relative md:h-screen flex md:items-center md:justify-center flex-col md:flex-row gap-16 md:gap-0 px-6 py-20 md:py-0 md:overflow-hidden">
+      <div ref={stackRef} className="relative md:h-screen flex md:items-center md:justify-center flex-col md:flex-row gap-12 md:gap-0 px-6 pb-16 md:py-0 md:overflow-hidden">
         {projects.map((project, i) => (
           <div
             key={project.id}

@@ -272,7 +272,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex min-h-screen items-center overflow-hidden bg-white crt-scanlines tv-noise"
+      className="relative flex min-h-screen items-start md:items-center overflow-hidden bg-white crt-scanlines tv-noise"
       style={{
         backgroundImage: "radial-gradient(circle, #E2E8F0 1px, transparent 1px)",
         backgroundSize: "24px 24px",
@@ -296,7 +296,7 @@ export default function Hero() {
       </div>
 
       {/* 12-column grid container */}
-      <div className="hero-content relative z-10 mx-auto grid w-full max-w-6xl grid-cols-12 items-center gap-8 px-6">
+      <div className="hero-content relative z-10 mx-auto grid w-full max-w-6xl grid-cols-12 items-center gap-8 px-6 pt-20 md:pt-0">
         {/* Left side — 7 columns */}
         <div className="col-span-12 md:col-span-7">
           <p

@@ -20,7 +20,7 @@ function StatCard({ value, label }: { value: number; label: string }) {
         0
       </span>
       <span className="text-3xl font-heading font-bold text-sky-500">+</span>
-      <span className="text-slate-500 font-mono text-xs uppercase mt-1 block">
+      <span className="text-slate-500 font-mono text-[10px] sm:text-xs uppercase mt-1 block">
         {label}
       </span>
     </div>
@@ -166,7 +166,7 @@ export default function About() {
           <CornerBrackets className="p-3">
             <div className="grid grid-cols-2 gap-4">
               <StatCard value={10} label="Projects Built" />
-              <StatCard value={300} label="Hrs Life Contemplation" />
+              <StatCard value={300} label="Hrs Thinking" />
               <StatCard value={3} label="Years Coding" />
               <StatCard value={999} label="Tabs Open" />
             </div>

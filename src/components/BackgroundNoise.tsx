@@ -99,7 +99,7 @@ export default function BackgroundNoise({
   const baseColor = variant === "dark" ? "rgb(148,163,184)" : "rgb(148,163,184)"; // slate-400 for both — dark bg needs same brightness since opacity handles visibility
 
   return (
-    <div className={`pointer-events-none absolute inset-0 select-none ${className}`} aria-hidden="true">
+    <div className={`pointer-events-none absolute inset-0 select-none hidden md:block ${className}`} aria-hidden="true">
       <style dangerouslySetInnerHTML={{ __html: driftKeyframes }} />
       {elements.map((el, i) => {
         const anim = `${el.drift} ${el.duration}s ease-in-out ${el.delay}s infinite`;
