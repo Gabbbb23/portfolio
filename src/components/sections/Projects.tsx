@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 import HudReadout from "@/components/HudReadout";
 import BackgroundNoise from "@/components/BackgroundNoise";
 
@@ -100,7 +101,15 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             {/* Project number */}
             <span className="absolute bottom-3 right-3 z-10 font-display text-5xl" style={{ color: accent, opacity: 0.2 }}>{projectNum}</span>
             {project.image ? (
-              <img src={project.image} alt={project.title} className="h-full w-full object-cover object-top" />
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 100vw, 58vw"
+                quality={90}
+                priority={index === 0}
+              />
             ) : (
               <>
                 <div className="flex items-center gap-2 bg-slate-800/90 px-3 py-2 border-b border-slate-700">
