@@ -69,22 +69,25 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     const card = cardRef.current;
     if (!card) return;
 
-    gsap.set(card, { y: 40, opacity: 0 });
+    gsap.set(card, { clipPath: "polygon(-10% 0%, 0% 0%, -10% 100%, -20% 100%)" });
 
-    ScrollTrigger.create({
-      trigger: card,
-      start: "top 80%",
-      onEnter: () => {
-        gsap.to(card, {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          delay: index * 0.1,
-          ease: "power3.out",
-        });
-      },
-      once: true,
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: card,
+        start: "top 80%",
+        onEnter: () => {
+          gsap.to(card, {
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            duration: 0.8,
+            delay: index * 0.15,
+            ease: "power2.out",
+          });
+        },
+        once: true,
+      });
     });
+
+    return () => ctx.revert();
   }, [index]);
 
   return (
