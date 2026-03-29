@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HudReadout from "@/components/HudReadout";
+import BackgroundNoise from "@/components/BackgroundNoise";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -175,7 +176,7 @@ export default function Projects() {
           end: () => `+=${(cardCount - 1) * window.innerHeight}`,
           pin: true,
           pinType: "fixed",
-          scrub: 0.6,
+          scrub: 1.5,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -227,6 +228,7 @@ export default function Projects() {
 
   return (
     <section ref={sectionRef} id="projects" className="project-section relative z-10 min-h-screen bg-slate-900">
+      <BackgroundNoise seed={404} density={20} variant="dark" />
       <HudReadout position="top-right" lines={["PROJ:SCAN // IDX:01", "STATUS:DEPLOYED", "BUILD:PASSING"]} />
 
       {/* Dot-grid texture overlay */}

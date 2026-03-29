@@ -130,7 +130,7 @@ export default function Skills() {
               start: "top top",
               end: () => `+=${totalWidth}`,
               pin: true,
-              scrub: 1,
+              scrub: 1.5,
               anticipatePin: 1,
               onUpdate: (self: ScrollTrigger) => {
                 const dots = section.querySelectorAll(".skill-progress-dot");
@@ -204,7 +204,7 @@ export default function Skills() {
             key={category.title}
             className="skill-panel relative flex-shrink-0 md:w-screen md:h-screen flex items-center justify-center px-6 md:px-16 py-20 md:py-0"
           >
-            <BackgroundNoise seed={300 + index * 100} density={25} />
+            <BackgroundNoise seed={300 + index * 100} density={14} />
             <div className="relative z-10 w-full max-w-5xl">
               {/* Category panel left border accent */}
               <div className="relative pl-6">
