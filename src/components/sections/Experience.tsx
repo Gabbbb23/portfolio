@@ -43,13 +43,13 @@ const workExperience: ExperienceItem[] = [
   },
   {
     id: "3",
-    title: "Level it Up! — Seminar Participant",
-    company: "CICS",
-    period: "2024",
+    title: "Ship or Be Shipped 2025 — Hackathon",
+    company: "Build and Ship Philippines @ Kaya Founders",
+    period: "Dec 2025",
     description:
-      "Seminar on Tactics for Mobile and Web App Development Mastery. Explored Blockchain Technology, Full Stack Development, and IT Career Paths.",
+      "24-hour hackathon where top companies brought real challenges with bounties starting at P5,000+. Solved actual business problems under pressure with instant hiring opportunities on the spot.",
     type: "work",
-    technologies: ["Blockchain", "Full Stack", "Mobile Dev"],
+    technologies: ["React", "Next.js", "AI", "Rapid Prototyping"],
   },
 ];
 
