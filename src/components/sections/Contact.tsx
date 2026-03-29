@@ -110,6 +110,14 @@ export default function Contact() {
     >
       <HudReadout position="bottom-right" dark lines={["CONN:OPEN // PORT:443", "SIGNAL:STRONG"]} />
 
+      {/* Ghost text — large word behind content */}
+      <span
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(8rem,20vw,16rem)] leading-none text-slate-800/30"
+        aria-hidden="true"
+      >
+        CONNECT
+      </span>
+
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-12 gap-8">
           <div ref={contentRef} className="col-span-12 md:col-span-6">

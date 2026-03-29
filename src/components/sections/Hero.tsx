@@ -281,6 +281,14 @@ export default function Hero() {
       <BackgroundNoise seed={101} density={22} />
       <HudReadout position="top-right" lines={["SIG:OK // FREQ:443.2", "NODE:ACTIVE", "v2.0.1"]} />
 
+      {/* Ghost text — large word behind hero content */}
+      <span
+        className="pointer-events-none absolute bottom-[15%] left-[5%] select-none font-display text-[clamp(8rem,18vw,14rem)] leading-none text-ghost"
+        aria-hidden="true"
+      >
+        PORTFOLIO
+      </span>
+
       {/* Diagonal slash lines */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         <div className="absolute top-[-10%] left-[15%] h-[120%] w-[1px] rotate-[12deg] bg-slate-200/60" />

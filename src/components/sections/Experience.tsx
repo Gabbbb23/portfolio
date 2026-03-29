@@ -157,13 +157,13 @@ export default function Experience() {
       className="relative z-10 bg-white py-16 md:py-20 overflow-hidden"
     >
       <BackgroundNoise seed={505} density={16} />
-      {/* Ghost text */}
+      {/* Ghost text — large word behind content */}
       <span
         ref={ghostRef}
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(10rem,25vw,20rem)] leading-none text-slate-200 opacity-60"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(10rem,25vw,20rem)] leading-none text-ghost"
         aria-hidden="true"
       >
-        05
+        JOURNEY
       </span>
 
       <div className="relative mx-auto max-w-6xl px-6">

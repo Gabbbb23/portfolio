@@ -237,6 +237,14 @@ export default function Projects() {
       {/* Noise grain overlay */}
       <div className="tv-noise pointer-events-none absolute inset-0 z-0" style={{ opacity: 0.06 }} />
 
+      {/* Ghost text — large word behind content */}
+      <span
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(10rem,25vw,20rem)] leading-none text-slate-800/40"
+        aria-hidden="true"
+      >
+        PROJECTS
+      </span>
+
       {/* Heading overlay — top-20 clears the floating logo pill */}
       <div className="pointer-events-none absolute left-8 top-20 z-20">
         <p className="font-mono text-sm uppercase tracking-wider text-sky-400">&#9656; Featured Work</p>
