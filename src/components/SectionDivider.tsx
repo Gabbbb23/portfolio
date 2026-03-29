@@ -30,7 +30,7 @@ export default function SectionDivider({ className = "" }: { className?: string 
 
   return (
     <div className={`relative z-10 overflow-hidden py-4 ${className}`}>
-      <div ref={lineRef} className="mx-auto h-px max-w-5xl bg-sky-500/40" />
+      <div ref={lineRef} className="mx-auto h-px max-w-5xl bg-sky-500/60" />
     </div>
   );
 }

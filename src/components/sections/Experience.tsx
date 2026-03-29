@@ -15,6 +15,7 @@ interface ExperienceItem {
   period: string;
   description: string;
   type: "work" | "education";
+  technologies?: string[];
 }
 
 // Placeholder data — will be replaced by Sanity CMS
@@ -27,6 +28,7 @@ const experiences: ExperienceItem[] = [
     description:
       "Developed and maintained full-stack features. Collaborated with cross-functional teams to deliver production-ready code.",
     type: "work",
+    technologies: ["React", "Node.js", "PostgreSQL", "AWS"],
   },
   {
     id: "2",
@@ -36,6 +38,7 @@ const experiences: ExperienceItem[] = [
     description:
       "Studying computer science with a focus on software engineering, data structures, algorithms, and system design.",
     type: "education",
+    technologies: ["Java", "Python", "C++", "Algorithms"],
   },
   {
     id: "3",
@@ -45,6 +48,7 @@ const experiences: ExperienceItem[] = [
     description:
       "Built custom web applications for clients. Managed projects end-to-end from requirements to deployment.",
     type: "work",
+    technologies: ["Next.js", "Tailwind", "Vercel", "Stripe"],
   },
   {
     id: "4",
@@ -54,6 +58,7 @@ const experiences: ExperienceItem[] = [
     description:
       "Contributed to open source projects, fixing bugs and adding features. Active member of developer communities.",
     type: "work",
+    technologies: ["TypeScript", "Git", "GitHub Actions"],
   },
 ];
 
@@ -181,51 +186,96 @@ export default function Experience() {
           </div>
         </div>
 
-        {/* Left-aligned timeline */}
-        <div ref={timelineRef} className="relative">
-          {/* Drawing timeline line */}
-          <div className="absolute left-0 md:left-[60px] top-0 bottom-0 w-[2px]">
-            <div ref={lineRef} className="w-full bg-slate-200" style={{ height: 0 }} />
+        <div className="grid grid-cols-12 gap-8">
+          {/* Timeline — 8 columns */}
+          <div className="col-span-12 md:col-span-8">
+            {/* Left-aligned timeline */}
+            <div ref={timelineRef} className="relative">
+              {/* Drawing timeline line */}
+              <div className="absolute left-0 md:left-[60px] top-0 bottom-0 w-[2px]">
+                <div ref={lineRef} className="w-full bg-slate-200" style={{ height: 0 }} />
+              </div>
+
+              {/* Timeline entries — group hover dims siblings */}
+              <div className="group/exp space-y-8 ml-0 md:ml-[60px] pl-8">
+                {experiences.map((item) => (
+                  <div key={item.id} className="relative transition-opacity duration-300 group-hover/exp:opacity-60 hover:!opacity-100" style={{ opacity: 1 }}>
+                    {/* Timeline dot */}
+                    <div
+                      data-dot
+                      className="absolute -left-8 top-6 w-3 h-3 rounded-full bg-sky-500 ring-4 ring-sky-100 -translate-x-[5px]"
+                    />
+
+                    {/* Card */}
+                    <CornerBrackets>
+                      <div
+                        data-card
+                        className="bg-white border border-slate-200 border-l-2 border-l-transparent rounded-xl p-6 shadow-sm hover:shadow-md hover:border-l-sky-500 transition-all duration-300"
+                        style={{ opacity: 1 }}
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="bg-sky-100 text-sky-600 font-mono text-xs rounded-full px-3 py-1">
+                            {item.type === "work" ? "Work" : "Education"}
+                          </span>
+                          <span className="text-slate-500 font-mono text-xs">
+                            {item.period}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-heading font-bold text-slate-900">
+                          {item.title}
+                        </h3>
+                        <p className="text-sky-500 text-sm font-medium">
+                          {item.company}
+                        </p>
+                        <p className="text-slate-600 text-sm mt-2">
+                          {item.description}
+                        </p>
+                        {item.technologies && (
+                          <div className="mt-3 flex flex-wrap gap-1.5">
+                            {item.technologies.map((tech) => (
+                              <span key={tech} className="rounded bg-slate-100 px-2 py-0.5 font-mono text-[10px] text-slate-500">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </CornerBrackets>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Timeline entries — group hover dims siblings */}
-          <div className="group/exp space-y-8 ml-0 md:ml-[60px] pl-8">
-            {experiences.map((item) => (
-              <div key={item.id} className="relative transition-opacity duration-300 group-hover/exp:opacity-60 hover:!opacity-100" style={{ opacity: 1 }}>
-                {/* Timeline dot */}
-                <div
-                  data-dot
-                  className="absolute -left-8 top-6 w-3 h-3 rounded-full bg-sky-500 ring-4 ring-sky-100 -translate-x-[5px]"
-                />
-
-                {/* Card */}
-                <CornerBrackets>
-                  <div
-                    data-card
-                    className="bg-white border border-slate-200 border-l-2 border-l-transparent rounded-xl p-6 shadow-sm hover:shadow-md hover:border-l-sky-500 transition-all duration-300"
-                    style={{ opacity: 1 }}
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="bg-sky-100 text-sky-600 font-mono text-xs rounded-full px-3 py-1">
-                        {item.type === "work" ? "Work" : "Education"}
-                      </span>
-                      <span className="text-slate-500 font-mono text-xs">
-                        {item.period}
-                      </span>
-                    </div>
-                    <h3 className="text-lg font-heading font-bold text-slate-900">
-                      {item.title}
-                    </h3>
-                    <p className="text-sky-500 text-sm font-medium">
-                      {item.company}
-                    </p>
-                    <p className="text-slate-600 text-sm mt-2">
-                      {item.description}
-                    </p>
+          {/* Summary sidebar — 4 columns, sticky */}
+          <div className="hidden md:col-span-4 md:block">
+            <div className="sticky top-32">
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+                <h4 className="mb-4 font-mono text-xs uppercase tracking-wider text-sky-500">Quick Stats</h4>
+                <div className="space-y-4">
+                  <div>
+                    <span className="font-heading text-2xl font-bold text-slate-900">3+</span>
+                    <span className="ml-2 font-mono text-xs text-slate-500">Years Coding</span>
                   </div>
-                </CornerBrackets>
+                  <div>
+                    <span className="font-heading text-2xl font-bold text-slate-900">4+</span>
+                    <span className="ml-2 font-mono text-xs text-slate-500">Projects Shipped</span>
+                  </div>
+                  <div>
+                    <span className="font-heading text-2xl font-bold text-slate-900">10+</span>
+                    <span className="ml-2 font-mono text-xs text-slate-500">Technologies</span>
+                  </div>
+                </div>
+                <div className="mt-6 border-t border-slate-200 pt-4">
+                  <h4 className="mb-3 font-mono text-xs uppercase tracking-wider text-sky-500">Top Skills</h4>
+                  <div className="flex flex-wrap gap-1.5">
+                    {["React", "TypeScript", "Node.js", "Next.js", "Python"].map((s) => (
+                      <span key={s} className="rounded-full bg-sky-100 px-2.5 py-0.5 font-mono text-[10px] text-sky-700">{s}</span>
+                    ))}
+                  </div>
+                </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </div>

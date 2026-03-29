@@ -96,6 +96,14 @@ export default function Skills() {
               pin: true,
               scrub: 1,
               anticipatePin: 1,
+              onUpdate: (self: ScrollTrigger) => {
+                const dots = section.querySelectorAll(".skill-progress-dot");
+                const activePanel = Math.min(Math.floor(self.progress * 3), 2);
+                dots.forEach((d, i) => {
+                  d.classList.toggle("bg-sky-500", i === activePanel);
+                  d.classList.toggle("bg-slate-200", i !== activePanel);
+                });
+              },
             },
           });
 
@@ -159,7 +167,7 @@ export default function Skills() {
             className="skill-panel flex-shrink-0 md:w-screen md:h-screen flex items-center justify-center px-6 md:px-16 py-20 md:py-0"
           >
             <div className="w-full max-w-4xl">
-              <h3 className="mb-8 font-display text-7xl text-slate-100">
+              <h3 className="mb-8 font-display text-7xl text-slate-200">
                 {category.title}
               </h3>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -171,6 +179,13 @@ export default function Skills() {
               </div>
             </div>
           </div>
+        ))}
+      </div>
+
+      {/* Panel progress dots */}
+      <div className="pointer-events-none absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 gap-2 md:flex">
+        {skillCategories.map((_, i) => (
+          <div key={i} className="skill-progress-dot h-1 w-8 rounded-full bg-slate-200 transition-colors" />
         ))}
       </div>
     </section>

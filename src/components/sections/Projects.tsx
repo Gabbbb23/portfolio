@@ -61,7 +61,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         {/* Marquee behind */}
         <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none z-0">
           <div className={index % 2 === 0 ? "animate-marquee whitespace-nowrap" : "animate-marquee-reverse whitespace-nowrap"}>
-            <span className="font-display text-[clamp(6rem,15vw,12rem)] font-bold uppercase text-slate-300 leading-none">
+            <span className="font-display text-[clamp(6rem,15vw,12rem)] font-bold uppercase text-slate-200 leading-none">
               {marqueeText}
             </span>
           </div>
@@ -70,9 +70,29 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         {/* Image area */}
         <div className={`relative z-10 col-span-12 md:col-span-7 ${isOdd ? "md:order-2" : ""}`}>
           <div className="relative rounded-xl bg-slate-100 aspect-video overflow-hidden border border-slate-200">
-            <div className="absolute top-0 left-0 right-0 h-1 bg-sky-500" />
-            <span className="absolute top-4 right-4 font-display text-6xl text-slate-200">{projectNum}</span>
-            <div className="absolute inset-0 flex items-center justify-center text-6xl text-slate-300">{"</ >"}</div>
+            {/* Browser chrome */}
+            <div className="flex items-center gap-2 bg-slate-200/80 px-3 py-2 border-b border-slate-200">
+              <div className="flex gap-1.5">
+                <div className="h-2 w-2 rounded-full bg-slate-300" />
+                <div className="h-2 w-2 rounded-full bg-slate-300" />
+                <div className="h-2 w-2 rounded-full bg-slate-300" />
+              </div>
+              <div className="flex-1 rounded bg-slate-100 px-2 py-0.5 text-center">
+                <span className="font-mono text-[10px] text-slate-400">localhost:3000</span>
+              </div>
+            </div>
+            {/* Content placeholder with wireframe lines */}
+            <div className="p-4 space-y-2">
+              <div className="h-2 w-3/4 rounded bg-slate-200" />
+              <div className="h-2 w-1/2 rounded bg-slate-200" />
+              <div className="h-2 w-2/3 rounded bg-sky-200/50" />
+              <div className="h-2 w-1/3 rounded bg-slate-200" />
+              <div className="mt-2 h-8 w-full rounded bg-sky-100/50" />
+            </div>
+            {/* Top accent bar */}
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-sky-500" />
+            {/* Project number */}
+            <span className="absolute bottom-3 right-3 font-display text-5xl text-slate-200">{projectNum}</span>
           </div>
         </div>
 
@@ -84,6 +104,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             {project.tags.map((tag) => (
               <span key={tag} className="rounded-full bg-sky-100 px-3 py-1 font-mono text-xs text-sky-700">{tag}</span>
             ))}
+          </div>
+          <div className="mb-4 flex items-center gap-2 text-slate-400">
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span className="font-mono text-xs">Full-Stack · 2024</span>
           </div>
           <div className={`flex gap-4 ${isOdd ? "md:justify-end" : ""}`}>
             {project.liveUrl && (

@@ -14,7 +14,7 @@ function StatCard({ value, label }: { value: number; label: string }) {
 
   return (
     <div ref={tiltRef} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm transition-shadow duration-200 hover:shadow-md">
-      <span ref={countRef} className="text-3xl font-heading font-bold text-sky-500">
+      <span ref={countRef} className="text-4xl font-heading font-bold text-sky-500">
         0
       </span>
       <span className="text-3xl font-heading font-bold text-sky-500">+</span>
@@ -147,6 +147,13 @@ export default function About() {
               build something meaningful. If you have an interesting project or
               just want to chat — reach out.
             </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {["Next.js", "Open Source", "UI/UX", "Clean Code", "System Design", "Coffee"].map((tag) => (
+                <span key={tag} className="rounded-full border border-slate-200 bg-white px-3 py-1 font-mono text-xs text-slate-500 transition-colors hover:border-sky-300 hover:text-sky-500">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Stat cards */}
@@ -158,6 +165,9 @@ export default function About() {
               <StatCard value={2} label="Internships" />
             </div>
           </CornerBrackets>
+          <p className="mt-4 font-mono text-xs italic text-slate-400">
+            // clean code, clear thinking
+          </p>
         </div>
       </div>
     </section>

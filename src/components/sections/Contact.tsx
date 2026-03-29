@@ -121,17 +121,50 @@ export default function Contact() {
               <span className="reveal-line block">one line of code at a time.</span>
               <span className="reveal-line block">Always learning, always shipping.</span>
             </div>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800 px-4 py-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              </span>
+              <span className="font-mono text-xs text-slate-300">Available for opportunities</span>
+            </div>
             <div className="flex flex-wrap gap-3">
               {socials.map((social) => (
                 <SocialButton key={social.label} social={social} />
               ))}
             </div>
+            <div className="mt-6 border-t border-slate-700 pt-6">
+              <p className="mb-1 font-mono text-xs text-slate-500">Email me directly</p>
+              <a href="mailto:gab@ticketnation.ph" className="font-mono text-sm text-sky-400 transition-colors hover:text-sky-300">
+                gab@ticketnation.ph
+              </a>
+            </div>
           </div>
 
-          <div className="col-span-12 hidden items-center justify-center md:col-span-6 md:flex">
-            <span ref={ghostRef} className="select-none font-display text-[16rem] leading-none text-slate-800">
+          <div className="col-span-12 hidden md:col-span-6 md:flex flex-col items-center justify-center">
+            <span ref={ghostRef} className="absolute select-none font-display text-[16rem] leading-none text-slate-800">
               06
             </span>
+
+            <div className="relative z-10 w-full max-w-sm rounded-lg border border-slate-700 bg-slate-800 overflow-hidden">
+              <div className="flex items-center gap-2 bg-slate-700/50 px-3 py-2">
+                <div className="flex gap-1.5">
+                  <div className="h-2 w-2 rounded-full bg-slate-500" />
+                  <div className="h-2 w-2 rounded-full bg-slate-500" />
+                  <div className="h-2 w-2 rounded-full bg-slate-500" />
+                </div>
+                <span className="font-mono text-[10px] text-slate-400">terminal</span>
+              </div>
+              <div className="space-y-1.5 p-4 font-mono text-xs">
+                <p className="text-slate-500">$ whoami</p>
+                <p className="text-sky-400">gab — full-stack developer</p>
+                <p className="text-slate-500">$ cat interests.txt</p>
+                <p className="text-emerald-400">web dev, open source, clean code</p>
+                <p className="text-slate-500">$ echo $STATUS</p>
+                <p className="text-amber-400">open to opportunities</p>
+                <p className="text-slate-500 flex items-center gap-1">$ <span className="inline-block h-3 w-1.5 animate-pulse bg-sky-400" /></p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

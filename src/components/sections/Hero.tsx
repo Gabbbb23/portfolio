@@ -34,7 +34,7 @@ function FloatingShape({
 
   return (
     <div
-      className={`absolute border border-slate-200 opacity-0 ${shapeClasses}`}
+      className={`absolute border border-slate-300 opacity-0 ${shapeClasses}`}
       style={{ width: size, height: size, left: x, top: y }}
     />
   );
@@ -262,7 +262,7 @@ export default function Hero() {
           {/* Giant "01" ghost number */}
           <span
             ref={ghostRef}
-            className="pointer-events-none absolute -right-8 -top-24 select-none font-display text-[20rem] leading-none text-slate-100"
+            className="pointer-events-none absolute -right-8 -top-24 select-none font-display text-[20rem] leading-none text-slate-200"
             aria-hidden="true"
           >
             01
@@ -290,12 +290,37 @@ export default function Hero() {
             ].map((frag) => (
               <span
                 key={frag.text}
-                className={`absolute font-mono text-slate-300/60 ${frag.size}`}
+                className={`absolute font-mono text-slate-400/70 ${frag.size}`}
                 style={{ left: frag.x, top: frag.y }}
               >
                 {frag.text}
               </span>
             ))}
+          </div>
+
+          {/* Decorative code editor window */}
+          <div className="relative z-[5] mt-16 w-full max-w-sm rotate-2 rounded-lg border border-slate-200 bg-slate-900 overflow-hidden shadow-lg">
+            <div className="flex items-center gap-2 bg-slate-800 px-3 py-2">
+              <div className="flex gap-1.5">
+                <div className="h-2 w-2 rounded-full bg-red-400" />
+                <div className="h-2 w-2 rounded-full bg-yellow-400" />
+                <div className="h-2 w-2 rounded-full bg-green-400" />
+              </div>
+              <span className="font-mono text-[10px] text-slate-500">portfolio.ts</span>
+            </div>
+            <div className="p-4 font-mono text-xs leading-relaxed">
+              <p><span className="text-sky-400">const</span> <span className="text-white">portfolio</span> <span className="text-slate-400">=</span> <span className="text-slate-400">{"{"}</span></p>
+              <p className="pl-4"><span className="text-white">name</span><span className="text-slate-400">:</span> <span className="text-emerald-400">&quot;Gab&quot;</span><span className="text-slate-400">,</span></p>
+              <p className="pl-4"><span className="text-white">role</span><span className="text-slate-400">:</span> <span className="text-emerald-400">&quot;Full-Stack Developer&quot;</span><span className="text-slate-400">,</span></p>
+              <p className="pl-4"><span className="text-white">skills</span><span className="text-slate-400">:</span> <span className="text-slate-400">[</span><span className="text-emerald-400">&quot;React&quot;</span><span className="text-slate-400">,</span> <span className="text-emerald-400">&quot;Node.js&quot;</span><span className="text-slate-400">,</span> <span className="text-emerald-400">&quot;TS&quot;</span><span className="text-slate-400">],</span></p>
+              <p className="pl-4"><span className="text-white">passion</span><span className="text-slate-400">:</span> <span className="text-emerald-400">&quot;Building things that matter&quot;</span></p>
+              <p><span className="text-slate-400">{"}"}</span><span className="text-slate-400">;</span></p>
+            </div>
+            <div className="flex gap-4 border-t border-slate-800 px-3 py-1.5 font-mono text-[10px] text-slate-500">
+              <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />Available for work</span>
+              <span>TypeScript</span>
+              <span>UTF-8</span>
+            </div>
           </div>
         </div>
       </div>
