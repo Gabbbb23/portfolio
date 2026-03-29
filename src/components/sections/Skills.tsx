@@ -55,16 +55,18 @@ const skillCategories: SkillCategory[] = [
 
 function SkillCard({ skill }: { skill: Skill }) {
   return (
-    <div className="group rounded-lg border border-slate-200 bg-white p-4 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-l-4 hover:border-l-sky-500 hover:shadow-md" style={{ opacity: 1 }}>
+    <div className="group relative rounded-lg border border-slate-200 bg-white p-4 text-center shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md overflow-hidden" style={{ opacity: 1 }}>
+      {/* Left accent strip — always visible, expands on hover */}
+      <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-sky-400/40 transition-all duration-300 group-hover:w-[4px] group-hover:bg-sky-500" />
       <span className="mb-2 block text-2xl text-slate-700 transition-colors duration-200 group-hover:text-sky-500">
         {skill.icon}
       </span>
-      <span className="font-mono text-xs text-slate-600">{skill.name}</span>
+      <span className="font-mono text-xs font-medium text-slate-700">{skill.name}</span>
       <div className="mt-2 flex items-end justify-center gap-0.5">
         {Array.from({ length: 5 }).map((_, i) => (
           <div
             key={i}
-            className={`skill-signal-bar w-1.5 rounded-sm transition-colors ${i < Math.round((skill.level / 100) * 5) ? "bg-sky-400" : "bg-slate-100"}`}
+            className={`skill-signal-bar w-1.5 rounded-sm transition-colors ${i < Math.round((skill.level / 100) * 5) ? "bg-sky-400" : "bg-slate-200"}`}
             style={{ height: `${6 + i * 3}px`, width: 0 }}
           />
         ))}
@@ -151,6 +153,12 @@ export default function Skills() {
 
   return (
     <section ref={sectionRef} id="skills" className="relative z-10 overflow-hidden bg-white">
+      {/* Cross-hatch pattern overlay for visual texture */}
+      <div className="pointer-events-none absolute inset-0 z-0 opacity-[0.03]" style={{
+        backgroundImage: `linear-gradient(45deg, #94A3B8 1px, transparent 1px), linear-gradient(-45deg, #94A3B8 1px, transparent 1px)`,
+        backgroundSize: '20px 20px',
+      }} />
+
       {/* Fixed heading overlay */}
       <div className="pointer-events-none absolute left-8 top-12 z-20">
         <p className="font-mono text-sm uppercase tracking-wider text-sky-500">&#9656; Tech Stack</p>
@@ -166,8 +174,8 @@ export default function Skills() {
           >
             <div className="w-full max-w-4xl">
               <div className="flex items-end justify-between mb-8">
-                <h3 className="font-display text-7xl text-slate-200">{category.title}</h3>
-                <span className="font-mono text-[10px] text-slate-300 tracking-wider">
+                <h3 className="font-display text-7xl text-slate-200/80">{category.title}</h3>
+                <span className="font-mono text-[10px] text-slate-400 tracking-wider">
                   [{String(index + 1).padStart(2, "0")}/{String(skillCategories.length).padStart(2, "0")}] {category.skills.length} LOADED
                 </span>
               </div>

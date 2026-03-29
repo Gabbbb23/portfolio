@@ -146,6 +146,22 @@ body {
   animation: terminal-blink 1s steps(1) infinite;
 }
 
+/* Projects dark section — invert HUD readout text */
+.project-section .hud-readout {
+  color: #475569;
+}
+
+/* Diagonal accent stripes — decorative */
+.accent-stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 4px,
+    rgba(14, 165, 233, 0.04) 4px,
+    rgba(14, 165, 233, 0.04) 8px
+  );
+}
+
 /* Fallback for signal bars if GSAP doesn't trigger */
 @media (prefers-reduced-motion: reduce) {
   .skill-signal-bar { width: 6px !important; }

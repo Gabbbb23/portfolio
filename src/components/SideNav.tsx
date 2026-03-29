@@ -60,6 +60,9 @@ export default function SideNav() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Projects section has a dark bg — SideNav needs lighter inactive colors there
+  const onDark = activeIndex === 2; // index 2 = "projects"
+
   return (
     <div className="fixed right-6 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-6 md:flex">
       {sections.map((section, i) => (
@@ -71,7 +74,7 @@ export default function SideNav() {
         >
           <span
             className={`font-mono text-[10px] tracking-wider transition-all duration-300 opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 ${
-              activeIndex === i ? "text-sky-500" : "text-slate-400"
+              activeIndex === i ? "text-sky-500" : onDark ? "text-slate-400" : "text-slate-400"
             }`}
           >
             {section.label.toUpperCase()}
@@ -79,7 +82,11 @@ export default function SideNav() {
 
           <span
             className={`font-mono text-[10px] transition-colors duration-300 ${
-              activeIndex === i ? "text-sky-500" : "text-slate-300 group-hover:text-slate-500"
+              activeIndex === i
+                ? "text-sky-500"
+                : onDark
+                  ? "text-slate-400 group-hover:text-slate-300"
+                  : "text-slate-300 group-hover:text-slate-500"
             }`}
           >
             {section.num}
@@ -89,7 +96,9 @@ export default function SideNav() {
             className={`h-[2px] rounded-full transition-all duration-300 ${
               activeIndex === i
                 ? "w-6 bg-sky-500"
-                : "w-4 bg-slate-300 group-hover:w-6 group-hover:bg-slate-400"
+                : onDark
+                  ? "w-4 bg-slate-500 group-hover:w-6 group-hover:bg-slate-400"
+                  : "w-4 bg-slate-300 group-hover:w-6 group-hover:bg-slate-400"
             }`}
           />
         </button>
@@ -99,7 +108,9 @@ export default function SideNav() {
         href="/resume.pdf"
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 font-mono text-[10px] tracking-wider text-slate-400 transition-colors hover:text-sky-500 [writing-mode:vertical-lr] rotate-180"
+        className={`mt-4 font-mono text-[10px] tracking-wider transition-colors hover:text-sky-500 [writing-mode:vertical-lr] rotate-180 ${
+          onDark ? "text-slate-400" : "text-slate-400"
+        }`}
       >
         RESUME
       </a>
