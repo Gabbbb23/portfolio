@@ -18,40 +18,13 @@ function FloatingShape({
   size,
   x,
   y,
-  delay,
   shape,
 }: {
   size: number;
   x: string;
   y: string;
-  delay: number;
   shape: "circle" | "square" | "diamond";
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    gsap.set(el, { opacity: 0, scale: 0 });
-    gsap.to(el, {
-      opacity: 1,
-      scale: 1,
-      duration: 1.5,
-      delay: 1 + delay,
-      ease: "power3.out",
-    });
-
-    gsap.to(el, {
-      y: "+=30",
-      x: "+=15",
-      duration: 4 + delay,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut",
-    });
-  }, [delay]);
-
   const shapeClasses =
     shape === "circle"
       ? "rounded-full"
@@ -61,86 +34,102 @@ function FloatingShape({
 
   return (
     <div
-      ref={ref}
-      className={`absolute border border-slate-200 ${shapeClasses}`}
-      style={{
-        width: size,
-        height: size,
-        left: x,
-        top: y,
-      }}
+      className={`absolute border border-slate-200 opacity-0 ${shapeClasses}`}
+      style={{ width: size, height: size, left: x, top: y }}
     />
   );
 }
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const ghostRef = useRef<HTMLSpanElement>(null);
+  const labelRef = useRef<HTMLParagraphElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const shapesRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-  const ghostRef = useRef<HTMLSpanElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
+
   const [titleIndex, setTitleIndex] = useState(0);
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [typingStarted, setTypingStarted] = useState(false);
 
   const btnWorkRef = useMagnetic<HTMLAnchorElement>(0.2);
   const btnContactRef = useMagnetic<HTMLAnchorElement>(0.2);
 
-  // Name reveal animation
+  // Choreographed entrance timeline
   useEffect(() => {
     const el = nameRef.current;
     if (!el) return;
 
+    // Split name into letter spans
     const text = el.textContent || "";
     el.innerHTML = "";
-
     [...text].forEach((char) => {
       const span = document.createElement("span");
       span.textContent = char;
       span.style.display = "inline-block";
-      span.style.opacity = "0";
-      span.style.transform = "translateY(100%)";
       if (char === " ") span.style.width = "0.3em";
       el.appendChild(span);
     });
 
-    gsap.to(el.children, {
-      y: "0%",
-      opacity: 1,
-      duration: 0.8,
-      stagger: 0.06,
-      ease: "power3.out",
-      delay: 0.3,
-    });
-  }, []);
+    const ctx = gsap.context(() => {
+      // Set initial invisible states
+      gsap.set(ghostRef.current, { x: 200, opacity: 0 });
+      gsap.set(labelRef.current, { y: 20, opacity: 0 });
+      gsap.set(el.children, { y: 60, rotateX: -15, opacity: 0 });
+      gsap.set(subtitleRef.current, { opacity: 0 });
+      gsap.set(ctaRef.current!.children, { y: 30, opacity: 0 });
+      if (shapesRef.current) gsap.set(shapesRef.current.children, { scale: 0.5, opacity: 0 });
+      gsap.set(scrollIndicatorRef.current, { opacity: 0 });
 
-  // Subtitle and CTA entrance
-  useEffect(() => {
-    gsap.from(subtitleRef.current, {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out",
-      delay: 1.2,
-    });
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    gsap.from(ctaRef.current, {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out",
-      delay: 1.5,
-    });
+      // t=0.2: Ghost "01" slams in from the right
+      tl.to(ghostRef.current, { x: 0, opacity: 1, duration: 0.6, ease: "power4.out" }, 0.2);
 
-    gsap.from(scrollIndicatorRef.current, {
-      opacity: 0,
-      duration: 1,
-      delay: 2,
-    });
+      // t=0.5: "HELLO, I'M" fades in
+      tl.to(labelRef.current, { y: 0, opacity: 1, duration: 0.4 }, 0.5);
 
-    // Ghost text parallax
-    if (ghostRef.current && sectionRef.current) {
+      // t=0.7: "Gab" letters stagger in with 3D rotation
+      tl.to(el.children, {
+        y: 0, rotateX: 0, opacity: 1,
+        stagger: 0.08, duration: 0.6,
+      }, 0.7);
+
+      // t=1.3: Subtitle area appears, start typing
+      tl.to(subtitleRef.current, { opacity: 1, duration: 0.3 }, 1.3);
+      tl.call(() => setTypingStarted(true), [], 1.3);
+
+      // t=1.5: CTA buttons slide up
+      tl.to(ctaRef.current!.children, {
+        y: 0, opacity: 1, stagger: 0.1, duration: 0.5,
+      }, 1.5);
+
+      // t=1.8: Floating shapes drift in
+      if (shapesRef.current) {
+        tl.to(shapesRef.current.children, {
+          scale: 1, opacity: 1, stagger: 0.05, duration: 0.8,
+        }, 1.8);
+
+        // Start floating after entrance
+        tl.call(() => {
+          if (!shapesRef.current) return;
+          Array.from(shapesRef.current.children).forEach((child, i) => {
+            gsap.to(child, {
+              y: "+=30", x: "+=15",
+              duration: 4 + i * 0.3,
+              repeat: -1, yoyo: true, ease: "sine.inOut",
+            });
+          });
+        }, [], ">");
+      }
+
+      // t=2.0: Scroll indicator
+      tl.to(scrollIndicatorRef.current, { opacity: 1, duration: 0.4 }, 2.0);
+
+      // Ghost text parallax (scroll-driven, separate from entrance)
       gsap.to(ghostRef.current, {
         yPercent: -20,
         ease: "none",
@@ -151,11 +140,15 @@ export default function Hero() {
           scrub: true,
         },
       });
-    }
+    });
+
+    return () => ctx.revert();
   }, []);
 
-  // Typing effect
+  // Typing effect — only starts after timeline triggers it
   useEffect(() => {
+    if (!typingStarted) return;
+
     const currentTitle = titles[titleIndex];
     const speed = isDeleting ? 40 : 80;
 
@@ -179,7 +172,7 @@ export default function Hero() {
     }, speed);
 
     return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, titleIndex]);
+  }, [displayText, isDeleting, titleIndex, typingStarted]);
 
   const handleScrollTo = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -196,11 +189,11 @@ export default function Hero() {
         backgroundSize: "24px 24px",
       }}
     >
-      {/* Diagonal slashes — P3R signature element */}
+      {/* Diagonal slashes — P3R signature */}
       <div className="pointer-events-none absolute top-[-10vh] left-[15%] h-[120vh] w-[1px] rotate-[15deg] bg-slate-200 opacity-50" aria-hidden="true" />
       <div className="pointer-events-none absolute top-[-10vh] right-[20%] h-[120vh] w-[1px] -rotate-12 bg-slate-200 opacity-50" aria-hidden="true" />
 
-      {/* Ghost text — P3R style */}
+      {/* Ghost text — slams in from right */}
       <span
         ref={ghostRef}
         className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(15rem,35vw,30rem)] leading-none text-ghost"
@@ -209,22 +202,25 @@ export default function Hero() {
         01
       </span>
 
-      {/* Floating shapes — thin outlines only */}
-      <FloatingShape size={60} x="10%" y="20%" delay={0} shape="circle" />
-      <FloatingShape size={40} x="80%" y="15%" delay={0.3} shape="diamond" />
-      <FloatingShape size={50} x="75%" y="70%" delay={0.6} shape="circle" />
-      <FloatingShape size={35} x="15%" y="75%" delay={0.9} shape="diamond" />
-      <FloatingShape size={45} x="50%" y="10%" delay={0.4} shape="circle" />
-      <FloatingShape size={30} x="90%" y="50%" delay={0.7} shape="square" />
+      {/* Floating shapes container */}
+      <div ref={shapesRef} className="pointer-events-none">
+        <FloatingShape size={60} x="10%" y="20%" shape="circle" />
+        <FloatingShape size={40} x="80%" y="15%" shape="diamond" />
+        <FloatingShape size={50} x="75%" y="70%" shape="circle" />
+        <FloatingShape size={35} x="15%" y="75%" shape="diamond" />
+        <FloatingShape size={45} x="50%" y="10%" shape="circle" />
+        <FloatingShape size={30} x="90%" y="50%" shape="square" />
+      </div>
 
       <div className="relative z-10 text-center">
-        <p className="mb-4 font-mono text-sm font-medium tracking-widest text-slate-500 uppercase">
+        <p ref={labelRef} className="mb-4 font-mono text-sm font-medium tracking-widest text-slate-500 uppercase">
           Hello, I&apos;m
         </p>
 
         <h1
           ref={nameRef}
           className="mb-6 font-heading text-[clamp(4rem,12vw,10rem)] font-bold leading-none tracking-tight text-slate-900"
+          style={{ perspective: "600px" }}
         >
           Gab
         </h1>
