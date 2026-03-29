@@ -67,12 +67,18 @@ function SocialButton({ social }: { social: SocialLink }) {
 export default function Contact() {
   const headingRef = useTextReveal<HTMLHeadingElement>();
   const headingWrapRef = useRef<HTMLDivElement>(null);
+  const highlightRef = useRef<HTMLDivElement>(null);
   const contentRef = useScrollFadeUp<HTMLDivElement>();
   const ghostRef = useRef<HTMLSpanElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      gsap.fromTo(highlightRef.current,
+        { width: 0 },
+        { width: "calc(100% + 2rem)", duration: 0.6, ease: "power2.out",
+          scrollTrigger: { trigger: headingRef.current, start: "top 75%" } },
+      );
       gsap.from(headingWrapRef.current, {
         x: -80, opacity: 0, duration: 0.8, ease: "power3.out",
         scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
@@ -106,12 +112,15 @@ export default function Contact() {
             &#9656; Get In Touch
           </p>
 
-          <h2
-            ref={headingRef}
-            className="mb-6 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
-          >
-            Let&apos;s Connect
-          </h2>
+          <div className="relative inline-block">
+            <div ref={highlightRef} className="absolute -left-4 top-0 h-full bg-sky-500/10 -z-10 rounded-r-sm" style={{ width: 0 }} />
+            <h2
+              ref={headingRef}
+              className="mb-6 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
+            >
+              Let&apos;s Connect
+            </h2>
+          </div>
         </div>
 
         <div ref={contentRef}>

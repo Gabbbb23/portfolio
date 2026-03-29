@@ -28,9 +28,16 @@ export default function About() {
   const sectionRef = useRef<HTMLElement>(null);
 
   const headingWrapRef = useRef<HTMLDivElement>(null);
+  const highlightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Highlight bar sweeps in behind heading
+      gsap.fromTo(highlightRef.current,
+        { width: 0 },
+        { width: "calc(100% + 2rem)", duration: 0.6, ease: "power2.out",
+          scrollTrigger: { trigger: headingRef.current, start: "top 75%" } },
+      );
       // Counter-directional entrance: heading from left, ghost from right
       gsap.from(headingWrapRef.current, {
         x: -80, opacity: 0, duration: 0.8, ease: "power3.out",
@@ -67,12 +74,15 @@ export default function About() {
             &#9656; About Me
           </p>
 
-          <h2
-            ref={headingRef}
-            className="mb-12 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
-          >
-            Building software that makes a difference
-          </h2>
+          <div className="relative inline-block">
+            <div ref={highlightRef} className="absolute -left-4 top-0 h-full bg-sky-500/10 -z-10 rounded-r-sm" style={{ width: 0 }} />
+            <h2
+              ref={headingRef}
+              className="mb-12 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
+            >
+              Building software that makes a difference
+            </h2>
+          </div>
         </div>
 
         <div className="grid gap-16 md:grid-cols-2">
