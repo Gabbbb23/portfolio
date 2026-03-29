@@ -169,9 +169,9 @@ export default function About() {
           <CornerBrackets className="p-3">
             <div className="grid grid-cols-2 gap-4">
               <StatCard value={10} label="Projects Built" />
-              <StatCard value={8} label="Technologies" />
+              <StatCard value={50} label="Head-Desk Moments" />
               <StatCard value={3} label="Years Coding" />
-              <StatCard value={2} label="Internships" />
+              <StatCard value={999} label="Tabs Open" />
             </div>
           </CornerBrackets>
           <p className="mt-4 font-mono text-xs italic text-slate-400">
