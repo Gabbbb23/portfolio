@@ -2,7 +2,7 @@
 
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import Navbar from "@/components/Navbar";
-import SectionDivider from "@/components/SectionDivider";
+import SectionTransition from "@/components/SectionTransition";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Skills from "@/components/sections/Skills";
@@ -17,15 +17,15 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <SectionDivider />
+        <SectionTransition />
         <About />
-        <SectionDivider />
+        <SectionTransition />
         <Skills />
-        <SectionDivider />
+        <SectionTransition />
         <Projects />
-        <SectionDivider />
+        <SectionTransition />
         <Experience />
-        <SectionDivider />
+        <SectionTransition />
         <Contact />
       </main>
       <Footer />
