@@ -87,13 +87,10 @@ function SkillCategorySection({ category }: { category: SkillCategory }) {
         trigger,
         start: "top 80%",
         onEnter: () => {
-          gsap.from(cards, {
-            y: 30,
-            opacity: 0,
-            stagger: 0.05,
-            duration: 0.4,
-            ease: "power3.out",
-          });
+          gsap.fromTo(cards,
+            { y: 30, opacity: 0 },
+            { y: 0, opacity: 1, stagger: 0.05, duration: 0.4, ease: "power3.out" },
+          );
         },
         once: true,
       });
@@ -103,14 +100,14 @@ function SkillCategorySection({ category }: { category: SkillCategory }) {
   }, []);
 
   return (
-    <div ref={categoryRef} className="mb-10 -skew-y-1 transform rounded-lg border border-slate-100 bg-slate-50/50 p-6">
+    <div ref={categoryRef} className="mb-10 rounded-lg border border-slate-100 bg-slate-50/50 p-6">
       <h3 className="mb-4 font-display text-xl uppercase text-slate-900">
         <span className="text-sky-500/30">[</span> {category.title}{" "}
         <span className="text-sky-500/30">]</span>
       </h3>
       <div
         ref={gridRef}
-        className="grid skew-y-1 transform grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6"
+        className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6"
       >
         {category.skills.map((skill) => (
           <SkillCard key={skill.name} skill={skill} />
@@ -197,7 +194,7 @@ export default function Skills() {
           <div className="relative inline-block">
             <div
               ref={highlightRef}
-              className="-z-10 absolute -left-2 top-0 h-full rounded-r-sm bg-sky-100/60"
+              className="-z-10 absolute -left-2 bottom-1 h-3 rounded-sm bg-sky-100"
               style={{ width: 0 }}
             />
             <h2

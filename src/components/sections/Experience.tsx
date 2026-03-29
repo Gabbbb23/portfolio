@@ -177,7 +177,7 @@ export default function Experience() {
           <div className="relative inline-block">
             <div
               ref={highlightRef}
-              className="absolute -left-2 top-0 h-full bg-sky-100/60 -z-10 rounded-sm"
+              className="absolute -left-2 bottom-1 h-3 bg-sky-100 -z-10 rounded-sm"
               style={{ width: 0 }}
             />
             <h2

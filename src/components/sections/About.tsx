@@ -113,7 +113,7 @@ export default function About() {
           <div className="relative inline-block">
             <div
               ref={highlightRef}
-              className="absolute -left-2 top-0 h-full bg-sky-100/60 -z-10 rounded-sm"
+              className="absolute -left-2 bottom-1 h-3 bg-sky-100 -z-10 rounded-sm"
               style={{ width: 0 }}
             />
             <h2
@@ -125,10 +125,10 @@ export default function About() {
           </div>
         </div>
 
-        {/* Overlapping layout */}
-        <div className="relative">
+        {/* Side-by-side layout */}
+        <div className="grid gap-12 md:grid-cols-[55%_1fr]">
           {/* Bio text */}
-          <div ref={bioRef} className="md:w-[55%] relative z-10">
+          <div ref={bioRef}>
             <p className="text-slate-700 leading-relaxed">
               I&apos;m a software engineer passionate about creating clean,
               performant, and thoughtful digital experiences. I believe great
@@ -148,16 +148,14 @@ export default function About() {
           </div>
 
           {/* Stat cards */}
-          <div className="md:absolute md:right-0 md:top-[-2rem] md:w-[50%] mt-8 md:mt-0">
-            <CornerBrackets className="p-3">
-              <div className="grid grid-cols-2 gap-4">
-                <StatCard value={10} label="Projects Built" />
-                <StatCard value={8} label="Technologies" />
-                <StatCard value={3} label="Years Coding" />
-                <StatCard value={2} label="Internships" />
-              </div>
-            </CornerBrackets>
-          </div>
+          <CornerBrackets className="p-3">
+            <div className="grid grid-cols-2 gap-4">
+              <StatCard value={10} label="Projects Built" />
+              <StatCard value={8} label="Technologies" />
+              <StatCard value={3} label="Years Coding" />
+              <StatCard value={2} label="Internships" />
+            </div>
+          </CornerBrackets>
         </div>
       </div>
     </section>

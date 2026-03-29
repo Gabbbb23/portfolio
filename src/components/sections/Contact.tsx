@@ -113,15 +113,6 @@ export default function Contact() {
       id="contact"
       className="bg-slate-50 py-16 md:py-20 relative overflow-hidden"
     >
-      {/* Ghost text */}
-      <span
-        ref={ghostRef}
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(10rem,25vw,20rem)] leading-none text-ghost"
-        aria-hidden="true"
-      >
-        06
-      </span>
-
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-12 gap-8">
           {/* Left column: content */}
@@ -148,7 +139,7 @@ export default function Contact() {
 
           {/* Right column: decorative large number */}
           <div className="col-span-12 md:col-span-6 hidden md:flex items-center justify-center">
-            <span className="text-[16rem] font-display text-slate-100 leading-none select-none">
+            <span ref={ghostRef} className="text-[16rem] font-display text-slate-100 leading-none select-none">
               06
             </span>
           </div>
