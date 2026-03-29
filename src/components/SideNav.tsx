@@ -60,7 +60,7 @@ export default function SideNav() {
   };
 
   return (
-    <nav className="fixed right-5 top-1/2 z-50 hidden -translate-y-1/2 md:block" aria-label="Section navigation">
+    <nav className="fixed right-5 top-1/2 z-50 hidden -translate-y-1/2 lg:block" aria-label="Section navigation">
       <div className="rounded-full border border-slate-200 bg-white/80 px-3 py-5 shadow-sm backdrop-blur-sm">
         <div className="flex flex-col items-center gap-5">
           {sections.map((section, i) => {
@@ -99,16 +99,6 @@ export default function SideNav() {
         </div>
       </div>
 
-      <div className="mt-3 flex justify-center">
-        <a
-          href="/resume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-full border border-slate-200 bg-white/80 px-2.5 py-1.5 font-mono text-[9px] font-medium tracking-wider text-slate-500 shadow-sm backdrop-blur-sm transition-colors hover:border-sky-500 hover:text-sky-500"
-        >
-          CV
-        </a>
-      </div>
     </nav>
   );
 }
