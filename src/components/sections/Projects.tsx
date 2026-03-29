@@ -37,33 +37,19 @@ const projects: Project[] = [
   },
   {
     id: "2",
-    title: "Project Two",
-    description: "An API-driven platform that streamlines workflow automation. Built for scalability and performance.",
-    tags: ["Next.js", "TypeScript", "MongoDB", "Docker"],
-    category: "Full-Stack",
-    year: "2025",
-    liveUrl: "#",
-    githubUrl: "#",
+    title: "Something Cool",
+    description: "Currently cooking something up. I only ship projects that solve real problems or help me deeply understand how things work. No filler projects here.",
+    tags: ["???", "Coming Soon"],
+    category: "TBD",
+    year: "2026",
   },
   {
     id: "3",
-    title: "Project Three",
-    description: "A mobile-first application focused on user experience. Implements complex state management and offline support.",
-    tags: ["React", "Python", "REST API", "Figma"],
-    category: "Mobile",
-    year: "2025",
-    liveUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    id: "4",
-    title: "Project Four",
-    description: "A developer tool that simplifies common tasks. Features a CLI interface and extensible plugin system.",
-    tags: ["TypeScript", "Node.js", "CLI", "Open Source"],
-    category: "Open Source",
-    year: "2025",
-    liveUrl: "#",
-    githubUrl: "#",
+    title: "Another One",
+    description: "Got a few ideas in the backlog. If it doesn't provide value to someone or teach me something meaningful, it doesn't make the cut.",
+    tags: ["Stay Tuned", "Building"],
+    category: "TBD",
+    year: "2026",
   },
 ];
 
@@ -111,11 +97,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             {/* Content area */}
             {project.image ? (
               <div className="relative aspect-video">
-                {project.wip && (
-                  <span className="absolute top-3 left-3 z-20 rounded bg-amber-500 px-2 py-0.5 font-mono text-[10px] font-bold text-slate-900">
-                    WIP
-                  </span>
-                )}
                 <Image
                   src={project.image}
                   alt={project.title}
@@ -140,7 +121,14 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
         {/* Info area */}
         <div className={`relative z-10 col-span-12 md:col-span-5 ${isOdd ? "md:order-1 md:text-right" : ""}`}>
-          <h3 className="mb-3 font-heading text-3xl font-bold text-white">{project.title}</h3>
+          <h3 className="mb-3 font-heading text-3xl font-bold text-white flex items-center gap-3 flex-wrap">
+            {project.title}
+            {project.wip && (
+              <span className="rounded bg-amber-500 px-2 py-0.5 font-mono text-[10px] font-bold text-slate-900 uppercase">
+                Work in Progress
+              </span>
+            )}
+          </h3>
           <p className="mb-4 text-slate-400">{project.description}</p>
           <div className={`mb-4 flex flex-wrap gap-2 ${isOdd ? "md:justify-end" : ""}`}>
             {project.tags.map((tag) => (
@@ -160,7 +148,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
-                Live Demo
+                Try It
               </a>
             )}
             {project.githubUrl && (
