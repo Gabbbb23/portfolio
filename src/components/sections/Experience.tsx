@@ -57,145 +57,107 @@ const experiences: ExperienceItem[] = [
   },
 ];
 
-function TimelineItem({
-  item,
-  index,
-  isLeft,
-}: {
-  item: ExperienceItem;
-  index: number;
-  isLeft: boolean;
-}) {
-  const itemRef = useRef<HTMLDivElement>(null);
-  const dotRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = itemRef.current;
-    const dot = dotRef.current;
-    if (!el || !dot) return;
-
-    gsap.set(el, { opacity: 0, x: isLeft ? -60 : 60 });
-    gsap.set(dot, { scale: 0 });
-
-    const trigger = ScrollTrigger.create({
-      trigger: el,
-      start: "top 80%",
-      onEnter: () => {
-        gsap.to(el, {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          delay: index * 0.15,
-          ease: "power3.out",
-        });
-        gsap.to(dot, {
-          scale: 1,
-          duration: 0.5,
-          delay: index * 0.15 + 0.2,
-          ease: "back.out(1.7)",
-        });
-      },
-      once: true,
-    });
-
-    return () => trigger.kill();
-  }, [index, isLeft]);
-
-  return (
-    <div
-      className={`relative flex w-full items-center ${
-        isLeft ? "md:justify-start" : "md:justify-end"
-      }`}
-    >
-      {/* Timeline dot — sky blue filled with soft ring */}
-      <div
-        ref={dotRef}
-        className="absolute left-0 z-10 h-3 w-3 rounded-full bg-sky-500 ring-4 ring-sky-100 md:left-1/2 md:-translate-x-1/2"
-      />
-
-      {/* Card */}
-      <div
-        ref={itemRef}
-        className={`ml-8 w-full md:ml-0 md:w-[calc(50%-2rem)] ${
-          isLeft ? "md:mr-auto md:pr-8" : "md:ml-auto md:pl-8"
-        }`}
-      >
-        <CornerBrackets className="rounded-2xl bg-white p-6 border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
-          <div className="mb-1 flex items-center gap-2">
-            <span className="rounded-full bg-sky-100 px-3 py-1 font-mono text-xs font-medium text-sky-600">
-              {item.type === "work" ? "Work" : "Education"}
-            </span>
-            <span className="font-mono text-xs text-slate-500">{item.period}</span>
-          </div>
-          <h3 className="text-lg font-bold text-slate-900">{item.title}</h3>
-          <p className="mb-2 text-sm font-medium text-sky-500">{item.company}</p>
-          <p className="text-sm leading-relaxed text-slate-700">
-            {item.description}
-          </p>
-        </CornerBrackets>
-      </div>
-    </div>
-  );
-}
-
 export default function Experience() {
   const headingRef = useTextReveal<HTMLHeadingElement>();
   const headingWrapRef = useRef<HTMLDivElement>(null);
   const highlightRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<SVGLineElement>(null);
-  const timelineWrapRef = useRef<HTMLDivElement>(null);
   const ghostRef = useRef<HTMLSpanElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.fromTo(highlightRef.current,
-        { width: 0 },
-        { width: "calc(100% + 2rem)", duration: 0.6, ease: "power2.out",
-          scrollTrigger: { trigger: headingRef.current, start: "top 75%" } },
-      );
+      // Counter-directional entrance: heading from left, ghost from right
       gsap.from(headingWrapRef.current, {
-        x: -80, opacity: 0, duration: 0.8, ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-      });
-      gsap.from(ghostRef.current, {
-        x: 120, opacity: 0, duration: 1.0, ease: "power2.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-      });
-      gsap.to(ghostRef.current, {
-        yPercent: -20, ease: "none",
-        scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: true },
-      });
-    });
-    return () => ctx.revert();
-  }, []);
-
-  useEffect(() => {
-    const line = lineRef.current;
-    const wrap = timelineWrapRef.current;
-    if (!line || !wrap) return;
-
-    const length = wrap.clientHeight;
-    gsap.set(line, { attr: { y2: length } });
-    gsap.set(line, { strokeDasharray: length, strokeDashoffset: length });
-
-    const ctx = gsap.context(() => {
-      gsap.to(line, {
-        strokeDashoffset: 0,
-        ease: "none",
+        x: -60,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power3.out",
         scrollTrigger: {
-          trigger: wrap,
-          start: "top 60%",
-          end: "bottom 40%",
-          scrub: 1,
+          trigger: sectionRef.current,
+          start: "top 70%",
         },
       });
+
+      gsap.from(ghostRef.current, {
+        x: 100,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+        },
+      });
+
+      // Highlight bar sweeps in behind heading
+      gsap.fromTo(
+        highlightRef.current,
+        { width: 0 },
+        {
+          width: "calc(100% + 1rem)",
+          duration: 0.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 75%",
+          },
+        }
+      );
+
+      // Ghost parallax
+      gsap.to(ghostRef.current, {
+        yPercent: -20,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      // Cards stagger in from the right
+      const cards = timelineRef.current?.querySelectorAll("[data-card]");
+      if (cards && cards.length > 0) {
+        gsap.from(cards, {
+          x: 40,
+          opacity: 0,
+          stagger: 0.12,
+          duration: 0.4,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: timelineRef.current,
+            start: "top 70%",
+          },
+        });
+      }
+
+      // Dots pop in with elastic ease
+      const dots = timelineRef.current?.querySelectorAll("[data-dot]");
+      if (dots && dots.length > 0) {
+        gsap.from(dots, {
+          scale: 0,
+          stagger: 0.12,
+          duration: 0.3,
+          ease: "back.out(2)",
+          scrollTrigger: {
+            trigger: timelineRef.current,
+            start: "top 70%",
+          },
+        });
+      }
     });
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="experience" className="relative bg-white py-32 px-6 overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="experience"
+      className="relative bg-white py-16 md:py-20 overflow-hidden"
+    >
       {/* Ghost text */}
       <span
         ref={ghostRef}
@@ -205,43 +167,69 @@ export default function Experience() {
         05
       </span>
 
-      <div className="relative mx-auto max-w-6xl">
+      <div className="relative mx-auto max-w-6xl px-6">
+        {/* Heading area */}
         <div ref={headingWrapRef}>
-          <p className="mb-4 font-mono text-sm font-medium tracking-widest text-sky-500 uppercase">
+          <p className="font-mono text-sky-500 uppercase tracking-wider text-sm mb-2">
             &#9656; Journey
           </p>
 
           <div className="relative inline-block">
-            <div ref={highlightRef} className="absolute -left-4 top-0 h-full bg-sky-500/10 -z-10 rounded-r-sm" style={{ width: 0 }} />
+            <div
+              ref={highlightRef}
+              className="absolute -left-2 top-0 h-full bg-sky-100/60 -z-10 rounded-sm"
+              style={{ width: 0 }}
+            />
             <h2
               ref={headingRef}
-              className="mb-16 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
+              className="font-heading text-4xl md:text-5xl font-bold text-slate-900 mb-10"
             >
-              Experience & Education
+              Experience &amp; Education
             </h2>
           </div>
         </div>
 
-        <div ref={timelineWrapRef} className="relative">
-          {/* SVG timeline line — draws itself on scroll */}
-          <svg className="absolute left-[5px] top-0 h-full w-[2px] md:left-1/2 md:-translate-x-1/2 overflow-visible">
-            <line
-              ref={lineRef}
-              x1="1" y1="0" x2="1" y2="100%"
-              stroke="#E2E8F0"
-              strokeWidth="2"
-              strokeDasharray="8 6"
-            />
-          </svg>
+        {/* Left-aligned timeline */}
+        <div ref={timelineRef} className="relative">
+          {/* Dashed vertical line */}
+          <div className="absolute left-0 md:left-[60px] top-0 bottom-0 border-l-2 border-dashed border-slate-200" />
 
-          <div className="space-y-12">
-            {experiences.map((item, index) => (
-              <TimelineItem
-                key={item.id}
-                item={item}
-                index={index}
-                isLeft={index % 2 === 0}
-              />
+          {/* Timeline entries */}
+          <div className="space-y-8 ml-0 md:ml-[60px] pl-8">
+            {experiences.map((item) => (
+              <div key={item.id} className="relative">
+                {/* Timeline dot */}
+                <div
+                  data-dot
+                  className="absolute -left-8 top-6 w-3 h-3 rounded-full bg-sky-500 ring-4 ring-sky-100 -translate-x-[5px]"
+                />
+
+                {/* Card */}
+                <CornerBrackets>
+                  <div
+                    data-card
+                    className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="bg-sky-100 text-sky-600 font-mono text-xs rounded-full px-3 py-1">
+                        {item.type === "work" ? "Work" : "Education"}
+                      </span>
+                      <span className="text-slate-500 font-mono text-xs">
+                        {item.period}
+                      </span>
+                    </div>
+                    <h3 className="text-lg font-heading font-bold text-slate-900">
+                      {item.title}
+                    </h3>
+                    <p className="text-sky-500 text-sm font-medium">
+                      {item.company}
+                    </p>
+                    <p className="text-slate-600 text-sm mt-2">
+                      {item.description}
+                    </p>
+                  </div>
+                </CornerBrackets>
+              </div>
             ))}
           </div>
         </div>

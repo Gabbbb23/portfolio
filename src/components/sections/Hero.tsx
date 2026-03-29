@@ -68,48 +68,48 @@ export default function Hero() {
     const ctx = gsap.context(() => {
       // Set initial invisible states
       gsap.set(ghostRef.current, { x: 200, opacity: 0 });
-      gsap.set(labelRef.current, { y: 20, opacity: 0 });
-      gsap.set(letters, { y: 60, rotateX: -15, opacity: 0 });
+      gsap.set(labelRef.current, { y: 15, opacity: 0 });
+      gsap.set(letters, { y: 40, rotateX: -10, opacity: 0 });
       gsap.set(subtitleRef.current, { opacity: 0 });
-      gsap.set(ctaRef.current!.children, { y: 30, opacity: 0 });
+      gsap.set(ctaRef.current!.children, { y: 20, opacity: 0 });
       if (shapesRef.current) gsap.set(shapesRef.current.children, { scale: 0.5, opacity: 0 });
       gsap.set(scrollIndicatorRef.current, { opacity: 0 });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      // t=0.2: Ghost "01" slams in from the right
-      tl.to(ghostRef.current, { x: 0, opacity: 1, duration: 0.6, ease: "power4.out" }, 0.2);
+      // t=0.1: Ghost "01" slams in from the right
+      tl.to(ghostRef.current, { x: 0, opacity: 1, duration: 0.4, ease: "power4.out" }, 0.1);
 
-      // t=0.5: "HELLO, I'M" fades in
-      tl.to(labelRef.current, { y: 0, opacity: 1, duration: 0.4 }, 0.5);
+      // t=0.3: Label fades from y:15
+      tl.to(labelRef.current, { y: 0, opacity: 1, duration: 0.3 }, 0.3);
 
-      // t=0.7: "Gab" letters stagger in with 3D rotation
+      // t=0.5: "Gab" letters stagger in with 3D rotation
       tl.to(letters, {
         y: 0, rotateX: 0, opacity: 1,
-        stagger: 0.08, duration: 0.6,
-      }, 0.7);
+        stagger: 0.06, duration: 0.4,
+      }, 0.5);
 
-      // t=1.3: Subtitle area appears, start typing
-      tl.to(subtitleRef.current, { opacity: 1, duration: 0.3 }, 1.3);
-      tl.call(() => setTypingStarted(true), [], 1.3);
+      // t=0.9: Subtitle area appears, start typing
+      tl.to(subtitleRef.current, { opacity: 1, duration: 0.3 }, 0.9);
+      tl.call(() => setTypingStarted(true), [], 0.9);
 
-      // t=1.5: CTA buttons slide up
+      // t=1.0: CTA buttons slide up
       tl.to(ctaRef.current!.children, {
-        y: 0, opacity: 1, stagger: 0.1, duration: 0.5,
-      }, 1.5);
+        y: 0, opacity: 1, stagger: 0.08, duration: 0.4,
+      }, 1.0);
 
-      // t=1.8: Floating shapes drift in
+      // t=1.2: Floating shapes drift in, then float
       if (shapesRef.current) {
         tl.to(shapesRef.current.children, {
-          scale: 1, opacity: 1, stagger: 0.05, duration: 0.8,
-        }, 1.8);
+          scale: 1, opacity: 1, stagger: 0.04, duration: 0.5,
+        }, 1.2);
 
         // Start floating after entrance
         tl.call(() => {
           if (!shapesRef.current) return;
           Array.from(shapesRef.current.children).forEach((child, i) => {
             gsap.to(child, {
-              y: "+=30", x: "+=15",
+              y: "+=25", x: "+=10",
               duration: 4 + i * 0.3,
               repeat: -1, yoyo: true, ease: "sine.inOut",
             });
@@ -117,8 +117,8 @@ export default function Hero() {
         }, [], ">");
       }
 
-      // t=2.0: Scroll indicator
-      tl.to(scrollIndicatorRef.current, { opacity: 1, duration: 0.4 }, 2.0);
+      // t=1.5: Scroll indicator
+      tl.to(scrollIndicatorRef.current, { opacity: 1, duration: 0.4 }, 1.5);
 
       // Ghost text parallax (scroll-driven, separate from entrance)
       gsap.to(ghostRef.current, {
@@ -174,81 +174,93 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-white px-6"
+      className="relative flex min-h-screen items-center overflow-hidden bg-white"
       style={{
         backgroundImage: "radial-gradient(circle, #E2E8F0 1px, transparent 1px)",
         backgroundSize: "24px 24px",
       }}
     >
-      {/* Diagonal slashes — P3R signature */}
-      <div className="pointer-events-none absolute top-[-10vh] left-[15%] h-[120vh] w-[1px] rotate-[15deg] bg-slate-200 opacity-50" aria-hidden="true" />
-      <div className="pointer-events-none absolute top-[-10vh] right-[20%] h-[120vh] w-[1px] -rotate-12 bg-slate-200 opacity-50" aria-hidden="true" />
-
-      {/* Ghost text — slams in from right */}
-      <span
-        ref={ghostRef}
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(15rem,35vw,30rem)] leading-none text-ghost"
-        aria-hidden="true"
-      >
-        01
-      </span>
-
-      {/* Floating shapes container */}
-      <div ref={shapesRef} className="pointer-events-none">
-        <FloatingShape size={60} x="10%" y="20%" shape="circle" />
-        <FloatingShape size={40} x="80%" y="15%" shape="diamond" />
-        <FloatingShape size={50} x="75%" y="70%" shape="circle" />
-        <FloatingShape size={35} x="15%" y="75%" shape="diamond" />
-        <FloatingShape size={45} x="50%" y="10%" shape="circle" />
-        <FloatingShape size={30} x="90%" y="50%" shape="square" />
+      {/* Diagonal slash lines */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div className="absolute top-[-10%] left-[15%] h-[120%] w-[1px] rotate-[12deg] bg-slate-200/60" />
+        <div className="absolute top-[-10%] right-[20%] h-[120%] w-[1px] -rotate-[8deg] bg-slate-200/40" />
       </div>
 
-      <div className="relative z-10 text-center">
-        <p ref={labelRef} className="mb-4 font-mono text-sm font-medium tracking-widest text-slate-500 uppercase">
-          Hello, I&apos;m
-        </p>
+      {/* 12-column grid container */}
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-12 items-center gap-8 px-6">
+        {/* Left side — 7 columns */}
+        <div className="col-span-12 md:col-span-7">
+          <p
+            ref={labelRef}
+            className="mb-2 font-mono text-sm font-medium tracking-wider text-sky-500 uppercase"
+          >
+            &#9658; Hello, I&apos;m
+          </p>
 
-        <h1
-          ref={nameRef}
-          className="mb-6 font-heading text-[clamp(4rem,12vw,10rem)] font-bold leading-none tracking-tight text-slate-900"
-          style={{ perspective: "600px" }}
-        >
-          {"Gab".split("").map((char, i) => (
-            <span key={i} className="hero-letter inline-block">{char}</span>
-          ))}
-        </h1>
+          <h1
+            ref={nameRef}
+            className="mb-6 font-heading text-7xl font-bold leading-none tracking-tight text-slate-900 md:text-8xl lg:text-9xl"
+            style={{ perspective: "600px" }}
+          >
+            {"Gab".split("").map((char, i) => (
+              <span key={i} className="hero-letter inline-block">{char}</span>
+            ))}
+          </h1>
 
-        <div ref={subtitleRef} className="mb-12 h-10">
-          <span className="text-xl font-light text-slate-500 md:text-2xl">
-            {displayText}
+          <div ref={subtitleRef} className="mb-10 h-10">
+            <span className="text-xl font-light text-slate-500">
+              {displayText}
+            </span>
+            <span className="ml-0.5 inline-block h-6 w-[2px] animate-pulse bg-sky-500" />
+          </div>
+
+          <div ref={ctaRef} className="flex flex-col gap-4 sm:flex-row">
+            <a
+              ref={btnWorkRef}
+              href="#projects"
+              onClick={handleScrollTo("#projects")}
+              className="inline-flex items-center gap-2 rounded-full bg-sky-500 px-10 py-4 text-base font-semibold text-white transition-colors duration-300 hover:bg-sky-600"
+            >
+              View My Work
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+            <a
+              ref={btnContactRef}
+              href="#contact"
+              onClick={handleScrollTo("#contact")}
+              className="inline-flex items-center rounded-full border border-slate-300 px-10 py-4 text-base font-semibold text-slate-700 transition-all duration-300 hover:border-sky-500 hover:text-sky-500"
+            >
+              Get In Touch
+            </a>
+          </div>
+        </div>
+
+        {/* Right side — 5 columns, decorative (hidden on mobile) */}
+        <div className="relative col-span-5 hidden md:block">
+          {/* Giant "01" ghost number */}
+          <span
+            ref={ghostRef}
+            className="pointer-events-none absolute -right-8 -top-24 select-none font-display text-[20rem] leading-none text-slate-100"
+            aria-hidden="true"
+          >
+            01
           </span>
-          <span className="ml-0.5 inline-block h-6 w-[2px] animate-pulse bg-sky-500" />
-        </div>
 
-        <div ref={ctaRef} className="flex flex-col items-center gap-5 sm:flex-row sm:justify-center">
-          <a
-            ref={btnWorkRef}
-            href="#projects"
-            onClick={handleScrollTo("#projects")}
-            className="inline-flex items-center gap-2 rounded-full bg-sky-500 px-10 py-4 text-base font-semibold text-white transition-colors duration-300 hover:bg-sky-600"
-          >
-            View My Work
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </a>
-          <a
-            ref={btnContactRef}
-            href="#contact"
-            onClick={handleScrollTo("#contact")}
-            className="inline-flex items-center rounded-full border border-slate-300 px-10 py-4 text-base font-semibold text-slate-700 transition-all duration-300 hover:border-sky-500 hover:text-sky-500"
-          >
-            Get In Touch
-          </a>
+          {/* Floating shapes clustered on the right */}
+          <div ref={shapesRef} className="pointer-events-none absolute inset-0">
+            <FloatingShape size={60} x="10%" y="5%" shape="circle" />
+            <FloatingShape size={40} x="70%" y="0%" shape="diamond" />
+            <FloatingShape size={50} x="60%" y="65%" shape="circle" />
+            <FloatingShape size={35} x="20%" y="75%" shape="diamond" />
+            <FloatingShape size={45} x="40%" y="20%" shape="circle" />
+            <FloatingShape size={30} x="85%" y="45%" shape="square" />
+          </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator at bottom center */}
       <div
         ref={scrollIndicatorRef}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
@@ -257,7 +269,7 @@ export default function Hero() {
           <span className="font-mono text-xs font-medium tracking-widest text-slate-400 uppercase">
             Scroll
           </span>
-          <div className="h-10 w-[1px] bg-slate-200 overflow-hidden">
+          <div className="h-10 w-[1px] overflow-hidden bg-slate-200">
             <div className="h-3 w-full animate-bounce bg-sky-500" />
           </div>
         </div>

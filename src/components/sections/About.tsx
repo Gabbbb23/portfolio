@@ -3,63 +3,97 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useScrollFadeUp, useTextReveal, useCountUp } from "@/lib/animations";
+import { useTextReveal, useScrollFadeUp, useCountUp } from "@/lib/animations";
 import CornerBrackets from "@/components/CornerBrackets";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function StatItem({ value, label }: { value: number; label: string }) {
+function StatCard({ value, label }: { value: number; label: string }) {
   const countRef = useCountUp(value);
 
   return (
-    <div className="rounded-xl bg-white p-6 text-center border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
-      <div className="text-4xl font-bold text-sky-500 md:text-5xl">
-        <span ref={countRef}>0</span>+
-      </div>
-      <p className="mt-2 font-mono text-sm font-medium text-slate-500">{label}</p>
+    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all duration-200">
+      <span ref={countRef} className="text-3xl font-heading font-bold text-sky-500">
+        0
+      </span>
+      <span className="text-3xl font-heading font-bold text-sky-500">+</span>
+      <span className="text-slate-500 font-mono text-xs uppercase mt-1 block">
+        {label}
+      </span>
     </div>
   );
 }
 
 export default function About() {
   const headingRef = useTextReveal<HTMLHeadingElement>();
-  const textRef = useScrollFadeUp<HTMLDivElement>();
-  const statsRef = useScrollFadeUp<HTMLDivElement>();
-  const ghostRef = useRef<HTMLSpanElement>(null);
+  const bioRef = useScrollFadeUp<HTMLDivElement>();
   const sectionRef = useRef<HTMLElement>(null);
-
+  const ghostRef = useRef<HTMLSpanElement>(null);
   const headingWrapRef = useRef<HTMLDivElement>(null);
   const highlightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Highlight bar sweeps in behind heading
-      gsap.fromTo(highlightRef.current,
-        { width: 0 },
-        { width: "calc(100% + 2rem)", duration: 0.6, ease: "power2.out",
-          scrollTrigger: { trigger: headingRef.current, start: "top 75%" } },
-      );
-      // Counter-directional entrance: heading from left, ghost from right
+      // Counter-directional: heading wrapper from left, ghost from right
       gsap.from(headingWrapRef.current, {
-        x: -80, opacity: 0, duration: 0.8, ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
+        x: -60,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+        },
       });
+
       gsap.from(ghostRef.current, {
-        x: 120, opacity: 0, duration: 1.0, ease: "power2.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
+        x: 100,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+        },
       });
+
+      // Highlight bar sweeps in behind heading
+      gsap.fromTo(
+        highlightRef.current,
+        { width: 0 },
+        {
+          width: "calc(100% + 1rem)",
+          duration: 0.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 75%",
+          },
+        }
+      );
 
       // Ghost parallax
       gsap.to(ghostRef.current, {
-        yPercent: -20, ease: "none",
-        scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: true },
+        yPercent: -20,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
       });
     });
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="about" className="relative bg-slate-50 py-32 px-6 overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="about"
+      className="bg-slate-50 py-16 md:py-20 relative overflow-hidden"
+    >
       {/* Ghost text */}
       <span
         ref={ghostRef}
@@ -69,51 +103,58 @@ export default function About() {
         ABOUT
       </span>
 
-      <div className="relative mx-auto max-w-6xl">
+      <div className="relative mx-auto max-w-6xl px-6">
+        {/* Heading area */}
         <div ref={headingWrapRef}>
-          <p className="mb-4 font-mono text-sm font-medium tracking-widest text-sky-500 uppercase">
+          <p className="font-mono text-sky-500 uppercase tracking-wider text-sm mb-2">
             &#9656; About Me
           </p>
 
           <div className="relative inline-block">
-            <div ref={highlightRef} className="absolute -left-4 top-0 h-full bg-sky-500/10 -z-10 rounded-r-sm" style={{ width: 0 }} />
+            <div
+              ref={highlightRef}
+              className="absolute -left-2 top-0 h-full bg-sky-100/60 -z-10 rounded-sm"
+              style={{ width: 0 }}
+            />
             <h2
               ref={headingRef}
-              className="mb-12 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
+              className="font-heading text-4xl md:text-5xl font-bold text-slate-900 mb-8"
             >
               Building software that makes a difference
             </h2>
           </div>
         </div>
 
-        <div className="grid gap-16 md:grid-cols-2">
-          <div ref={textRef} className="space-y-6">
-            <p className="text-lg leading-relaxed text-slate-700">
-              I&apos;m a software engineer passionate about creating clean, performant,
-              and thoughtful digital experiences. I believe great software sits at the
-              intersection of technical excellence and human-centered design.
+        {/* Overlapping layout */}
+        <div className="relative">
+          {/* Bio text */}
+          <div ref={bioRef} className="md:w-[55%] relative z-10">
+            <p className="text-slate-700 leading-relaxed">
+              I&apos;m a software engineer passionate about creating clean,
+              performant, and thoughtful digital experiences. I believe great
+              software sits at the intersection of technical excellence and
+              human-centered design.
             </p>
-            <p className="text-lg leading-relaxed text-slate-700">
+            <p className="text-slate-700 leading-relaxed mt-4">
               Currently a junior-year computer science student, I spend my time
               exploring full-stack development, diving into new technologies, and
-              building projects that solve real problems. When I&apos;m not coding,
-              you&apos;ll find me exploring new tools, contributing to open source, or
-              learning about system design.
+              building projects that solve real problems.
             </p>
-            <p className="text-lg leading-relaxed text-slate-700">
-              I&apos;m always looking for opportunities to grow, collaborate, and build
-              something meaningful. If you have an interesting project or just want to
-              chat — reach out.
+            <p className="text-slate-700 leading-relaxed mt-4">
+              I&apos;m always looking for opportunities to grow, collaborate, and
+              build something meaningful. If you have an interesting project or
+              just want to chat — reach out.
             </p>
           </div>
 
-          <div ref={statsRef} className="flex items-center">
-            <CornerBrackets className="w-full p-3">
-              <div className="grid w-full grid-cols-2 gap-6">
-                <StatItem value={10} label="Projects Built" />
-                <StatItem value={8} label="Technologies" />
-                <StatItem value={3} label="Years Coding" />
-                <StatItem value={2} label="Internships" />
+          {/* Stat cards */}
+          <div className="md:absolute md:right-0 md:top-[-2rem] md:w-[50%] mt-8 md:mt-0">
+            <CornerBrackets className="p-3">
+              <div className="grid grid-cols-2 gap-4">
+                <StatCard value={10} label="Projects Built" />
+                <StatCard value={8} label="Technologies" />
+                <StatCard value={3} label="Years Coding" />
+                <StatCard value={2} label="Internships" />
               </div>
             </CornerBrackets>
           </div>

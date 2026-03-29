@@ -61,104 +61,118 @@ const projects: Project[] = [
   },
 ];
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const cardRef = useRef<HTMLDivElement>(null);
+function ProjectRow({ project, index }: { project: Project; index: number }) {
+  const rowRef = useRef<HTMLDivElement>(null);
   const projectNum = String(index + 1).padStart(2, "0");
+  const isOdd = index % 2 === 1;
 
   useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
-
-    gsap.set(card, { clipPath: "polygon(-10% 0%, 0% 0%, -10% 100%, -20% 100%)" });
+    const row = rowRef.current;
+    if (!row) return;
 
     const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: card,
-        start: "top 80%",
-        onEnter: () => {
-          gsap.to(card, {
-            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-            duration: 0.8,
-            delay: index * 0.15,
-            ease: "power2.out",
-          });
+      gsap.from(row, {
+        x: isOdd ? 40 : -40,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: row,
+          start: "top 80%",
         },
-        once: true,
       });
     });
 
     return () => ctx.revert();
-  }, [index]);
+  }, [isOdd]);
 
   return (
-    <div
-      ref={cardRef}
-      className="group relative flex-shrink-0 w-[85vw] max-w-[500px] md:w-[450px]"
-    >
-      <div className="overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)]">
-        {/* Top accent bar — ZZZ mission status style */}
-        <div className="h-[3px] w-full bg-sky-500" />
-        {/* Image placeholder */}
-        <div className="relative h-64 overflow-hidden bg-slate-100">
+    <div ref={rowRef} className="grid grid-cols-12 gap-6 md:gap-8 items-center">
+      {/* Image area */}
+      <div
+        className={`col-span-12 md:col-span-7 ${isOdd ? "md:order-2" : ""}`}
+      >
+        <div className="relative bg-slate-100 rounded-xl aspect-video overflow-hidden border border-slate-200">
+          {/* Sky blue top bar */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-sky-500" />
           {/* Project number */}
-          <span className="absolute top-4 right-4 z-10 font-display text-5xl text-slate-200">
+          <span className="absolute top-4 right-4 font-display text-6xl text-slate-200">
             {projectNum}
           </span>
-          <div className="flex h-full items-center justify-center text-6xl text-slate-300">
-            {"</>"}
+          {/* Placeholder */}
+          <div className="absolute inset-0 flex items-center justify-center text-slate-300 text-6xl">
+            {"</ >"}
           </div>
         </div>
+      </div>
 
-        {/* Content */}
-        <div className="p-6">
-          <h3 className="mb-2 font-heading text-xl font-bold text-slate-900 transition-colors duration-300 group-hover:text-sky-500">
-            {project.title}
-          </h3>
-          <p className="mb-4 text-sm leading-relaxed text-slate-700">
-            {project.description}
-          </p>
+      {/* Info area */}
+      <div
+        className={`col-span-12 md:col-span-5 ${
+          isOdd ? "md:order-1 md:text-right" : ""
+        }`}
+      >
+        <h3 className="text-2xl font-heading font-bold text-slate-900 mb-2 hover:text-sky-500 transition">
+          {project.title}
+        </h3>
+        <p className="text-slate-600 mb-4 text-sm">{project.description}</p>
 
-          {/* Tags */}
-          <div className="mb-5 flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full bg-sky-100 px-3 py-1 font-mono text-xs font-medium text-sky-700"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+        {/* Tags */}
+        <div
+          className={`flex flex-wrap gap-2 mb-4 ${
+            isOdd ? "md:justify-end" : ""
+          }`}
+        >
+          {project.tags.map((tag) => (
+            <span
+              key={tag}
+              className="bg-sky-100 text-sky-700 font-mono text-xs rounded-full px-3 py-1"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
 
-          {/* Links */}
-          <div className="flex gap-4">
-            {project.liveUrl && (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-sm font-medium text-sky-500 transition-colors hover:text-sky-600"
+        {/* Links */}
+        <div
+          className={`flex gap-4 ${isOdd ? "md:justify-end" : ""}`}
+        >
+          {project.liveUrl && (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sky-500 hover:text-sky-600 font-mono text-sm transition-colors"
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
               >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-                Live Demo
-              </a>
-            )}
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-sm font-medium text-sky-500 transition-colors hover:text-sky-600"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                </svg>
-                GitHub
-              </a>
-            )}
-          </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+              Live Demo
+            </a>
+          )}
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-sky-500 hover:text-sky-600 font-mono text-sm transition-colors"
+            >
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+              GitHub
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -167,69 +181,109 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export default function Projects() {
   const headingRef = useTextReveal<HTMLHeadingElement>();
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const ghostRef = useRef<HTMLSpanElement>(null);
+  const headingWrapRef = useRef<HTMLDivElement>(null);
+  const highlightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const inner = innerRef.current;
-    const section = sectionRef.current;
-    const container = scrollContainerRef.current;
-    if (!inner || !section || !container) return;
+    const ctx = gsap.context(() => {
+      // Counter-directional: heading from left, ghost from right
+      gsap.from(headingWrapRef.current, {
+        x: -60,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+        },
+      });
 
-    const totalScrollWidth = inner.scrollWidth - container.clientWidth;
+      gsap.from(ghostRef.current, {
+        x: 100,
+        opacity: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+        },
+      });
 
-    const tween = gsap.to(inner, {
-      x: -totalScrollWidth,
-      ease: "none",
-      scrollTrigger: {
-        trigger: section,
-        start: "top 10%",
-        end: () => `+=${totalScrollWidth}`,
-        scrub: 1,
-        pin: true,
-        anticipatePin: 1,
-      },
+      // Highlight bar sweeps in behind heading
+      gsap.fromTo(
+        highlightRef.current,
+        { width: 0 },
+        {
+          width: "calc(100% + 1rem)",
+          duration: 0.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 75%",
+          },
+        }
+      );
+
+      // Ghost parallax
+      gsap.to(ghostRef.current, {
+        yPercent: -20,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
     });
 
-    return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="projects" className="relative bg-slate-50 py-32 px-6 overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="projects"
+      className="bg-slate-50 py-16 md:py-20 relative overflow-hidden"
+    >
       {/* Ghost text */}
       <span
+        ref={ghostRef}
         className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none font-display text-[clamp(10rem,25vw,20rem)] leading-none text-ghost"
         aria-hidden="true"
       >
         04
       </span>
 
-      <div className="relative mx-auto max-w-6xl">
-        <p className="mb-4 font-mono text-sm font-medium tracking-widest text-sky-500 uppercase">
-          &#9656; Featured Work
-        </p>
+      <div className="relative mx-auto max-w-6xl px-6">
+        {/* Heading area */}
+        <div ref={headingWrapRef}>
+          <p className="font-mono text-sky-500 uppercase tracking-wider text-sm mb-2">
+            &#9656; Featured Work
+          </p>
 
-        <h2
-          ref={headingRef}
-          className="mb-16 font-heading text-4xl font-bold text-slate-900 md:text-5xl"
-        >
-          Projects
-        </h2>
-      </div>
+          <div className="relative inline-block">
+            <div
+              ref={highlightRef}
+              className="absolute -left-2 top-0 h-full bg-sky-100/60 -z-10 rounded-sm"
+              style={{ width: 0 }}
+            />
+            <h2
+              ref={headingRef}
+              className="font-heading text-4xl md:text-5xl font-bold text-slate-900 mb-12"
+            >
+              Projects
+            </h2>
+          </div>
+        </div>
 
-      <div ref={scrollContainerRef} className="overflow-hidden">
-        <div ref={innerRef} className="flex gap-8">
-          {/* Left spacer — aligns first card with max-w-6xl container */}
-          <div className="w-6 flex-shrink-0 md:w-[max(1.5rem,calc((100vw-72rem)/2))]" />
+        {/* Project rows — vertical alternating layout */}
+        <div className="space-y-16">
           {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+            <ProjectRow key={project.id} project={project} index={index} />
           ))}
-          {/* Right spacer */}
-          <div className="w-6 flex-shrink-0 md:w-[max(1.5rem,calc((100vw-72rem)/2))]" />
         </div>
       </div>
     </section>
