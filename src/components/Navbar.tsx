@@ -87,6 +87,9 @@ export default function Navbar() {
       });
     });
 
+    // Refresh after pinned sections initialize
+    const refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 200);
+
     const handleScroll = () => {
       const currentScroll = window.scrollY;
       setScrolled(currentScroll > 50);
@@ -100,6 +103,7 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
+      clearTimeout(refreshTimer);
       ctx.revert();
       window.removeEventListener("scroll", handleScroll);
     };

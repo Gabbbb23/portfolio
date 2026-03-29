@@ -86,7 +86,7 @@ export default function Skills() {
         "(min-width: 768px)": function () {
           const totalWidth = panels.scrollWidth - window.innerWidth;
 
-          gsap.to(panels, {
+          const horizontalTween = gsap.to(panels, {
             x: -totalWidth,
             ease: "none",
             scrollTrigger: {
@@ -99,8 +99,8 @@ export default function Skills() {
             },
           });
 
-          // Animate skill bars when each panel enters
-          panels.querySelectorAll(".skill-panel").forEach((panel, i) => {
+          // Animate skill bars using containerAnimation for proper timing
+          panels.querySelectorAll(".skill-panel").forEach((panel) => {
             const bars = panel.querySelectorAll(".skill-bar-fill");
             gsap.fromTo(bars,
               { width: "0%" },
@@ -108,8 +108,9 @@ export default function Skills() {
                 width: (_: number, el: Element) => `${(el as HTMLElement).dataset.level}%`,
                 stagger: 0.08, duration: 0.8, ease: "power2.out",
                 scrollTrigger: {
-                  trigger: section,
-                  start: () => `top+=${i * (totalWidth / 3)}px top`,
+                  trigger: panel,
+                  containerAnimation: horizontalTween,
+                  start: "left 80%",
                   toggleActions: "play none none none",
                 },
               },

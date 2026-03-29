@@ -127,13 +127,15 @@ export default function Projects() {
     const ctx = gsap.context(() => {
       ScrollTrigger.matchMedia({
         "(min-width: 768px)": function () {
-          // Pin the section for card-stack scroll
+          const scrollPerCard = window.innerHeight;
+          const cardCount = cards.length;
+
+          // Pin the section — no scrub on pin itself
           ScrollTrigger.create({
             trigger: section,
             start: "top top",
-            end: () => `+=${cards.length * 100}vh`,
+            end: () => `+=${cardCount * scrollPerCard}`,
             pin: true,
-            scrub: true,
             anticipatePin: 1,
           });
 
@@ -141,27 +143,30 @@ export default function Projects() {
           cards.forEach((card, i) => {
             if (i === 0) return;
 
+            const enterStart = i * scrollPerCard;
+            const enterEnd = enterStart + scrollPerCard * 0.7;
+
             gsap.fromTo(card,
               { yPercent: 100, opacity: 0, scale: 0.9 },
               {
-                yPercent: 0, opacity: 1, scale: 1, ease: "power2.out",
+                yPercent: 0, opacity: 1, scale: 1, ease: "none",
                 scrollTrigger: {
                   trigger: section,
-                  start: () => `top+=${i * 100}vh top`,
-                  end: () => `top+=${i * 100 + 80}vh top`,
-                  scrub: true,
+                  start: () => `top+=${enterStart} top`,
+                  end: () => `top+=${enterEnd} top`,
+                  scrub: 0.5,
                 },
               },
             );
 
             // Previous card recedes
             gsap.to(cards[i - 1], {
-              scale: 0.92, opacity: 0.4,
+              scale: 0.92, opacity: 0.4, ease: "none",
               scrollTrigger: {
                 trigger: section,
-                start: () => `top+=${i * 100}vh top`,
-                end: () => `top+=${i * 100 + 50}vh top`,
-                scrub: true,
+                start: () => `top+=${enterStart} top`,
+                end: () => `top+=${enterStart + scrollPerCard * 0.4} top`,
+                scrub: 0.5,
               },
             });
 
@@ -169,8 +174,8 @@ export default function Projects() {
             if (dots && dots[i]) {
               ScrollTrigger.create({
                 trigger: section,
-                start: () => `top+=${i * 100 + 40}vh top`,
-                end: () => `top+=${(i + 1) * 100 + 40}vh top`,
+                start: () => `top+=${enterStart + scrollPerCard * 0.3} top`,
+                end: () => `top+=${(i + 1) * scrollPerCard + scrollPerCard * 0.3} top`,
                 onEnter: () => {
                   dots.forEach((d) => d.classList.remove("bg-sky-500"));
                   dots[i].classList.add("bg-sky-500");

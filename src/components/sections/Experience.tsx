@@ -191,7 +191,7 @@ export default function Experience() {
           {/* Timeline entries — group hover dims siblings */}
           <div className="group/exp space-y-8 ml-0 md:ml-[60px] pl-8">
             {experiences.map((item) => (
-              <div key={item.id} className="relative transition-opacity duration-300 group-hover/exp:opacity-40 hover:!opacity-100">
+              <div key={item.id} className="relative transition-opacity duration-300 group-hover/exp:opacity-40 hover:!opacity-100" style={{ opacity: 1 }}>
                 {/* Timeline dot */}
                 <div
                   data-dot
