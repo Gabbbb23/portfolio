@@ -152,9 +152,10 @@ export default function Projects() {
             },
           });
 
-          // Set z-index stacking order
+          // Set z-index stacking + initial positions
           cards.forEach((card, i) => {
             gsap.set(card, { zIndex: i + 1 });
+            if (i > 0) gsap.set(card, { yPercent: 100 });
           });
 
           cards.forEach((card, i) => {
@@ -163,14 +164,14 @@ export default function Projects() {
             const enterDuration = 0.7 / cardCount;
             const recessDuration = 0.4 / cardCount;
 
-            // Previous card recedes upward and fades
+            // Previous card recedes subtly (covered by incoming solid bg)
             tl.to(cards[i - 1], {
-              scale: 0.92, opacity: 0.3, yPercent: -5, ease: "none", duration: recessDuration,
+              scale: 0.95, yPercent: -3, ease: "none", duration: recessDuration,
             }, cardStart);
 
-            // New card slides up
+            // New card slides up — solid bg covers previous
             tl.fromTo(card,
-              { yPercent: 100, opacity: 0, scale: 0.9 },
+              { yPercent: 100, opacity: 1, scale: 1 },
               { yPercent: 0, opacity: 1, scale: 1, ease: "none", duration: enterDuration },
               cardStart,
             );
@@ -204,12 +205,11 @@ export default function Projects() {
       </div>
 
       {/* Stacked cards */}
-      <div ref={stackRef} className="relative md:h-screen flex md:items-center md:justify-center flex-col md:flex-row gap-16 md:gap-0 px-6 py-20 md:py-0">
+      <div ref={stackRef} className="relative md:h-screen flex md:items-center md:justify-center flex-col md:flex-row gap-16 md:gap-0 px-6 py-20 md:py-0 md:overflow-hidden">
         {projects.map((project, i) => (
           <div
             key={project.id}
-            className={`project-card md:absolute md:inset-0 ${i === 0 ? "" : "md:opacity-0"}`}
-            style={i === 0 ? { opacity: 1 } : undefined}
+            className="project-card md:absolute md:inset-0 bg-slate-50"
           >
             <ProjectCard project={project} index={i} />
           </div>
