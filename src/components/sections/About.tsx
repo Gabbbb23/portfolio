@@ -139,19 +139,14 @@ export default function About() {
           {/* Bio text — in a subtle panel */}
           <div ref={bioRef} className="rounded-xl border border-slate-100 bg-white/60 p-6">
             <p className="reveal-line text-slate-700 leading-relaxed">
-              I build software that delivers real value to the people who use it.
-              For me, a good product isn&apos;t just code that works — it&apos;s
-              something that solves a genuine problem, scales without falling
-              apart, and is clean enough for the next developer to pick up
-              without a headache.
+              I build software that solves real problems, scales cleanly, and
+              is easy for the next developer to maintain. Good products
+              deliver value, not just functionality.
             </p>
             <p className="reveal-line text-slate-700 leading-relaxed mt-4">
-              Currently a junior-year CS student, I focus on learning how to
-              create and communicate solutions that are genuinely useful —
-              software that solves real problems for real people. Lately
-              I&apos;ve been diving into AI, exploring how it can make the
-              products I build deliver higher quality output — and figuring
-              out how to maximize what it can do.
+              Junior-year CS student focused on creating useful solutions and
+              communicating them well. Currently exploring AI to maximize
+              output quality in the things I build.
             </p>
             <p className="reveal-line mt-6 border-l-2 border-sky-500 pl-4 font-mono text-sm italic text-slate-500">
               &quot;I&apos;d rather ship one well-architected feature than ten duct-taped ones.&quot;
