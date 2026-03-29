@@ -20,11 +20,11 @@ interface Project {
 const projects: Project[] = [
   {
     id: "1",
-    title: "Project One",
-    description: "A full-stack web application built with modern technologies. Features real-time updates, authentication, and a clean UI.",
-    tags: ["React", "Node.js", "PostgreSQL", "Tailwind"],
-    liveUrl: "#",
-    githubUrl: "#",
+    title: "App Inventor Studio",
+    description: "A modern web tool that lets you build MIT App Inventor apps by writing code instead of dragging blocks. Features a code editor, layout markup language, and exports valid .aia files you can import directly into App Inventor.",
+    tags: ["React", "Vite", "CodeMirror", "JSZip"],
+    liveUrl: "https://app-inventor-studio.vercel.app",
+    githubUrl: "https://github.com/Gabbbb23/App-Inventor-Studio",
   },
   {
     id: "2",
