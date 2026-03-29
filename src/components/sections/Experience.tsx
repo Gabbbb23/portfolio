@@ -64,6 +64,7 @@ export default function Experience() {
   const ghostRef = useRef<HTMLSpanElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -116,6 +117,15 @@ export default function Experience() {
           scrub: true,
         },
       });
+
+      // Timeline line draws downward
+      gsap.fromTo(lineRef.current,
+        { height: "0%" },
+        {
+          height: "100%", ease: "none",
+          scrollTrigger: { trigger: timelineRef.current, start: "top 60%", end: "bottom 80%", scrub: 0.5 },
+        },
+      );
 
       // Cards stagger in from the right
       const cards = timelineRef.current?.querySelectorAll("[data-card]");
@@ -191,8 +201,10 @@ export default function Experience() {
 
         {/* Left-aligned timeline */}
         <div ref={timelineRef} className="relative">
-          {/* Dashed vertical line */}
-          <div className="absolute left-0 md:left-[60px] top-0 bottom-0 border-l-2 border-dashed border-slate-200" />
+          {/* Drawing timeline line */}
+          <div className="absolute left-0 md:left-[60px] top-0 bottom-0 w-[2px]">
+            <div ref={lineRef} className="w-full bg-slate-200" style={{ height: 0 }} />
+          </div>
 
           {/* Timeline entries */}
           <div className="space-y-8 ml-0 md:ml-[60px] pl-8">

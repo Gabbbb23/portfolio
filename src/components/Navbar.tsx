@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useMagnetic } from "@/lib/animations";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -12,42 +15,60 @@ const navLinks = [
   { label: "Contact", href: "#contact" },
 ];
 
-function NavLink({ label, href }: { label: string; href: string }) {
-  const ref = useMagnetic<HTMLAnchorElement>(0.2);
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const target = document.querySelector(href);
-    target?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  return (
-    <a
-      ref={ref}
-      href={href}
-      onClick={handleClick}
-      className="group relative font-mono text-sm font-medium text-slate-500 transition-colors duration-300 hover:text-sky-500"
-    >
-      {label}
-      <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-sky-500 transition-all duration-300 group-hover:w-full" />
-    </a>
-  );
-}
-
 export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
+  const indicatorRef = useRef<HTMLDivElement>(null);
+  const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const lastScroll = useRef(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
+
+  const moveIndicator = useCallback((index: number) => {
+    setActiveIndex(index);
+    const link = linkRefs.current[index];
+    const indicator = indicatorRef.current;
+    if (!link || !indicator) return;
+
+    gsap.to(indicator, {
+      x: link.offsetLeft,
+      width: link.offsetWidth,
+      opacity: 1,
+      duration: 0.3,
+      ease: "power2.out",
+    });
+  }, []);
 
   useEffect(() => {
-    gsap.from(navRef.current, {
-      y: -100,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out",
-      delay: 0.5,
+    const ctx = gsap.context(() => {
+      gsap.from(navRef.current, {
+        y: -100, opacity: 0, duration: 1, ease: "power3.out", delay: 0.5,
+      });
+
+      // Active section tracking
+      const sections = ["about", "skills", "projects", "experience", "contact"];
+      sections.forEach((id, index) => {
+        ScrollTrigger.create({
+          trigger: `#${id}`,
+          start: "top center",
+          end: "bottom center",
+          onEnter: () => moveIndicator(index),
+          onEnterBack: () => moveIndicator(index),
+          onLeave: () => {
+            if (index === sections.length - 1) {
+              gsap.to(indicatorRef.current, { opacity: 0, duration: 0.2 });
+              setActiveIndex(-1);
+            }
+          },
+          onLeaveBack: () => {
+            if (index === 0) {
+              gsap.to(indicatorRef.current, { opacity: 0, duration: 0.2 });
+              setActiveIndex(-1);
+            }
+          },
+        });
+      });
     });
 
     const handleScroll = () => {
@@ -62,13 +83,21 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    return () => {
+      ctx.revert();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [moveIndicator]);
+
+  const handleClick = (href: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <nav
       ref={navRef}
-      className={`fixed top-0 left-0 z-50 w-full transition-transform duration-500 ${
+      className={`fixed top-0 left-0 z-40 w-full transition-transform duration-500 ${
         hidden ? "-translate-y-full" : "translate-y-0"
       }`}
     >
@@ -90,10 +119,16 @@ export default function Navbar() {
           Gab<span className="text-sky-500">.</span>
         </a>
 
-        {/* Desktop links */}
-        <div className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <NavLink key={link.href} {...link} />
+        {/* Desktop links with active indicator */}
+        <div className="relative hidden items-center gap-8 md:flex">
+          {navLinks.map((link, i) => (
+            <NavLink
+              key={link.href}
+              label={link.label}
+              href={link.href}
+              ref={(el) => { linkRefs.current[i] = el; }}
+              isActive={activeIndex === i}
+            />
           ))}
           <a
             href="/resume.pdf"
@@ -103,6 +138,12 @@ export default function Navbar() {
           >
             Resume
           </a>
+          {/* Sliding indicator line */}
+          <div
+            ref={indicatorRef}
+            className="absolute -bottom-1 left-0 h-0.5 rounded-full bg-sky-500 opacity-0"
+            style={{ width: 0 }}
+          />
         </div>
 
         {/* Mobile hamburger */}
@@ -111,21 +152,9 @@ export default function Navbar() {
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle menu"
         >
-          <span
-            className={`h-0.5 w-6 bg-slate-700 transition-all duration-300 ${
-              mobileOpen ? "translate-y-2 rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`h-0.5 w-6 bg-slate-700 transition-all duration-300 ${
-              mobileOpen ? "opacity-0" : ""
-            }`}
-          />
-          <span
-            className={`h-0.5 w-6 bg-slate-700 transition-all duration-300 ${
-              mobileOpen ? "-translate-y-2 -rotate-45" : ""
-            }`}
-          />
+          <span className={`h-0.5 w-6 bg-slate-700 transition-all duration-300 ${mobileOpen ? "translate-y-2 rotate-45" : ""}`} />
+          <span className={`h-0.5 w-6 bg-slate-700 transition-all duration-300 ${mobileOpen ? "opacity-0" : ""}`} />
+          <span className={`h-0.5 w-6 bg-slate-700 transition-all duration-300 ${mobileOpen ? "-translate-y-2 -rotate-45" : ""}`} />
         </button>
       </div>
 
@@ -163,3 +192,34 @@ export default function Navbar() {
     </nav>
   );
 }
+
+import { forwardRef } from "react";
+
+const NavLink = forwardRef<HTMLAnchorElement, { label: string; href: string; isActive: boolean }>(
+  ({ label, href, isActive }, ref) => {
+    const magneticRef = useMagnetic<HTMLAnchorElement>(0.2);
+
+    const combinedRef = (el: HTMLAnchorElement | null) => {
+      (magneticRef as React.MutableRefObject<HTMLAnchorElement | null>).current = el;
+      if (typeof ref === "function") ref(el);
+      else if (ref) (ref as React.MutableRefObject<HTMLAnchorElement | null>).current = el;
+    };
+
+    return (
+      <a
+        ref={combinedRef}
+        href={href}
+        onClick={(e) => {
+          e.preventDefault();
+          document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+        }}
+        className={`relative font-mono text-sm font-medium transition-colors duration-300 ${
+          isActive ? "text-sky-500" : "text-slate-500 hover:text-sky-500"
+        }`}
+      >
+        {label}
+      </a>
+    );
+  }
+);
+NavLink.displayName = "NavLink";

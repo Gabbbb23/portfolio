@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTextReveal } from "@/lib/animations";
+import { useTextReveal, useTilt } from "@/lib/animations";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,6 +63,7 @@ const projects: Project[] = [
 
 function ProjectRow({ project, index }: { project: Project; index: number }) {
   const rowRef = useRef<HTMLDivElement>(null);
+  const imageRef = useTilt<HTMLDivElement>(5);
   const projectNum = String(index + 1).padStart(2, "0");
   const isOdd = index % 2 === 1;
 
@@ -92,7 +93,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
       <div
         className={`col-span-12 md:col-span-7 ${isOdd ? "md:order-2" : ""}`}
       >
-        <div className="relative bg-slate-100 rounded-xl aspect-video overflow-hidden border border-slate-200">
+        <div ref={imageRef} className="relative bg-slate-100 rounded-xl aspect-video overflow-hidden border border-slate-200">
           {/* Sky blue top bar */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-sky-500" />
           {/* Project number */}

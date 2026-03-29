@@ -52,10 +52,13 @@ function SocialButton({ social }: { social: SocialLink }) {
       href={social.href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-5 py-3 text-slate-600 font-mono text-sm hover:border-sky-500 hover:text-sky-500 transition-all shadow-sm hover:shadow-md"
+      className="group relative overflow-hidden rounded-lg border border-slate-600 px-6 py-3 font-mono text-sm text-slate-300 transition-colors duration-300 hover:border-sky-500 hover:text-white"
     >
-      {social.icon}
-      {social.label}
+      <span className="absolute inset-0 -translate-x-full bg-sky-500 transition-transform duration-300 ease-out group-hover:translate-x-0" />
+      <span className="relative z-10 flex items-center gap-2">
+        {social.icon}
+        {social.label}
+      </span>
     </a>
   );
 }
@@ -67,43 +70,19 @@ export default function Contact() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Left content slides in from the left
       gsap.from(contentRef.current, {
-        x: -40,
-        opacity: 0,
-        duration: 0.5,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
+        x: -40, opacity: 0, duration: 0.5, ease: "power3.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
       });
-
-      // Ghost text slides in from the right
       gsap.from(ghostRef.current, {
-        x: 100,
-        opacity: 0,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 70%",
-        },
+        x: 100, opacity: 0, duration: 0.6, ease: "power2.out",
+        scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
       });
-
-      // Ghost parallax on scroll
       gsap.to(ghostRef.current, {
-        yPercent: -20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
+        yPercent: -20, ease: "none",
+        scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: true },
       });
     });
-
     return () => ctx.revert();
   }, []);
 
@@ -111,25 +90,21 @@ export default function Contact() {
     <section
       ref={sectionRef}
       id="contact"
-      className="bg-slate-50 py-16 md:py-20 relative overflow-hidden"
+      className="relative overflow-hidden bg-slate-900 py-16 md:py-20"
     >
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-12 gap-8">
-          {/* Left column: content */}
           <div ref={contentRef} className="col-span-12 md:col-span-6">
-            <p className="font-mono text-sky-500 uppercase tracking-wider text-sm mb-2">
+            <p className="mb-2 font-mono text-sm uppercase tracking-wider text-sky-400">
               &#9656; Get In Touch
             </p>
-
-            <h2 className="font-heading text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            <h2 className="mb-4 font-heading text-4xl font-bold text-white md:text-5xl">
               Let&apos;s Connect
             </h2>
-
-            <p className="text-slate-500 mb-8">
+            <p className="mb-8 text-slate-300">
               I&apos;m always open to new opportunities, collaborations, or just
               a friendly chat about tech.
             </p>
-
             <div className="flex flex-wrap gap-3">
               {socials.map((social) => (
                 <SocialButton key={social.label} social={social} />
@@ -137,9 +112,8 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Right column: decorative large number */}
-          <div className="col-span-12 md:col-span-6 hidden md:flex items-center justify-center">
-            <span ref={ghostRef} className="text-[16rem] font-display text-slate-100 leading-none select-none">
+          <div className="col-span-12 hidden items-center justify-center md:col-span-6 md:flex">
+            <span ref={ghostRef} className="select-none font-display text-[16rem] leading-none text-slate-800">
               06
             </span>
           </div>

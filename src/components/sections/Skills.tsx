@@ -63,8 +63,9 @@ function SkillCard({ skill }: { skill: Skill }) {
       <span className="font-mono text-xs text-slate-600">{skill.name}</span>
       <div className="mt-2 h-1 w-full rounded-full bg-slate-100">
         <div
-          className="h-full rounded-full bg-sky-400"
-          style={{ width: `${skill.level}%` }}
+          className="skill-bar-fill h-full rounded-full bg-sky-400"
+          data-level={skill.level}
+          style={{ width: 0 }}
         />
       </div>
     </div>
@@ -90,6 +91,18 @@ function SkillCategorySection({ category }: { category: SkillCategory }) {
           gsap.fromTo(cards,
             { y: 30, opacity: 0 },
             { y: 0, opacity: 1, stagger: 0.05, duration: 0.4, ease: "power3.out" },
+          );
+          // Animated skill bar fills after cards reveal
+          const bars = grid.querySelectorAll(".skill-bar-fill");
+          gsap.fromTo(bars,
+            { width: "0%" },
+            {
+              width: (_: number, el: Element) => `${(el as HTMLElement).dataset.level}%`,
+              stagger: 0.08,
+              duration: 0.8,
+              delay: 0.3,
+              ease: "power2.out",
+            },
           );
         },
         once: true,

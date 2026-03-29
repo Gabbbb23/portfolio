@@ -3,16 +3,17 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTextReveal, useScrollFadeUp, useCountUp } from "@/lib/animations";
+import { useTextReveal, useScrollFadeUp, useCountUp, useTilt } from "@/lib/animations";
 import CornerBrackets from "@/components/CornerBrackets";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function StatCard({ value, label }: { value: number; label: string }) {
   const countRef = useCountUp(value);
+  const tiltRef = useTilt<HTMLDivElement>(5);
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all duration-200">
+    <div ref={tiltRef} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm transition-shadow duration-200 hover:shadow-md">
       <span ref={countRef} className="text-3xl font-heading font-bold text-sky-500">
         0
       </span>

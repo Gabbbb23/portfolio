@@ -257,6 +257,26 @@ export default function Hero() {
             <FloatingShape size={45} x="40%" y="20%" shape="circle" />
             <FloatingShape size={30} x="85%" y="45%" shape="square" />
           </div>
+
+          {/* Floating code fragments */}
+          <div className="pointer-events-none absolute inset-0 select-none">
+            {[
+              { text: "const", x: "15%", y: "20%", size: "text-sm" },
+              { text: "=>", x: "80%", y: "35%", size: "text-base" },
+              { text: "{ }", x: "55%", y: "60%", size: "text-lg" },
+              { text: "async", x: "75%", y: "50%", size: "text-xs" },
+              { text: "</>", x: "30%", y: "75%", size: "text-sm" },
+              { text: "npm run dev", x: "60%", y: "12%", size: "text-xs" },
+            ].map((frag) => (
+              <span
+                key={frag.text}
+                className={`absolute font-mono text-slate-200/40 ${frag.size}`}
+                style={{ left: frag.x, top: frag.y }}
+              >
+                {frag.text}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 

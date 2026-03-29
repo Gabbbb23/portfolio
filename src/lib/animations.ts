@@ -201,3 +201,38 @@ export function useMagnetic<T extends HTMLElement>(strength = 0.3) {
 
   return ref;
 }
+
+// 3D tilt on hover
+export function useTilt<T extends HTMLElement>(maxTilt = 6) {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const handleMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -maxTilt;
+      const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * maxTilt;
+      el.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+      el.style.transition = "transform 0.1s ease";
+    };
+
+    const handleLeave = () => {
+      el.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)";
+      el.style.transition = "transform 0.5s ease";
+    };
+
+    el.addEventListener("mousemove", handleMove);
+    el.addEventListener("mouseleave", handleLeave);
+
+    return () => {
+      el.removeEventListener("mousemove", handleMove);
+      el.removeEventListener("mouseleave", handleLeave);
+    };
+  }, [maxTilt]);
+
+  return ref;
+}
