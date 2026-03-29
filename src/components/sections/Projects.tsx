@@ -169,7 +169,7 @@ export default function Projects() {
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: () => `+=${cardCount * window.innerHeight}`,
+          end: () => `+=${(cardCount - 1) * window.innerHeight}`,
           pin: true,
           pinType: "fixed",
           scrub: 0.6,
@@ -178,11 +178,12 @@ export default function Projects() {
         },
       });
 
+      const transitions = cardCount - 1;
       cardEls.forEach((card, i) => {
         if (i === 0) return;
-        const cardStart = i / cardCount;
-        const enterDuration = 0.7 / cardCount;
-        const recessDuration = 0.4 / cardCount;
+        const cardStart = (i - 1) / transitions;
+        const enterDuration = 0.7 / transitions;
+        const recessDuration = 0.4 / transitions;
 
         // Previous card recedes subtly (covered by incoming solid bg)
         tl.to(cardEls[i - 1], {
