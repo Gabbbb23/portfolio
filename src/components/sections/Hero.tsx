@@ -325,23 +325,12 @@ export default function Hero() {
             <span className="ml-0.5 inline-block h-6 w-[2px] animate-pulse bg-sky-500" />
           </div>
 
-          <div ref={ctaRef} className="flex flex-col gap-4 sm:flex-row">
-            <a
-              ref={btnWorkRef}
-              href="#projects"
-              onClick={handleScrollTo("#projects")}
-              className="inline-flex items-center gap-2 rounded-full bg-sky-500 px-10 py-4 text-base font-semibold text-white transition-colors duration-300 hover:bg-sky-600"
-            >
-              View My Work
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </a>
+          <div ref={ctaRef}>
             <a
               ref={btnContactRef}
               href="#contact"
               onClick={handleScrollTo("#contact")}
-              className="inline-flex items-center rounded-full border border-slate-300 px-10 py-4 text-base font-semibold text-slate-700 transition-all duration-300 hover:border-sky-500 hover:text-sky-500"
+              className="inline-flex items-center rounded-full bg-sky-500 px-10 py-4 text-base font-semibold text-white transition-colors duration-300 hover:bg-sky-600"
             >
               Get In Touch
             </a>
