@@ -13,6 +13,8 @@ interface Project {
   title: string;
   description: string;
   tags: string[];
+  category?: string;
+  year?: string;
   liveUrl?: string;
   githubUrl?: string;
 }
@@ -23,6 +25,8 @@ const projects: Project[] = [
     title: "App Inventor Studio",
     description: "A modern web tool that lets you build MIT App Inventor apps by writing code instead of dragging blocks. Features a code editor, layout markup language, and exports valid .aia files you can import directly into App Inventor.",
     tags: ["React", "Vite", "CodeMirror", "JSZip"],
+    category: "Dev Tool",
+    year: "2026",
     liveUrl: "https://app-inventor-studio.vercel.app",
     githubUrl: "https://github.com/Gabbbb23/App-Inventor-Studio",
   },
@@ -31,6 +35,8 @@ const projects: Project[] = [
     title: "Project Two",
     description: "An API-driven platform that streamlines workflow automation. Built for scalability and performance.",
     tags: ["Next.js", "TypeScript", "MongoDB", "Docker"],
+    category: "Full-Stack",
+    year: "2025",
     liveUrl: "#",
     githubUrl: "#",
   },
@@ -39,6 +45,8 @@ const projects: Project[] = [
     title: "Project Three",
     description: "A mobile-first application focused on user experience. Implements complex state management and offline support.",
     tags: ["React", "Python", "REST API", "Figma"],
+    category: "Mobile",
+    year: "2025",
     liveUrl: "#",
     githubUrl: "#",
   },
@@ -47,6 +55,8 @@ const projects: Project[] = [
     title: "Project Four",
     description: "A developer tool that simplifies common tasks. Features a CLI interface and extensible plugin system.",
     tags: ["TypeScript", "Node.js", "CLI", "Open Source"],
+    category: "Open Source",
+    year: "2025",
     liveUrl: "#",
     githubUrl: "#",
   },
@@ -114,7 +124,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-            <span className="font-mono text-xs">Full-Stack · 2024</span>
+            <span className="font-mono text-xs">{project.category || "Project"} · {project.year || "2025"}</span>
           </div>
           <div className={`flex gap-4 ${isOdd ? "md:justify-end" : ""}`}>
             {project.liveUrl && (
