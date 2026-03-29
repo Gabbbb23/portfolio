@@ -151,9 +151,8 @@ export default function About() {
               Lately I&apos;ve been diving deep into AI — exploring how it can
               make the products I build smarter and more useful.
             </p>
-            <p className="reveal-line text-slate-700 leading-relaxed mt-4">
-              I&apos;m always down to talk about scalable systems, AI-powered
-              products, or anything that pushes what software can do. Hit me up.
+            <p className="reveal-line mt-6 border-l-2 border-sky-500 pl-4 font-mono text-sm italic text-slate-500">
+              &quot;I&apos;d rather ship one well-architected feature than ten duct-taped ones.&quot;
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {["Next.js", "Open Source", "UI/UX", "Clean Code", "System Design", "No Coffee"].map((tag) => (
