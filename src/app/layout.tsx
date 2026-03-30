@@ -53,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${bebasNeue.variable} antialiased`}>
+    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${bebasNeue.variable} antialiased overflow-x-hidden`}>
       <body>{children}</body>
     </html>
   );
