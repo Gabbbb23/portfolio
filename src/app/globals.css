@@ -26,7 +26,7 @@
 
 html {
   scroll-behavior: auto;
-  background: #FFFFFF;
+  background: #020617;
   scrollbar-width: none;
   -ms-overflow-style: none;
   overflow-x: hidden;
@@ -52,7 +52,7 @@ html.lenis, html.lenis body {
 }
 
 body {
-  background: #FFFFFF;
+  background: #020617;
   color: #334155;
   font-family: var(--font-inter), system-ui, sans-serif;
   overflow-x: hidden;
