@@ -17,6 +17,7 @@ interface ExperienceItem {
   description: string;
   type: "work" | "education" | "event";
   technologies?: string[];
+  credentialUrl?: string;
 }
 
 // Newest first
@@ -56,6 +57,17 @@ const workExperience: ExperienceItem[] = [
 const education: ExperienceItem[] = [
   {
     id: "4",
+    title: "CS50x Certificate",
+    company: "Harvard University",
+    period: "Issued Apr 2, 2026",
+    description:
+      "Completed Harvard's CS50x: Introduction to Computer Science covering core computer science and programming fundamentals.",
+    type: "education",
+    technologies: ["C", "Python", "SQL", "JavaScript"],
+    credentialUrl: "https://cs50.harvard.edu/certificates/cb9fb01f-be0e-4231-88ad-14232b8d0134",
+  },
+  {
+    id: "5",
     title: "B.S. Information Technology",
     company: "Rizal Technological University",
     period: "2023 — Present",
@@ -65,7 +77,7 @@ const education: ExperienceItem[] = [
     technologies: ["Java", "Python", "C++", "System Design"],
   },
   {
-    id: "5",
+    id: "6",
     title: "ICT Strand",
     company: "Rizal Technological University",
     period: "2021 — 2023",
@@ -111,6 +123,16 @@ function TimelineCard({ item, index, accent = "sky" }: { item: ExperienceItem; i
                 <span key={tech} className="rounded bg-slate-100 px-2 py-0.5 font-mono text-[10px] text-slate-500">{tech}</span>
               ))}
             </div>
+          )}
+          {item.credentialUrl && (
+            <a
+              href={item.credentialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center rounded border border-slate-200 px-3 py-1.5 font-mono text-[11px] uppercase tracking-wide text-slate-600 transition-colors hover:border-amber-500 hover:text-amber-500"
+            >
+              View Certificate
+            </a>
           )}
         </div>
       </CornerBrackets>
