@@ -37,6 +37,17 @@ const projects: Project[] = [
   },
   {
     id: "2",
+    title: "Rope & Nails",
+    description: "A string-art puzzle game that runs inside Reddit posts. Bend continuous strings onto empty nails until the board matches the target shape. Ships with daily puzzles, 100 trophies, leaderboards, and an editor where players design and publish their own boards. Built for Reddit's Games with a Hook Hackathon.",
+    tags: ["Phaser", "Devvit Web", "TypeScript", "Vite"],
+    category: "Game",
+    year: "2026",
+    image: "/projects/rope-and-nails.png",
+    liveUrl: "https://www.reddit.com/r/RopeAndNails/",
+    githubUrl: "https://github.com/Gabbbb23/rope-and-nails",
+  },
+  {
+    id: "3",
     title: "Something Cool",
     description: "Currently cooking something up. I only ship projects that solve real problems or help me deeply understand how things work. No filler projects here.",
     tags: ["???", "Coming Soon"],
@@ -44,7 +55,7 @@ const projects: Project[] = [
     year: "2026",
   },
   {
-    id: "3",
+    id: "4",
     title: "Another One",
     description: "Got a few ideas in the backlog. If it doesn't provide value to someone or teach me something meaningful, it doesn't make the cut.",
     tags: ["Stay Tuned", "Building"],
